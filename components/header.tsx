@@ -21,9 +21,14 @@ export default function Header() {
 
         {/* Navigation - PC */}
         <nav className="hidden md:flex gap-8">
-          <a href="#" className="hover:text-accent transition">Kezdőlap</a>
+           <Link href="/" className="hover:text-accent transition">
+            Kezdőlap
+          </Link>
           <a href="#" className="hover:text-accent transition">Random anime</a>
           <a href="#" className="hover:text-accent transition">Kategóriák</a>
+          <Link href="/admin" className="hover:text-accent transition">
+            Admin
+          </Link>
         </nav>
 
         {/* Header jobb oldali elemei */}
@@ -53,9 +58,14 @@ export default function Header() {
       {/* Telefon Menu */}
       {isMenuOpen && (
         <nav className="md:hidden bg-card border-t border-border px-4 py-4 space-y-3">
-          <a href="#" className="block hover:text-accent transition">Kezdőlap</a>
+          <Link href="/" className="hover:text-accent transition">
+            Kezdőlap
+          </Link>
           <a href="#" className="block hover:text-accent transition">Random Anime</a>
           <a href="#" className="block hover:text-accent transition">Kategóriák</a>
+          <Link href="/admin" className="hover:text-accent transition">
+            Admin
+          </Link>
         </nav>
       )}
     </header>
