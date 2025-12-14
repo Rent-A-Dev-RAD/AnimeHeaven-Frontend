@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { Card } from '@/components/ui/card'
 import { Play, Plus } from 'lucide-react'
+import Link from "next/link"
 
 const animes = [
   {
@@ -97,10 +98,8 @@ export default function AnimeGrid() {
       
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {animes.map((anime) => (
-          <Card
-            key={anime.id}
-            className="bg-card border-border hover:border-accent transition-all group cursor-pointer"
-          >
+          <Link key={anime.id} href={`/anime/${anime.id}`}>
+            <Card className="bg-card border-border hover:border-accent transition-all group cursor-pointer">
             <div className="relative overflow-hidden rounded-lg">
               {/* Kép */}
               <div className="relative w-full aspect-[2/3] overflow-hidden">
@@ -140,8 +139,9 @@ export default function AnimeGrid() {
               </div>
             </div>
           </Card>
-        ))}
-      </div>
-    </section>
+        </Link>
+      ))}
+    </div>
+  </section>
   )
 }
