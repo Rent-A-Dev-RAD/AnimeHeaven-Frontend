@@ -7,7 +7,6 @@ const animes = [
     title_japanese: 'Chainsaw Man',
     title_english: 'Chainsaw Man',
     borito: 'https://cdn.myanimelist.net/images/anime/1806/126216l.webp',
-    hatter: '',
     rating: 9.0,
     genre: 'Action, Fantasy',
     malId: 44511,
@@ -93,29 +92,7 @@ export default async function AnimePage({ params }: { params: Promise<{ id: stri
             <nav>
                 <Header />
             </nav>
-            <main className="relative bg-background text-foreground min-h-screen">
-                {/* Háttérkép blur effekttel */}
-                {(anime as any).hatter && (
-                    <div className="fixed inset-0 -z-10 overflow-hidden">
-                        <img 
-                            src={(anime as any).hatter}
-                            alt="Background"
-                            className="absolute inset-0 w-full h-full object-cover object-center"
-                            style={{
-                                filter: 'blur(5px)',
-                                transform: 'scale(1.1)',
-                            }}
-                        />
-                        <div 
-                            className="absolute inset-0" 
-                            style={{
-                                backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                                backdropFilter: 'blur(5px)',
-                            }}
-                        />
-                    </div>
-                )}
-                
+            <main className="relative bg-background text-foreground min-h-screen">               
                 <div className="relative max-w-7xl mx-auto px-4 py-8">
                     <div className="flex flex-col md:flex-row gap-8">
                         {/* Borító kép */}
