@@ -2,27 +2,27 @@ import Header from '@/components/header'
 
 // Anime típus definíció
 interface Anime {
-  id: number
-  title_japanese: string
-  title_english: string
-  borito?: string
-  image?: string
-  rating: number
-  genre: string
-  malId: number
-  leiras?: string
-  studio?: string
-  statusz?: string
-  tipus?: string
-  osszes_epizod?: number
-  jelenlegi_epizod?: number
-  megjelenes?: string
-  fordito?: string
-  besorolas?: string
-  feltoltesDatuma?: string
-  trailer?: string
-  title?: string
-}
+    id: number
+    title_japanese: string
+    title_english: string
+    borito?: string
+    hatter?: string
+    rating: number
+    genre: string
+    malId: number
+    leiras?: string
+    studio?: string
+    statusz?: string
+    tipus?: string
+    osszes_epizod?: number
+    jelenlegi_epizod?: number
+    megjelenes?: string
+    fordito?: string
+    besorolas?: string
+    feltoltesDatuma?: string
+    trailer?: string
+    title?: string
+    }
 
 // Anime adatok (ugyanaz mint az anime-grid-ben)
 const animes: Anime[] = [
@@ -31,6 +31,7 @@ const animes: Anime[] = [
     title_japanese: 'Chainsaw Man',
     title_english: 'Chainsaw Man',
     borito: 'https://cdn.myanimelist.net/images/anime/1806/126216l.webp',
+    hatter: 'https://image.tmdb.org/t/p/original/9x3TvkC3pZ1rH6j7A0Rzq1Z2VeB.jpg',
     rating: 9.0,
     genre: 'Action, Fantasy',
     malId: 44511,
@@ -50,47 +51,106 @@ const animes: Anime[] = [
     id: 2,
     title_japanese: 'Yofukashi no Uta',
     title_english: 'Call Of The Night',
-    image: '',
+    borito: 'https://cdn.myanimelist.net/images/anime/1164/134092l.webp',
+    hatter: 'https://image.tmdb.org/t/p/original/veh7M4ho0vgqkW0n0hx1Up42elV.jpg',
     rating: 8.9,
-    genre: 'Supernatural',
-    malId: 50346
-
+    genre: 'Supernatural, Romance',
+    malId: 50346,
+    leiras: 'Ko Yamori éjszakánként bolyong az utcákon, mert nem tud aludni. Egy éjszaka találkozik Nazuna Nanakusával, egy titokzatos lánnyal, aki felfedi, hogy vámpír. Nazuna megmutatja Ko-nak az éjszakai élet varázsát és szabadságát, miközben különös kapcsolat alakul ki közöttük.',
+    studio: 'Lidenfilms',
+    statusz: 'Befejezett',
+    tipus: 'TV',
+    osszes_epizod: 13,
+    jelenlegi_epizod: 13,
+    megjelenes: '2022 Nyár',
+    fordito: 'Anime Heaven Fansub',
+    besorolas: 'R-17+',
+    feltoltesDatuma: '2022-07-08',
+    trailer: 'https://www.youtube-nocookie.com/embed/a4bSbmqwhso?enablejsapi=1&wmode=opaque&autoplay=0'
   },
   {
     id: 3,
     title_japanese: 'Jujutsu Kaisen',
     title_english: 'Jujutsu Kaisen',
-    image: '',
+    borito: 'https://cdn.myanimelist.net/images/anime/1171/109222l.webp',
+    hatter: 'https://image.tmdb.org/t/p/original/20r6g0KfiAKZ3qBaFvBMvZ0Qbzz.jpg',
     rating: 8.8,
-    genre: 'Action',
-    malId: 40748
+    genre: 'Action, Fantasy, Shounen',
+    malId: 40748,
+    leiras: 'Yuuji Itadori egy rendkívüli fizikai képességekkel rendelkező középiskolás. Egyik napja azzal kezdődik, hogy találkozik egy jujutsu varázslóval, aki elátkozott tárgyakat kutat. Amikor barátai veszélybe kerülnek, Yuuji lenyeli egy erős átok ujját, hogy megmentse őket.',
+    studio: 'MAPPA',
+    statusz: 'Folyamatban',
+    tipus: 'TV',
+    osszes_epizod: 24,
+    jelenlegi_epizod: 24,
+    megjelenes: '2020 Ősz',
+    fordito: 'Anime Heaven Fansub',
+    besorolas: 'R-17+',
+    feltoltesDatuma: '2020-10-03',
+    trailer: 'https://www.youtube-nocookie.com/embed/4A_X-Dvl0ws?enablejsapi=1&wmode=opaque&autoplay=0'
   },
   {
     id: 4,
     title_japanese: 'Sono Bisque Doll wa Koi wo Suru',
     title_english: 'My Dress-Up Darling',
-    image: '',
+    borito: 'https://cdn.myanimelist.net/images/anime/1179/119897l.webp',
+    hatter: 'https://image.tmdb.org/t/p/original/c22TSmxhIuKEHhY7YKKBdaHnR61.jpg',
     rating: 8.7,
-    genre: 'Romance',
-    malId: 48736
+    genre: 'Romance, Slice of Life',
+    malId: 48736,
+    leiras: 'Wakana Gojou egy középiskolás fiú, aki hina babák készítésével foglalkozik. Egy nap osztálytársa, Marin Kitagawa felfedezi Wakana tehetségét, és megkéri, hogy segítsen neki cosplay jelmezek készítésében. Így kezdődik kettejük különleges barátsága.',
+    studio: 'CloverWorks',
+    statusz: 'Befejezett',
+    tipus: 'TV',
+    osszes_epizod: 12,
+    jelenlegi_epizod: 12,
+    megjelenes: '2022 Tél',
+    fordito: 'Anime Heaven Fansub',
+    besorolas: 'PG-13',
+    feltoltesDatuma: '2022-01-09',
+    trailer: 'https://www.youtube-nocookie.com/embed/tFKDKd8z-NU?enablejsapi=1&wmode=opaque&autoplay=0'
   },
   {
     id: 5,
     title_japanese: 'Death Note',
     title_english: 'Death Note',
-    image: '',
+    borito: 'https://cdn.myanimelist.net/images/anime/9/9453l.webp',
+    hatter: 'https://image.tmdb.org/t/p/original/mOlEbXcb6ufRJKogI35KqsSlCfB.jpg',
     rating: 8.6,
-    genre: 'Thriller',
-    malId: 1535
+    genre: 'Thriller, Supernatural',
+    malId: 1535,
+    leiras: 'Light Yagami egy kiváló tanuló, aki egy különleges noteszre bukkan, a Death Note-ra. Bárki neve, akit a noteszba írnak, meghal. Light úgy dönt, hogy megtisztítja a világot a gonosztól, de hamarosan egy titokzatos nyomozó, L nyomába ered.',
+    studio: 'Madhouse',
+    statusz: 'Befejezett',
+    tipus: 'TV',
+    osszes_epizod: 37,
+    jelenlegi_epizod: 37,
+    megjelenes: '2006 Ősz',
+    fordito: 'Anime Heaven Fansub',
+    besorolas: 'R-17+',
+    feltoltesDatuma: '2006-10-04',
+    trailer: 'https://www.youtube-nocookie.com/embed/Vt_3c8BgxV4?enablejsapi=1&wmode=opaque&autoplay=0'
   },
   {
     id: 6,
     title_japanese: 'Otonari no Tenshi-sama ni Itsunomanika Dame Ningen ni Sareteita Ken',
     title_english: 'The Angel Next Door Spoils Me Rotten',
-    image: '',
+    borito: 'https://cdn.myanimelist.net/images/anime/1009/131524l.webp',
+    hatter: 'https://image.tmdb.org/t/p/original/eusdD22WIeV27BVQPSJz6YONtqf.jpg',
     rating: 9.0,
-    genre: 'Romance',
-    malId: 50739
+    genre: 'Romance, Slice of Life',
+    malId: 50739,
+    leiras: 'Amane Fujimiya egy magányos középiskolás fiú, aki egy napon találkozik szomszédjával, Mahiru Shiinával, akit az iskolában angyalnak hívnak. Amikor Mahiru észreveszi Amane rendetlen életmódját, eldönti, hogy gondoskodik róla.',
+    studio: 'Project No.9',
+    statusz: 'Befejezett',
+    tipus: 'TV',
+    osszes_epizod: 12,
+    jelenlegi_epizod: 12,
+    megjelenes: '2023 Tél',
+    fordito: 'Anime Heaven Fansub',
+    besorolas: 'PG-13',
+    feltoltesDatuma: '2023-01-07',
+    trailer: 'https://www.youtube-nocookie.com/embed/IUq59ARXtdg?enablejsapi=1&wmode=opaque&autoplay=0'
   },
 ]
 
