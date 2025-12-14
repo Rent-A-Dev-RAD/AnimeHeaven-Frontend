@@ -1,7 +1,31 @@
 import Header from '@/components/header'
 
+// Anime típus definíció
+interface Anime {
+  id: number
+  title_japanese: string
+  title_english: string
+  borito?: string
+  image?: string
+  rating: number
+  genre: string
+  malId: number
+  leiras?: string
+  studio?: string
+  statusz?: string
+  tipus?: string
+  osszes_epizod?: number
+  jelenlegi_epizod?: number
+  megjelenes?: string
+  fordito?: string
+  besorolas?: string
+  feltoltesDatuma?: string
+  trailer?: string
+  title?: string
+}
+
 // Anime adatok (ugyanaz mint az anime-grid-ben)
-const animes = [
+const animes: Anime[] = [
   {
     id: 1,
     title_japanese: 'Chainsaw Man',
@@ -100,7 +124,7 @@ export default async function AnimePage({ params }: { params: Promise<{ id: stri
                             <div className="relative w-full aspect-[2/3] overflow-hidden rounded-lg shadow-lg">
                                 <img
                                     src={anime.borito || "/placeholder.svg"}
-                                    alt={(anime as any).title_english || (anime as any).title_japanese || (anime as any).title}
+                                    alt={anime.title_english || anime.title_japanese || anime.title || 'Anime cover'}
                                     className="w-full h-full object-cover rounded-lg scale-100 transition-transform duration-300"
                                 />
                             </div>
@@ -110,13 +134,13 @@ export default async function AnimePage({ params }: { params: Promise<{ id: stri
                         <div className="w-full md:w-2/3">
                             {/* Címek */}
                             <div className="mb-4">
-                                {(anime as any).title_japanese && (anime as any).title_english && (anime as any).title_japanese !== (anime as any).title_english ? (
+                                {anime.title_japanese && anime.title_english && anime.title_japanese !== anime.title_english ? (
                                     <>
-                                        <h1 className="text-3xl md:text-4xl font-bold mb-2">{(anime as any).title_japanese}</h1>
-                                        <h2 className="text-xl md:text-2xl text-muted-foreground font-semibold">{(anime as any).title_english}</h2>
+                                        <h1 className="text-3xl md:text-4xl font-bold mb-2">{anime.title_japanese}</h1>
+                                        <h2 className="text-xl md:text-2xl text-muted-foreground font-semibold">{anime.title_english}</h2>
                                     </>
                                 ) : (
-                                    <h1 className="text-3xl md:text-4xl font-bold">{(anime as any).title_english || (anime as any).title_japanese || (anime as any).title}</h1>
+                                    <h1 className="text-3xl md:text-4xl font-bold">{anime.title_english || anime.title_japanese || anime.title}</h1>
                                 )}
                             </div>
                             
@@ -137,49 +161,49 @@ export default async function AnimePage({ params }: { params: Promise<{ id: stri
                             </div>
 
                             {/* Információk */}
-                            {(anime as any).studio && (
+                            {anime.studio && (
                                 <div className="mb-6">
                                     <div className="grid grid-cols-2 gap-x-6 gap-y-2 bg-muted/50 p-4 rounded-lg">
-                                        {(anime as any).fordito && (
+                                        {anime.fordito && (
                                             <>
                                                 <div className="text-sm font-medium text-muted-foreground uppercase">FORDÍTÓ:</div>
-                                                <div className="text-sm text-foreground">{(anime as any).fordito}</div>
+                                                <div className="text-sm text-foreground">{anime.fordito}</div>
                                             </>
                                         )}
-                                        {(anime as any).besorolas && (
+                                        {anime.besorolas && (
                                             <>
                                                 <div className="text-sm font-medium text-muted-foreground uppercase">BESOROLÁS:</div>
-                                                <div className="text-sm text-foreground">{(anime as any).besorolas}</div>
+                                                <div className="text-sm text-foreground">{anime.besorolas}</div>
                                             </>
                                         )}
-                                        {(anime as any).statusz && (
+                                        {anime.statusz && (
                                             <>
                                                 <div className="text-sm font-medium text-muted-foreground uppercase">STÁTUSZ:</div>
-                                                <div className="text-sm text-foreground">{(anime as any).statusz}</div>
+                                                <div className="text-sm text-foreground">{anime.statusz}</div>
                                             </>
                                         )}
-                                        {(anime as any).osszes_epizod && (
+                                        {anime.osszes_epizod && (
                                             <>
                                                 <div className="text-sm font-medium text-muted-foreground uppercase">RÉSZEK:</div>
-                                                <div className="text-sm text-foreground">{(anime as any).jelenlegi_epizod}/{(anime as any).osszes_epizod}</div>
+                                                <div className="text-sm text-foreground">{anime.jelenlegi_epizod}/{anime.osszes_epizod}</div>
                                             </>
                                         )}
-                                        {(anime as any).megjelenes && (
+                                        {anime.megjelenes && (
                                             <>
                                                 <div className="text-sm font-medium text-muted-foreground uppercase">MEGJELENÉS:</div>
-                                                <div className="text-sm text-foreground">{(anime as any).megjelenes}</div>
+                                                <div className="text-sm text-foreground">{anime.megjelenes}</div>
                                             </>
                                         )}
-                                        {(anime as any).tipus && (
+                                        {anime.tipus && (
                                             <>
                                                 <div className="text-sm font-medium text-muted-foreground uppercase">TÍPUS:</div>
-                                                <div className="text-sm text-foreground">{(anime as any).tipus}</div>
+                                                <div className="text-sm text-foreground">{anime.tipus}</div>
                                             </>
                                         )}
-                                        {(anime as any).studio && (
+                                        {anime.studio && (
                                             <>
                                                 <div className="text-sm font-medium text-muted-foreground uppercase">STÚDIÓ:</div>
-                                                <div className="text-sm text-foreground">{(anime as any).studio}</div>
+                                                <div className="text-sm text-foreground">{anime.studio}</div>
                                             </>
                                         )}
                                     </div>
@@ -189,11 +213,11 @@ export default async function AnimePage({ params }: { params: Promise<{ id: stri
                     </div>
                     
                     {/* Trailer */}
-                    {(anime as any).trailer && (
+                    {anime.trailer && (
                         <div className="mt-8">
                             <div className="aspect-video">
                                 <iframe
-                                    src={(anime as any).trailer}
+                                    src={anime.trailer}
                                     title={`${anime.title_english} Trailer`}
                                     frameBorder="0"
                                     allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
