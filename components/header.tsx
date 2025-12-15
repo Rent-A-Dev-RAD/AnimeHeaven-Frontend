@@ -12,12 +12,14 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b border-border">
       <div className="flex items-center justify-between px-4 md:px-6 py-4 max-w-7xl mx-auto">
         {/* Logo */}
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center">
-            <span className="text-accent-foreground font-bold">AH</span>
+        <Link href="/" className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center">
+              <span className="text-accent-foreground font-bold">AH</span>
+            </div>
+            <span className="text-xl font-bold hidden sm:inline">AnimeHeaven</span>
           </div>
-          <span className="text-xl font-bold hidden sm:inline">AnimeHeaven</span>
-        </div>
+        </Link>
 
         {/* Navigation - PC */}
         <nav className="hidden md:flex gap-8">
