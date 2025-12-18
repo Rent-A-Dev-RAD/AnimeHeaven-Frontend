@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { randomBytes } from "crypto"
 
 export default function AddAnimePage() {
   const [malUrl, setMalUrl] = useState("")
@@ -24,9 +25,13 @@ export default function AddAnimePage() {
     season: "",
     studio: "",
     genres: "",
-    rating: "",
+    score: "",
     imageUrl: "",
     trailerUrl: "",
+    backgroundUrl: "",
+    type: "",
+    translator: "",
+    rating: ""
   })
 
   const handleFetchFromMAL = async () => {
@@ -66,9 +71,13 @@ export default function AddAnimePage() {
         season: data.season || "",
         studio: data.studio || "",
         genres: data.genres || "",
-        rating: data.rating || "",
+        score: data.score || "",
         imageUrl: data.imageUrl || "",
         trailerUrl: data.trailerUrl || "",
+        backgroundUrl: "", // Manually filled
+        type: data.type || "",
+        translator: "", // Manually filled
+        rating: data.rating || "",
       })
     } catch (error) {
       console.error("Hiba történt:", error)
@@ -152,35 +161,26 @@ export default function AddAnimePage() {
               {/* Címek */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label>Magyar cím</Label>
-                  <Input
-                    value={animeData.title}
-                    onChange={(e) => handleChange("title", e.target.value)}
-                    placeholder="Chainsaw Man"
-                  />
-                </div>
-                <div>
-                  <Label>Angol cím</Label>
+                  <Label className="mb-2 block">Angol cím</Label>
                   <Input
                     value={animeData.englishTitle}
                     onChange={(e) => handleChange("englishTitle", e.target.value)}
                     placeholder="Chainsaw Man"
                   />
                 </div>
-              </div>
-
-              <div>
-                <Label>Japán cím</Label>
-                <Input
-                  value={animeData.japaneseTitle}
-                  onChange={(e) => handleChange("japaneseTitle", e.target.value)}
-                  placeholder="チェンソーマン"
-                />
+                <div>
+                  <Label className="mb-2 block">Japán cím</Label>
+                  <Input
+                    value={animeData.japaneseTitle}
+                    onChange={(e) => handleChange("japaneseTitle", e.target.value)}
+                    placeholder="Sousou no Frieren"
+                  />
+                </div>
               </div>
 
               {/* Leírás */}
               <div>
-                <Label>Leírás</Label>
+                <Label className="mb-2 block">Leírás</Label>
                 <textarea
                   value={animeData.synopsis}
                   onChange={(e) => handleChange("synopsis", e.target.value)}
@@ -192,7 +192,7 @@ export default function AddAnimePage() {
               {/* Részletek */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <Label>Epizódok száma</Label>
+                  <Label className="mb-2 block">Epizódok száma</Label>
                   <Input
                     type="number"
                     value={animeData.episodes}
@@ -201,7 +201,7 @@ export default function AddAnimePage() {
                   />
                 </div>
                 <div>
-                  <Label>Évad</Label>
+                  <Label className="mb-2 block">Megjelenés</Label>
                   <Input
                     value={animeData.season}
                     onChange={(e) => handleChange("season", e.target.value)}
@@ -209,20 +209,20 @@ export default function AddAnimePage() {
                   />
                 </div>
                 <div>
-                  <Label>Értékelés</Label>
+                  <Label className="mb-2 block">Értékelés</Label>
                   <Input
                     type="number"
                     step="0.1"
-                    value={animeData.rating}
-                    onChange={(e) => handleChange("rating", e.target.value)}
+                    value={animeData.score}
+                    onChange={(e) => handleChange("score", e.target.value)}
                     placeholder="8.7"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <Label>Stúdió</Label>
+                  <Label className="mb-2 block">Stúdió</Label>
                   <Input
                     value={animeData.studio}
                     onChange={(e) => handleChange("studio", e.target.value)}
@@ -230,37 +230,46 @@ export default function AddAnimePage() {
                   />
                 </div>
                 <div>
-                  <Label>Státusz</Label>
+                  <Label className="mb-2 block">Státusz</Label>
                   <Input
                     value={animeData.status}
                     onChange={(e) => handleChange("status", e.target.value)}
                     placeholder="Finished Airing"
                   />
                 </div>
+                <div>
+                  <Label className="mb-2 block">Besorolás</Label>
+                  <Input
+                    value={animeData.rating}
+                    onChange={(e) => handleChange("rating", e.target.value)}
+                    placeholder="R - 17+"
+                  />
+                </div>
               </div>
 
-              <div>
-                <Label>Műfajok (vesszővel elválasztva)</Label>
-                <Input
-                  value={animeData.genres}
-                  onChange={(e) => handleChange("genres", e.target.value)}
-                  placeholder="Action, Dark Fantasy, Supernatural"
-                />
-              </div>
-
-              <div>
-                <Label>Adás időszaka</Label>
-                <Input
-                  value={animeData.aired}
-                  onChange={(e) => handleChange("aired", e.target.value)}
-                  placeholder="Oct 12, 2022 to Dec 28, 2022"
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label className="mb-2 block">Műfajok (vesszővel elválasztva)</Label>
+                  <Input
+                    value={animeData.genres}
+                    onChange={(e) => handleChange("genres", e.target.value)}
+                    placeholder="Action, Dark Fantasy, Supernatural"
+                  />
+                </div>
+                <div>
+                  <Label className="mb-2 block">Típus</Label>
+                  <Input
+                    value={animeData.type}
+                    onChange={(e) => handleChange("type", e.target.value)}
+                    placeholder="TV"
+                  />
+                </div>
               </div>
 
               {/* Média */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label>Borítókép URL</Label>
+                  <Label className="mb-2 block">Borítókép URL</Label>
                   <Input
                     value={animeData.imageUrl}
                     onChange={(e) => handleChange("imageUrl", e.target.value)}
@@ -268,14 +277,33 @@ export default function AddAnimePage() {
                   />
                 </div>
                 <div>
-                  <Label>Trailer URL</Label>
+                  <Label className="mb-2 block">Háttérkép URL</Label>
                   <Input
-                    value={animeData.trailerUrl}
-                    onChange={(e) => handleChange("trailerUrl", e.target.value)}
-                    placeholder="https://youtube.com/..."
+                    value={animeData.backgroundUrl}
+                    onChange={(e) => handleChange("backgroundUrl", e.target.value)}
+                    placeholder="/chainsaw-man-background.jpg"
                   />
                 </div>
               </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label className="mb-2 block">Fordító</Label>
+                    <Input
+                      value={animeData.translator}
+                      onChange={(e) => handleChange("translator", e.target.value)}
+                      placeholder="AnimeHeaven Team"
+                    />
+                  </div>
+                  <div>
+                    <Label className="mb-2 block">Trailer URL</Label>
+                    <Input
+                      value={animeData.trailerUrl}
+                      onChange={(e) => handleChange("trailerUrl", e.target.value)}
+                      placeholder="https://youtube.com/..."
+                    />
+                  </div>
+                </div>
             </div>
 
             {/* Submit Buttons */}

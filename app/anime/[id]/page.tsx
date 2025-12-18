@@ -206,13 +206,20 @@ export default async function AnimePage({ params }: { params: Promise<{ id: stri
                                 )}
                             </div>
                             
-                        {/* Kategória kezelő */}
-                            <div className="mb-6 max-w-md">
-                                <AnimeCategorySelect
-                                    animeId={String(anime.id)}
-                                    title={anime.title_english || anime.title_japanese || anime.title || "Anime"}
-                                    coverUrl={anime.borito}
-                                />
+                        {/* Kategória kezelő és Megtekintés gomb */}
+                            <div className="mb-6 flex flex-col sm:flex-row gap-6 items-center">
+                                <button className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition whitespace-nowrap">
+                                    Megtekintés
+                                </button>
+                                <div className="flex-1 flex justify-end">
+                                    <div className="w-full max-w-md">
+                                        <AnimeCategorySelect
+                                            animeId={String(anime.id)}
+                                            title={anime.title_english || anime.title_japanese || anime.title || "Anime"}
+                                            coverUrl={anime.borito}
+                                        />
+                                    </div>
+                                </div>
                             </div>
 
                             {/* Műfajok */}
