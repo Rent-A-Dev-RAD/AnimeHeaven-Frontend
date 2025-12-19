@@ -141,12 +141,16 @@ export default function Hero() {
         {/* Content Overlay */}
         <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
           <div className="max-w-2xl">
-            <p className="text-accent text-sm md:text-base font-semibold mb-2">{anime.subtitle}</p>
             <h1 className="text-3xl md:text-5xl font-bold mb-3 text-balance">{anime.title}</h1>
+            <p className="text-accent text-sm md:text-base font-semibold mb-2">{anime.subtitle}</p>
             <p className="text-gray-300 mb-6 max-w-lg text-sm md:text-base leading-relaxed">
               {anime.description}
             </p>
-            <div className="flex gap-3 mb-4">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-yellow-500 font-semibold">{ratingDisplay}</span>
+              <span className="text-gray-400 text-sm">MAL</span>
+            </div>
+            <div className="flex gap-3">
               <Button className="gap-2 bg-accent text-accent-foreground hover:bg-accent/90">
                 <Play className="w-4 h-4 fill-current" />
                 Lejátszás
@@ -157,10 +161,6 @@ export default function Hero() {
                   Részletek
                 </Button>
               </Link>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-yellow-500 font-semibold">{ratingDisplay}</span>
-              <span className="text-gray-400 text-sm">MAL</span>
             </div>
           </div>
         </div>
