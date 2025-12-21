@@ -1,5 +1,7 @@
 import Header from '@/components/header'
 import AnimeCategorySelect from "@/components/anime-category-select";
+import { Button } from "@/components/ui/button"
+import Link from 'next/link';
 
 
 // Anime típus definíció
@@ -208,9 +210,11 @@ export default async function AnimePage({ params }: { params: Promise<{ id: stri
                             
                         {/* Kategória kezelő és Megtekintés gomb */}
                             <div className="mb-6 flex flex-col sm:flex-row gap-6 items-center">
-                                <button className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition whitespace-nowrap">
-                                    Megtekintés
-                                </button>
+                                <Link href={`/anime/${anime.id}/watch-anime`}>
+                                    <Button variant="default" size="lg" className="cursor-pointer bg-accent text-accent-foreground hover:bg-accent/90">
+                                        Megtekintés
+                                    </Button>
+                                </Link>
                                 <div className="flex-1 flex justify-end">
                                     <div className="w-full max-w-md">
                                         <AnimeCategorySelect
