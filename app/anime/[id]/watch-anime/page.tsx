@@ -4,6 +4,7 @@ import { useState, use } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import Header from '@/components/header'
 import Link from 'next/link'
+import animesData from '@/app/data/animes.json'
 
 interface Anime {
     id: number
@@ -13,51 +14,7 @@ interface Anime {
     fordito?: string
 }
 
-// Anime adatok (ugyanaz mint az anime-grid-ben)
-const animes: Anime[] = [
-    {
-        id: 1,
-        title_japanese: 'Chainsaw Man',
-        title_english: 'Chainsaw Man',
-        genre: 'Action, Fantasy',
-        fordito: 'Anime Heaven Fansub',
-    },
-    {
-        id: 2,
-        title_japanese: 'Yofukashi no Uta',
-        title_english: 'Call Of The Night',
-        genre: 'Supernatural, Romance',
-        fordito: 'Anime Heaven Fansub',
-    },
-    {
-        id: 3,
-        title_japanese: 'Jujutsu Kaisen',
-        title_english: 'Jujutsu Kaisen',
-        genre: 'Action, Fantasy, Shounen',
-        fordito: 'Anime Heaven Fansub',
-    },
-    {
-        id: 4,
-        title_japanese: 'Sono Bisque Doll wa Koi wo Suru',
-        title_english: 'My Dress-Up Darling',
-        genre: 'Romance, Slice of Life',
-        fordito: 'Anime Heaven Fansub',
-    },
-    {
-        id: 5,
-        title_japanese: 'Death Note',
-        title_english: 'Death Note',
-        genre: 'Thriller, Supernatural',
-        fordito: 'Anime Heaven Fansub',
-    },
-    {
-        id: 6,
-        title_japanese: 'Otonari no Tenshi-sama ni Itsunomanika Dame Ningen ni Sareteita Ken',
-        title_english: 'The Angel Next Door Spoils Me Rotten',
-        genre: 'Romance, Slice of Life',
-        fordito: 'Anime Heaven Fansub',
-    },
-]
+const animes: Anime[] = animesData as Anime[]
 
 export default function WatchAnimePage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params)

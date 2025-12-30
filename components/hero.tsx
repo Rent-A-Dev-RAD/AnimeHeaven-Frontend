@@ -4,45 +4,9 @@ import { useState, useEffect } from 'react'
 import { ChevronLeft, ChevronRight, Play, Info } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import animesData from '@/app/data/animes.json'
 
-const featuredAnimes = [
-  {
-    id: 1,
-    title: 'Chainsaw Man',
-    subtitle: 'Chainsaw Man Arc',
-    description: 'Denji egy elszegényedett tinédzser, aki elhunyt apja hatalmas adósságát próbálja törleszteni a jakuzának. Egyetlen társa Pochita, egy láncfűrész-ördög, akivel együtt ördögökre vadásznak, hogy pénzt keressenek.',
-    image: 'https://image.tmdb.org/t/p/original/cCAAmkt18qkINhY7TR5WziRLQxE.jpg',
-    rating: '9.0',
-    malId: 44511
-  },
-  {
-    id: 2,
-    title: 'Call Of The Night',
-    subtitle: 'Yofukashi no Uta',
-    description: 'A történet főszereplője Ko Yamori, egy álmatlanságban szenvedő, 14 éves fiú, aki elégedetlen a nappali életével, ezért éjszakánként a városban bolyong. Egy ilyen séta során találkozik Nazuna Nanakusával, egy vámpírral, aki megmutatja neki az éjszakai élet szabadságát.',
-    image: 'https://image.tmdb.org/t/p/original/veh7M4ho0vgqkW0n0hx1Up42elV.jpg',
-    rating: '8.9',
-    malId: 50346
-  },
-  {
-    id: 3,
-    title: 'My Dress Up Darling',
-    subtitle: 'Sono Bisque Doll wa Koi wo Suru',
-    description: 'Egy fiatal fiú és egy lány különös barátságot köt, amikor a fiú segít a lánynak elkészíteni a cosplay jelmezeit, miközben mindketten felfedezik saját szenvedélyeiket és álmaikat.',
-    image: 'https://image.tmdb.org/t/p/original/c22TSmxhIuKEHhY7YKKBdaHnR61.jpg',
-    rating: '8.8',
-    malId: 48736
-  },
-  {
-    id: 4,
-    title: 'Death Note',
-    subtitle: 'Shinigami Realm',
-    description: 'A történet középpontjában egy fiatal diák áll, aki egy különleges noteszre bukkan, amely lehetővé teszi számára, hogy megölje azokat, akiket beleír.',
-    image: 'https://image.tmdb.org/t/p/original/mOlEbXcb6ufRJKogI35KqsSlCfB.jpg',
-    rating: '8.7',
-    malId: 1535
-  }
-]
+const featuredAnimes = animesData.slice(0, 4)
 
 export default function Hero() {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -129,7 +93,7 @@ export default function Hero() {
             >
               <img
                 src={item.image || "/placeholder.svg"}
-                alt={item.title}
+                alt={item.title_english || item.title_japanese}
                 className="w-full h-full object-cover"
               />
               {/* Gradient Overlay */}
@@ -141,8 +105,10 @@ export default function Hero() {
         {/* Content Overlay */}
         <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
           <div className="max-w-2xl">
-            <h1 className="text-3xl md:text-5xl font-bold mb-3 text-balance">{anime.title}</h1>
-            <p className="text-accent text-sm md:text-base font-semibold mb-2">{anime.subtitle}</p>
+            <h1 className="text-3xl md:text-5xl font-bold mb-3 text-balance">{anime.title_english || anime.title_japanese}</h1>
+            {anime.title_japanese && anime.title_japanese !== anime.title_english && (
+              <p className="text-accent text-sm md:text-base font-semibold mb-2">{anime.title_japanese}</p>
+            )}
             <p className="text-gray-300 mb-6 max-w-lg text-sm md:text-base leading-relaxed">
               {anime.description}
             </p>

@@ -4,57 +4,7 @@ import { useEffect, useState } from "react"
 import { Card } from '@/components/ui/card'
 import { Play, Plus } from 'lucide-react'
 import Link from "next/link"
-
-const animes = [
-  {
-    id: 1,
-    title: 'Chainsaw Man',
-    image: '',
-    rating: 9.0,
-    genre: 'Action',
-    malId: 44511
-  },
-  {
-    id: 2,
-    title: 'Call Of The Night',
-    image: '',
-    rating: 8.9,
-    genre: 'Supernatural',
-    malId: 50346
-  },
-  {
-    id: 3,
-    title: 'Jujutsu Kaisen',
-    image: '',
-    rating: 8.8,
-    genre: 'Action',
-    malId: 40748
-  },
-  {
-    id: 4,
-    title: 'My Dress-Up Darling',
-    image: '',
-    rating: 8.7,
-    genre: 'Romance',
-    malId: 48736
-  },
-  {
-    id: 5,
-    title: 'Death Note',
-    image: '',
-    rating: 8.6,
-    genre: 'Thriller',
-    malId: 1535
-  },
-  {
-    id: 6,
-    title: 'The Angel Next Door Spoils Me Rotten',
-    image: '',
-    rating: 9.0,
-    genre: 'Romance',
-    malId: 50739
-  },
-]
+import animes from '@/app/data/animes.json'
 
 export default function AnimeGrid() {
   // cache Jikan details by MAL id
@@ -98,16 +48,16 @@ export default function AnimeGrid() {
       
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {animes.map((anime) => (
-          <Link key={anime.id} href={`/anime/${anime.id}`}>
-            <Card className="bg-card border-border hover:border-accent transition-all group cursor-pointer">
-            <div className="relative overflow-hidden rounded-lg">
+          <Link key={anime.id} href={`/anime/${anime.id}`} className="h-full">
+            <Card className="bg-card border-border hover:border-accent transition-all group cursor-pointer h-full">
+            <div className="relative overflow-hidden rounded-lg h-full flex flex-col">
               {/* Kép */}
-              <div className="relative w-full aspect-[2/3] overflow-hidden">
+              <div className="relative w-full aspect-[2/3] overflow-hidden flex-shrink-0">
                 <img
                   src={
                     ((anime.malId && jikanDetails[anime.malId]?.image) ?? anime.image) || "/placeholder.svg"
                   }
-                  alt={anime.title}
+                  alt={anime.title_english || anime.title_japanese}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                 />
                 
@@ -123,10 +73,15 @@ export default function AnimeGrid() {
               </div>
 
               {/* Content */}
-              <div className="p-3">
-                <h3 className="font-semibold text-sm line-clamp-2 mb-2">{anime.title}</h3>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-1">
+              <div className="p-3 flex flex-col flex-1">
+                <h3 className="font-semibold text-sm line-clamp-2 mb-1">{anime.title_english || anime.title_japanese}</h3>
+                <div className="h-5 mb-2">
+                  {anime.title_japanese && anime.title_japanese !== anime.title_english && (
+                    <p className="text-accent text-xs line-clamp-1">{anime.title_japanese}</p>
+                  )}
+                </div>
+                <div className="flex items-center justify-between gap-2 mt-auto">
+                  <div className="flex items-center gap-1 flex-shrink-0">
                     <span className="text-yellow-500 text-xs">★</span>
                     <span className="text-xs text-foreground/70">{
                       anime.malId && jikanDetails[anime.malId]?.score != null
@@ -134,7 +89,7 @@ export default function AnimeGrid() {
                         : anime.rating
                     }</span>
                   </div>
-                  <span className="text-xs text-muted-foreground">{anime.genre}</span>
+                  <span className="text-xs text-muted-foreground truncate">{anime.genre}</span>
                 </div>
               </div>
             </div>
