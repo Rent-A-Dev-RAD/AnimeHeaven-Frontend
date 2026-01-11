@@ -117,12 +117,12 @@ export default function Hero() {
               <span className="text-gray-400 text-sm">MAL</span>
             </div>
             <div className="flex gap-3">
-              <Button className="gap-2 bg-accent text-accent-foreground hover:bg-accent/90">
+              <Button className="gap-2 bg-accent text-accent-foreground hover:bg-accent/80 transition-colors">
                 <Play className="w-4 h-4 fill-current" />
                 Lejátszás
               </Button>
               <Link href={`/anime/${anime.id}`}>
-                <Button variant="outline" className="gap-2 border-foreground/30 hover:bg-foreground/10 bg-transparent">
+                <Button variant="outline" className="gap-2 border-foreground/30 hover:bg-accent/10 hover:text-accent hover:border-accent bg-background/80 backdrop-blur transition-colors">
                   <Info className="w-4 h-4" />
                   Részletek
                 </Button>
@@ -134,14 +134,14 @@ export default function Hero() {
         {/* Nav gombok */}
         <button
           onClick={prevSlide}
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition"
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-background/40 hover:bg-accent/80 hover:text-accent-foreground text-white p-2 rounded-full transition-all backdrop-blur"
           aria-label="Előző"
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
         <button
           onClick={nextSlide}
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition"
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-background/40 hover:bg-accent/80 hover:text-accent-foreground text-white p-2 rounded-full transition-all backdrop-blur"
           aria-label="Következő"
         >
           <ChevronRight className="w-6 h-6" />
@@ -157,7 +157,7 @@ export default function Hero() {
             className={`h-2 rounded-full transition-all ${
               index === currentSlide
                 ? 'bg-accent w-8'
-                : 'bg-muted w-2 hover:bg-muted/70'
+                : 'bg-muted w-2 hover:bg-accent/50'
             }`}
             aria-label={`Dia ${index + 1}`}
           />

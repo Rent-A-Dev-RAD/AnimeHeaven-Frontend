@@ -10,7 +10,7 @@ export default async function Home() {
 
   return (
     <main className="bg-background text-foreground">
-      <Header />
+      <Header animes={animes} />
       <Hero />
       <AnimeGrid animes={animes} />
     </main>

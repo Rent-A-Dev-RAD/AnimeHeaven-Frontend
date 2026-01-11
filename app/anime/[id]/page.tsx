@@ -2,7 +2,7 @@ import Header from '@/components/header'
 import AnimeCategorySelect from "@/components/anime-category-select";
 import { Button } from "@/components/ui/button"
 import Link from 'next/link';
-import { getAnimeById } from '@/lib/api/anime.service'
+import { getAnimeById, getAllAnimes } from '@/lib/api/anime.service'
 
 export default async function AnimePage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
@@ -10,12 +10,15 @@ export default async function AnimePage({ params }: { params: Promise<{ id: stri
     // API szolgáltatás használata
     const result = await getAnimeById(parseInt(id))
     const anime = result.data
+    
+    const allAnimesResult = await getAllAnimes()
+    const allAnimes = allAnimesResult.data || []
 
     if (!anime) {
         return (
             <>
                 <nav>
-                    <Header />
+                    <Header animes={allAnimes} />
                 </nav>
                 <main className="bg-background text-foreground">
                     <h1 className="text-3xl font-bold p-6 text-center">Anime nem található</h1>
@@ -27,7 +30,7 @@ export default async function AnimePage({ params }: { params: Promise<{ id: stri
     return (
         <>
             <nav>
-                <Header />
+                <Header animes={allAnimes} />
             </nav>
             <main className="relative bg-background text-foreground min-h-screen">
                 <div className="relative max-w-7xl mx-auto px-4 py-8">
@@ -79,9 +82,11 @@ export default async function AnimePage({ params }: { params: Promise<{ id: stri
                             <div className="mb-6">
                                 <div className="flex flex-wrap gap-2">
                                     {anime.genre.split(', ').map((g, index) => (
-                                        <span key={index} className="px-3 py-1 bg-accent text-accent-foreground rounded-full text-sm">
-                                            {g}
-                                        </span>
+                                        <Link key={index} href={`/categories/${encodeURIComponent(g.trim())}`}>
+                                            <span className="px-3 py-1 bg-accent text-accent-foreground rounded-full text-sm hover:bg-accent/80 transition-colors cursor-pointer">
+                                                {g}
+                                            </span>
+                                        </Link>
                                     ))}
                                 </div>
                             </div>
