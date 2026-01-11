@@ -2,37 +2,14 @@ import Header from '@/components/header'
 import AnimeCategorySelect from "@/components/anime-category-select";
 import { Button } from "@/components/ui/button"
 import Link from 'next/link';
-import animesData from '@/app/data/animes.json'
-
-// Anime típus definíció
-interface Anime {
-    id: number
-    title_japanese: string
-    title_english: string
-    borito?: string
-    hatter?: string
-    rating: number
-    genre: string
-    malId: number
-    leiras?: string
-    studio?: string
-    statusz?: string
-    tipus?: string
-    osszes_epizod?: number
-    jelenlegi_epizod?: number
-    megjelenes?: string
-    fordito?: string
-    besorolas?: string
-    feltoltesDatuma?: string
-    trailer?: string
-    title?: string
-}
-
-const animes: Anime[] = animesData as Anime[]
+import { getAnimeById } from '@/lib/api/anime.service'
 
 export default async function AnimePage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
-    const anime = animes.find(a => a.id === parseInt(id))
+    
+    // API szolgáltatás használata
+    const result = await getAnimeById(parseInt(id))
+    const anime = result.data
 
     if (!anime) {
         return (

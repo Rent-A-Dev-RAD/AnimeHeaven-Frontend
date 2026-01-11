@@ -4,9 +4,14 @@ import { useEffect, useState } from "react"
 import { Card } from '@/components/ui/card'
 import { Play, Plus } from 'lucide-react'
 import Link from "next/link"
-import animes from '@/app/data/animes.json'
+import type { Anime } from '@/lib/types/anime'
 
-export default function AnimeGrid() {
+// Props interface - később komponens prop-ból kaphatja az animéket
+interface AnimeGridProps {
+  animes?: Anime[]
+}
+
+export default function AnimeGrid({ animes = [] }: AnimeGridProps) {
   // cache Jikan details by MAL id
   const [jikanDetails, setJikanDetails] = useState<Record<number, { score: number | null; image: string | null }>>({})
 
@@ -40,7 +45,7 @@ export default function AnimeGrid() {
     return () => {
       Object.values(controllers).forEach((c) => c.abort())
     }
-  }, [])
+  }, [animes])
 
   return (
     <section className="py-12 px-4 md:px-6 max-w-7xl mx-auto">
@@ -55,7 +60,7 @@ export default function AnimeGrid() {
               <div className="relative w-full aspect-[2/3] overflow-hidden flex-shrink-0">
                 <img
                   src={
-                    ((anime.malId && jikanDetails[anime.malId]?.image) ?? anime.image) || "/placeholder.svg"
+                    ((anime.malId && jikanDetails[anime.malId]?.image) ?? anime.borito) || "/placeholder.svg"
                   }
                   alt={anime.title_english || anime.title_japanese}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
