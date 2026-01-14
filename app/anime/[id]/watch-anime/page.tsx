@@ -148,10 +148,12 @@ export default function WatchAnimePage({ params }: { params: Promise<{ id: strin
                             {/* Jobb oldal - Műfajok és Fordító */}
                             <div className="flex flex-col gap-3 md:items-end">
                                 <div className="flex flex-wrap gap-2">
-                                    {anime?.genre.split(', ').map((genre) => (
-                                        <span key={genre} className="px-3 py-1 bg-accent text-accent-foreground rounded-full text-sm">
-                                            {genre}
-                                        </span>
+                                    {anime?.genre.split(', ').map((g, index) => (
+                                        <Link key={index} href={`/categories/${encodeURIComponent(g.trim())}`}>
+                                            <span className="px-3 py-1 bg-accent text-accent-foreground rounded-full text-sm">
+                                                {g}
+                                            </span>
+                                        </Link>
                                     ))}
                                 </div>
                                 {anime?.fordito && (
