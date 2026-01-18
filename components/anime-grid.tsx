@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { Card } from '@/components/ui/card'
 import { Play, Plus } from 'lucide-react'
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import type { Anime } from '@/lib/types/anime'
 
 // Props interface - később komponens prop-ból kaphatja az animéket
@@ -12,6 +13,8 @@ interface AnimeGridProps {
 }
 
 export default function AnimeGrid({ animes = [] }: AnimeGridProps) {
+  const router = useRouter()
+  
   // cache Jikan details by MAL id
   const [jikanDetails, setJikanDetails] = useState<Record<number, { score: number | null; image: string | null }>>({})
 
@@ -68,10 +71,17 @@ export default function AnimeGrid({ animes = [] }: AnimeGridProps) {
                 
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-3 gap-2">
-                  <button className="bg-accent text-accent-foreground rounded-full p-2 hover:bg-accent/90 transition">
+                  <button 
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      router.push(`/anime/${anime.id}/watch-anime`)
+                    }}
+                    className="bg-accent text-accent-foreground rounded-full p-2 hover:bg-accent/90 transition cursor-pointer"
+                  >
                     <Play className="w-4 h-4 fill-current" />
                   </button>
-                  <button className="bg-foreground/20 text-foreground rounded-full p-2 hover:bg-foreground/30 transition border border-foreground/30">
+                  <button className="cursor-pointer bg-foreground/20 text-foreground rounded-full p-2 hover:bg-foreground/30 transition border border-foreground/30">
                     <Plus className="w-4 h-4" />
                   </button>
                 </div>

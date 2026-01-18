@@ -117,10 +117,12 @@ export default function Hero() {
               <span className="text-gray-400 text-sm">MAL</span>
             </div>
             <div className="flex gap-3">
-              <Button className="gap-2 bg-accent text-accent-foreground hover:bg-accent/80 transition-colors">
-                <Play className="w-4 h-4 fill-current" />
-                Lejátszás
-              </Button>
+              <Link href={`/anime/${anime.id}/watch-anime`}>
+                <Button className="gap-2 bg-accent text-accent-foreground hover:bg-accent/80 transition-colors">
+                  <Play className="w-4 h-4 fill-current" />
+                  Lejátszás
+                </Button>
+              </Link>
               <Link href={`/anime/${anime.id}`}>
                 <Button variant="outline" className="gap-2 border-foreground/30 hover:bg-accent/10 hover:text-accent hover:border-accent bg-background/80 backdrop-blur transition-colors">
                   <Info className="w-4 h-4" />

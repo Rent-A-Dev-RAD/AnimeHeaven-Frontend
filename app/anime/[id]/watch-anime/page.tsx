@@ -4,20 +4,21 @@ import { useState, use, useEffect } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import Header from '@/components/header'
 import Link from 'next/link'
-import animesData from '@/app/data/animes.json'
-
-interface Anime {
-    id: number
-    title_japanese: string
-    title_english: string
-    genre: string
-    fordito?: string
-}
-
-const animes: Anime[] = animesData as Anime[]
+import { getAllAnimes } from '@/lib/api/anime.service'
+import type { Anime } from '@/lib/types/anime'
 
 export default function WatchAnimePage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params)
+    const [animes, setAnimes] = useState<Anime[]>([])
+    const [loading, setLoading] = useState(true)
+    
+    useEffect(() => {
+        getAllAnimes().then(result => {
+            setAnimes(result.data || [])
+            setLoading(false)
+        })
+    }, [])
+    
     const anime = animes.find(a => a.id === parseInt(id))
 
     // Epizódok több forrással
@@ -119,9 +120,24 @@ export default function WatchAnimePage({ params }: { params: Promise<{ id: strin
         if (currentEpisode < totalEpisodes) setCurrentEpisode(currentEpisode + 1)
     }
 
+    if (loading) {
+        return (
+            <>
+                <nav>
+                    <Header animes={[]} />
+                </nav>
+                <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
+                    <p className="text-muted-foreground text-lg">Betöltés...</p>
+                </div>
+            </>
+        )
+    }
+
     return (
         <>
-            <Header />
+            <nav>
+                <Header animes={animes} />
+            </nav>
             <div className="min-h-screen bg-background text-foreground">
                 {/* Anime információs fejléc */}
                 <div className="bg-card/50 border-b border-border">
@@ -176,7 +192,7 @@ export default function WatchAnimePage({ params }: { params: Promise<{ id: strin
                                 <button
                                     onClick={handlePrevious}
                                     disabled={currentEpisode === 1}
-                                    className="flex items-center gap-2 px-4 py-2 bg-card hover:bg-accent/20 border border-border rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="cursor-pointer flex items-center gap-2 px-4 py-2 bg-card hover:bg-accent/20 border border-border rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     <ChevronLeft className="w-4 h-4" />
                                     <span className="hidden sm:inline">Előző</span>
@@ -189,7 +205,7 @@ export default function WatchAnimePage({ params }: { params: Promise<{ id: strin
                                 <button
                                     onClick={handleNext}
                                     disabled={currentEpisode === totalEpisodes}
-                                    className="flex items-center gap-2 px-4 py-2 bg-card hover:bg-accent/20 border border-border rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="cursor-pointer flex items-center gap-2 px-4 py-2 bg-card hover:bg-accent/20 border border-border rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     <span className="hidden sm:inline">Következő</span>
                                     <ChevronRight className="w-4 h-4" />
@@ -215,7 +231,7 @@ export default function WatchAnimePage({ params }: { params: Promise<{ id: strin
                                         <button
                                             key={index}
                                             onClick={() => setCurrentSource(index)}
-                                            className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                                            className={`cursor-pointer px-4 py-2 rounded-lg text-sm font-medium transition ${
                                                 currentSource === index
                                                     ? 'bg-accent text-accent-foreground'
                                                     : 'bg-accent/10 hover:bg-accent/20 text-muted-foreground'

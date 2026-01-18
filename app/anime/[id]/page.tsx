@@ -63,7 +63,7 @@ export default async function AnimePage({ params }: { params: Promise<{ id: stri
                         {/* Kategória kezelő és Megtekintés gomb */}
                             <div className="mb-6 flex flex-col sm:flex-row gap-6 items-center">
                                 <Link href={`/anime/${anime.id}/watch-anime`}>
-                                    <Button variant="default" size="lg" className="cursor-pointer bg-accent text-accent-foreground hover:bg-accent/90">
+                                    <Button variant="default" size="lg" className=" bg-accent text-accent-foreground hover:bg-accent/90">
                                         Megtekintés
                                     </Button>
                                 </Link>

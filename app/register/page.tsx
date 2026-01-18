@@ -98,7 +98,7 @@ export default function RegisterPage() {
               <button
                 type="submit"
                 disabled={!canSubmit}
-                className="w-full rounded bg-primary py-3 font-semibold text-primary-foreground disabled:opacity-50"
+                className="cursor-pointer w-full rounded bg-primary py-3 font-semibold text-primary-foreground disabled:opacity-50"
               >
                 {loading ? "Regisztráció..." : "Regisztráció"}
               </button>
@@ -106,7 +106,7 @@ export default function RegisterPage() {
 
             <p className="mt-4 text-center text-sm">
               Van már fiókod?{" "}
-              <Link href="/login" className="font-semibold underline">
+              <Link href="/login" className="font-semibold underline cursor-pointer">
                 Bejelentkezés
               </Link>
             </p>

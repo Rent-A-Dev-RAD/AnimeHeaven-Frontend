@@ -72,7 +72,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={!canSubmit}
-                className="w-full rounded bg-primary py-3 font-semibold text-primary-foreground disabled:opacity-50"
+                className="cursor-pointer w-full rounded bg-primary py-3 font-semibold text-primary-foreground disabled:opacity-50"
               >
                 {loading ? "Bejelentkezés..." : "Bejelentkezés"}
               </button>
@@ -80,7 +80,7 @@ export default function LoginPage() {
 
             <p className="mt-4 text-center text-sm">
               Nincs még fiókod?{" "}
-              <Link href="/register" className="font-semibold underline">
+              <Link href="/register" className="cursor-pointer font-semibold underline">
                 Regisztráció
               </Link>
             </p>

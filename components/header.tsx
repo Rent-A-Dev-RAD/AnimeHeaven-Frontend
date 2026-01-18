@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import Link from "next/link"
 import SearchDialog from './search-dialog'
 import NotificationsDialog from './notifications-dialog'
+import RandomAnimeButton from './random-anime-button'
 import type { Anime } from '@/lib/types/anime'
 
 interface HeaderProps {
@@ -35,10 +36,15 @@ export default function Header({ animes = [] }: HeaderProps) {
 
         {/* Navigation - PC */}
         <nav className="hidden md:flex gap-8">
-           <Link href="/" className="hover:text-accent transition">
+          <Link href="/" className="hover:text-accent transition">
             Kezdőlap
           </Link>
-          <a href="#" className="hover:text-accent transition">Random anime</a>
+          <RandomAnimeButton 
+            animes={animes}
+            className="hover:text-accent transition"
+          >
+            Random anime
+          </RandomAnimeButton>
           <Link href="/categories" className="hover:text-accent transition">
             Kategóriák
           </Link>
@@ -99,7 +105,12 @@ export default function Header({ animes = [] }: HeaderProps) {
           <Link href="/" className="block hover:text-accent transition">
             Kezdőlap
           </Link>
-          <a href="#" className="block hover:text-accent transition">Random Anime</a>
+          <RandomAnimeButton 
+            animes={animes}
+            className="block hover:text-accent transition text-left"
+          >
+            Random Anime
+          </RandomAnimeButton>
           <Link href="/categories" className="block hover:text-accent transition">
             Kategóriák
           </Link>
