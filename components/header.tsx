@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Menu, Search, Bell} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from "next/link"
+import Image from "next/image"
 import SearchDialog from './search-dialog'
 import NotificationsDialog from './notifications-dialog'
 import RandomAnimeButton from './random-anime-button'
@@ -23,15 +24,28 @@ export default function Header({ animes = [] }: HeaderProps) {
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b border-border">
-      <div className="flex items-center justify-between px-4 md:px-6 py-4 max-w-7xl mx-auto">
+      <div className="flex items-center justify-between px-4 md:px-6 py-3 max-w-7xl mx-auto">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center">
-              <span className="text-accent-foreground font-bold">AH</span>
-            </div>
-            <span className="text-xl font-bold hidden sm:inline">AnimeHeaven</span>
-          </div>
+        <Link href="/" className="flex items-center gap-2 group">
+          <Image 
+            src="/anime-heaven-logo.png" 
+            alt="AnimeHeaven Logo" 
+            width={60} 
+            height={60}
+            className="w-12 h-12 sm:w-14 sm:h-14 md:w-[60px] md:h-[60px] transition-all duration-300 group-hover:scale-110 group-hover:brightness-110"
+            style={{
+              filter: 'drop-shadow(0 0 0px rgba(236, 72, 153, 0))',
+              transition: 'filter 0.3s ease-in-out'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.filter = 'drop-shadow(0 0 8px rgba(236, 72, 153, 0.8)) drop-shadow(0 0 16px rgba(168, 85, 247, 0.6)) drop-shadow(0 0 24px rgba(236, 72, 153, 0.4))';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.filter = 'drop-shadow(0 0 0px rgba(236, 72, 153, 0))';
+            }}
+            priority
+            unoptimized
+          />
         </Link>
 
         {/* Navigation - PC */}
