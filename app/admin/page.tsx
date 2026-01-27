@@ -89,17 +89,19 @@ export default async function AdminPage() {
               </Card>
             </Link>
 
-            <Card className="p-6 bg-card border-border hover:border-accent/40 transition cursor-pointer">
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-accent/20 rounded-lg">
-                  <Tv className="w-6 h-6 text-accent" />
+            <Link href="/admin/manage-anime">
+              <Card className="p-6 bg-card border-border hover:border-accent/40 transition cursor-pointer">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-accent/20 rounded-lg">
+                    <Tv className="w-6 h-6 text-accent" />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-lg">Animék kezelése</p>
+                    <p className="text-sm text-muted-foreground">Szerkesztés és törlés</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-semibold text-lg">Animék kezelése</p>
-                  <p className="text-sm text-muted-foreground">Szerkesztés és törlés</p>
-                </div>
-              </div>
-            </Card>
+              </Card>
+            </Link>
 
             <Card className="p-6 bg-card border-border hover:border-accent/40 transition cursor-pointer">
               <div className="flex items-center gap-4">
