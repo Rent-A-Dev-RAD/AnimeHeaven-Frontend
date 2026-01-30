@@ -6,7 +6,7 @@
     "jelszoHash": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
     "salt": "$2a$10$N9qo8uLOickgx2ZMRZoMye",
     "profilkep": "/profiles/tulaj.jpg",
-    "jog": 5
+    "jogosultsag": 5
   },
   {
     "id": 2,
@@ -15,7 +15,7 @@
     "jelszoHash": "$2a$10$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQ",
     "salt": "$2a$10$abcdefghijklmnopqrs",
     "profilkep": "/profiles/admin.jpg",
-    "jog": 4
+    "jogosultsag": 4
   },
   {
     "id": 3,
@@ -24,7 +24,7 @@
     "jelszoHash": "$2a$10$xyz123abc456def789ghi012jkl345mno678pqr901stu234vwx567",
     "salt": "$2a$10$xyz123abc456def789g",
     "profilkep": "/profiles/chief-editor.jpg",
-    "jog": 3
+    "jogosultsag": 3
   },
   {
     "id": 4,
@@ -33,7 +33,7 @@
     "jelszoHash": "$2a$10$pqr901stu234vwx567yzA012BCD345EFG678HIJ901KLM234NOP567",
     "salt": "$2a$10$pqr901stu234vwx567y",
     "profilkep": "/profiles/editor1.jpg",
-    "jog": 2
+    "jogosultsag": 2
   },
   {
     "id": 5,
@@ -42,7 +42,7 @@
     "jelszoHash": "$2a$10$QRS345TUV678WXY901ZAB234CDE567FGH890IJK123LMN456OPQ789",
     "salt": "$2a$10$QRS345TUV678WXY901Z",
     "profilkep": "/profiles/editor2.jpg",
-    "jog": 2
+    "jogosultsag": 2
   },
   {
     "id": 6,
@@ -51,7 +51,7 @@
     "jelszoHash": "$2a$10$STU678VWX901YZA234BCD567EFG890HIJ123KLM456NOP789QRS012",
     "salt": "$2a$10$STU678VWX901YZA234B",
     "profilkep": "/profiles/user1.jpg",
-    "jog": 1
+    "jogosultsag": 1
   },
   {
     "id": 7,
@@ -60,7 +60,7 @@
     "jelszoHash": "$2a$10$TUV890WXY123ZAB456CDE789FGH012IJK345LMN678OPQ901RST234",
     "salt": "$2a$10$TUV890WXY123ZAB456C",
     "profilkep": "/profiles/user2.jpg",
-    "jog": 1
+    "jogosultsag": 1
   },
   {
     "id": 8,
@@ -69,7 +69,7 @@
     "jelszoHash": "$2a$10$UVW012XYZ345ABC678DEF901GHI234JKL567MNO890PQR123STU456",
     "salt": "$2a$10$UVW012XYZ345ABC678D",
     "profilkep": "/profiles/user3.jpg",
-    "jog": 1
+    "jogosultsag": 1
   },
   {
     "id": 9,
@@ -78,7 +78,7 @@
     "jelszoHash": "$2a$10$VWX234YZA567BCD890EFG123HIJ456KLM789NOP012QRS345TUV678",
     "salt": "$2a$10$VWX234YZA567BCD890E",
     "profilkep": null,
-    "jog": 0
+    "jogosultsag": 0
   },
   {
     "id": 10,
@@ -87,6 +87,6 @@
     "jelszoHash": "$2a$10$WXY456ZAB789CDE012FGH345IJK678LMN901OPQ234RST567UVW890",
     "salt": "$2a$10$WXY456ZAB789CDE012F",
     "profilkep": "/profiles/test.jpg",
-    "jog": 1
+    "jogosultsag": 1
   }
 ]

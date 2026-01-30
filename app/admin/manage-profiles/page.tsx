@@ -18,11 +18,11 @@ interface Profile {
   jelszoHash: string
   salt: string
   profilkep: string | null
-  jog: number
+  jogosultsag: number
 }
 
-const getRoleLabel = (jog: number) => {
-  switch (jog) {
+const getRoleLabel = (jogosultsag: number) => {
+  switch (jogosultsag) {
     case 0: return { label: "Inaktív", color: "text-gray-500 bg-gray-500/20" }
     case 1: return { label: "Felhasználó", color: "text-blue-500 bg-blue-500/20" }
     case 2: return { label: "Szerkesztő", color: "text-purple-500 bg-purple-500/20" }
@@ -56,7 +56,7 @@ export default function ManageProfilesPage() {
   }
 
   const saveEdit = () => {
-    // Here you would typically save to backend
+    //Ide jön majd a backend frissítés
     setProfiles(profiles.map(p => p.id === editingId ? { ...p, ...editForm } as Profile : p))
     setEditingId(null)
     setEditForm({})
@@ -68,15 +68,6 @@ export default function ManageProfilesPage() {
     }
   }
 
-  const exportProfiles = () => {
-    const dataStr = JSON.stringify(profiles, null, 2)
-    const dataBlob = new Blob([dataStr], { type: 'application/json' })
-    const url = URL.createObjectURL(dataBlob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = 'profiles.json'
-    link.click()
-  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -98,10 +89,10 @@ export default function ManageProfilesPage() {
       </header>
 
       <div className="max-w-7xl mx-auto px-6 py-8">
-        {/* Stats */}
+        {/* Statisztikák */}
         <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-8">
           {[0, 1, 2, 3, 4, 5].map(level => {
-            const count = profiles.filter(p => p.jog === level).length
+            const count = profiles.filter(p => p.jogosultsag === level).length
             const role = getRoleLabel(level)
             return (
               <Card key={level} className="p-4 bg-card border-border">
@@ -112,7 +103,7 @@ export default function ManageProfilesPage() {
           })}
         </div>
 
-        {/* Search */}
+        {/* Keresés */}
         <Card className="p-4 mb-6 bg-card border-border">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -125,7 +116,7 @@ export default function ManageProfilesPage() {
           </div>
         </Card>
 
-        {/* Profiles Table */}
+        {/* Profilok táblázat */}
         <Card className="bg-card border-border overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
@@ -141,7 +132,7 @@ export default function ManageProfilesPage() {
               <tbody className="divide-y divide-border">
                 {filteredProfiles.map((profile) => {
                   const isEditing = editingId === profile.id
-                  const role = getRoleLabel(profile.jog)
+                  const role = getRoleLabel(profile.jogosultsag)
 
                   return (
                     <tr key={profile.id} className="hover:bg-accent/5 transition">
@@ -172,8 +163,8 @@ export default function ManageProfilesPage() {
                       <td className="px-4 py-3">
                         {isEditing ? (
                           <select
-                            value={editForm.jog ?? profile.jog}
-                            onChange={(e) => setEditForm({ ...editForm, jog: Number(e.target.value) })}
+                            value={editForm.jogosultsag ?? profile.jogosultsag}
+                            onChange={(e) => setEditForm({ ...editForm, jogosultsag: Number(e.target.value) })}
                             className="h-8 px-2 rounded-md border border-border bg-background"
                           >
                             <option value={0}>Inaktív</option>
@@ -209,7 +200,7 @@ export default function ManageProfilesPage() {
                                 size="sm" 
                                 variant="ghost" 
                                 onClick={() => deleteProfile(profile.id)}
-                                disabled={profile.jog === 5}
+                                disabled={profile.jogosultsag === 5}
                               >
                                 <Trash2 className="w-4 h-4 text-red-500" />
                               </Button>
