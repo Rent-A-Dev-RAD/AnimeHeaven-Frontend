@@ -69,13 +69,22 @@ export default function Hero() {
   }, [anime, details])
 
   const ratingDisplay = (() => {
+    // Try mal_link first (backend format)
+    if (anime?.mal_link) {
+      const malIdMatch = anime.mal_link.match(/\/anime\/(\d+)/)
+      const malId = malIdMatch ? parseInt(malIdMatch[1]) : null
+      if (malId) {
+        const s = details[malId]?.score
+        if (s !== undefined && s !== null) return Number(s).toFixed(1)
+      }
+    }
+    // Fallback to malId (mock data format)
     if (anime?.malId) {
       const s = details[anime.malId]?.score
       if (s !== undefined && s !== null) return Number(s).toFixed(1)
-      // if score is undefined (not yet fetched) or null (error), fall back to the static value
-      return anime.rating
     }
-    return anime.rating
+    // Use ertekeles (backend) or rating (mock)
+    return anime.ertekeles ? Number(anime.ertekeles).toFixed(1) : (anime.rating ? Number(anime.rating).toFixed(1) : 'N/A')
   })()
 
   return (
@@ -93,7 +102,7 @@ export default function Hero() {
             >
               <img
                 src={item.image || "/placeholder.svg"}
-                alt={item.title_english || item.title_japanese}
+                alt={item.angol_cim || item.title_english || item.japan_cim || item.title_japanese || 'Anime'}
                 className="w-full h-full object-cover"
               />
               {/* Gradient Overlay */}
@@ -105,9 +114,14 @@ export default function Hero() {
         {/* Content Overlay */}
         <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
           <div className="max-w-2xl">
-            <h1 className="text-3xl md:text-5xl font-bold mb-3 text-balance">{anime.title_english || anime.title_japanese}</h1>
-            {anime.title_japanese && anime.title_japanese !== anime.title_english && (
-              <p className="text-accent text-sm md:text-base font-semibold mb-2">{anime.title_japanese}</p>
+            <h1 className="text-3xl md:text-5xl font-bold mb-3 text-balance">
+              {anime.angol_cim || anime.title_english || anime.japan_cim || anime.title_japanese}
+            </h1>
+            {(anime.japan_cim || anime.title_japanese) && 
+             (anime.japan_cim !== anime.angol_cim || anime.title_japanese !== anime.title_english) && (
+              <p className="text-accent text-sm md:text-base font-semibold mb-2">
+                {anime.japan_cim || anime.title_japanese}
+              </p>
             )}
             <p className="text-gray-300 mb-6 max-w-lg text-sm md:text-base leading-relaxed">
               {anime.description}

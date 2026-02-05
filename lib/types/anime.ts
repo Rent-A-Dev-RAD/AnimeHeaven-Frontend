@@ -1,25 +1,43 @@
-// Anime típus definíciók - Ezt használd mindenhol az alkalmazásban
+// Anime típus definíciók - Backend válasz szerint
 export interface Anime {
   id: number
-  title_japanese: string
-  title_english: string
+  japan_cim: string          // Backend mezőnevek
+  angol_cim: string
   borito?: string
   hatter?: string
-  rating: number
-  genre: string
-  malId: number
+  ertekeles: number          // Backend: ertekeles (nem rating)
+  cimkek: string            // Backend: cimkek (nem genre) - vesszővel elválasztva
+  studiok?: string          // Backend: studiok (nem studio) - vesszővel elválasztva
+  mal_link: string          // Backend: mal_link (URL string, nem ID)
   leiras?: string
-  studio?: string
   statusz?: string
   tipus?: string
   osszes_epizod?: number
   jelenlegi_epizod?: number
   megjelenes?: string
-  fordito?: string
+  szezon?: string
+  keszito?: string          // Backend: keszito (fordító)
   besorolas?: string
-  feltoltesDatuma?: string
+  feltoltes_ido?: string    // Backend: feltoltes_ido
   trailer?: string
-  title?: string
+  lathatosag?: number
+  reszek?: Episode[]        // Epizódok lista
+  
+  // Backward compatibility alias-ok (ha használod valahol)
+  title_japanese?: string
+  title_english?: string
+  rating?: number
+  genre?: string
+  studio?: string
+}
+
+// Epizód típus
+export interface Episode {
+  id: number
+  sorrend: number
+  resz: string
+  lathatosag: number
+  anime_id?: number
 }
 
 // API Response típusok

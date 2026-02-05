@@ -11,8 +11,9 @@ export default async function CategoriesPage() {
   const genresMap = new Map<string, number>()
   
   animes.forEach(anime => {
-    if (anime.genre) {
-      const genres = anime.genre.split(',').map(g => g.trim())
+    const genreField = anime.cimkek || anime.genre
+    if (genreField) {
+      const genres = genreField.split(',').map(g => g.trim())
       genres.forEach(genre => {
         genresMap.set(genre, (genresMap.get(genre) || 0) + 1)
       })

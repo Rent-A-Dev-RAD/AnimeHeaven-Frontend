@@ -33,8 +33,9 @@ export default function CategoryPage({ params }: CategoryPageProps) {
 
   // Szűrés műfaj alapján
   const filteredAnimes = allAnimes.filter(anime => {
-    if (!anime.genre) return false
-    const genres = anime.genre.split(',').map(g => g.trim().toLowerCase())
+    const genreField = anime.cimkek || anime.genre
+    if (!genreField) return false
+    const genres = genreField.split(',').map(g => g.trim().toLowerCase())
     return genres.includes(decodedGenre.toLowerCase())
   })
 
@@ -42,11 +43,11 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   const sortedAnimes = [...filteredAnimes].sort((a, b) => {
     switch (sortBy) {
       case 'rating':
-        return (b.rating || 0) - (a.rating || 0)
+        return Number(b.ertekeles || b.rating || 0) - Number(a.ertekeles || a.rating || 0)
       case 'title-jp':
-        return (a.title_japanese || '').localeCompare(b.title_japanese || '', 'ja')
+        return (a.japan_cim || a.title_japanese || '').localeCompare(b.japan_cim || b.title_japanese || '', 'ja')
       case 'title-en':
-        return (a.title_english || '').localeCompare(b.title_english || '', 'en')
+        return (a.angol_cim || a.title_english || '').localeCompare(b.angol_cim || b.title_english || '', 'en')
       default:
         return 0
     }
@@ -141,7 +142,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                       <div className="relative w-full aspect-[2/3] overflow-hidden flex-shrink-0">
                         <img
                           src={anime.borito || "/placeholder.svg"}
-                          alt={anime.title_english || anime.title_japanese}
+                          alt={anime.angol_cim || anime.title_english || anime.japan_cim || anime.title_japanese}
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                         />
                         
@@ -166,17 +167,17 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                       {/* Content */}
                       <div className="p-3 flex-1 flex flex-col">
                         <h3 className="font-semibold text-sm mb-1 line-clamp-2 group-hover:text-accent transition">
-                          {anime.title_english || anime.title_japanese}
+                          {anime.angol_cim || anime.title_english || anime.japan_cim || anime.title_japanese}
                         </h3>
                         <div className="flex items-center gap-2 mt-auto">
                           <span className="text-xs text-muted-foreground line-clamp-1">
-                            {anime.genre}
+                            {(anime.cimkek || anime.genre)?.split(', ')[0]}
                           </span>
-                          {anime.rating > 0 && (
+                          {Number(anime.ertekeles || anime.rating || 0) > 0 && (
                             <>
                               <span className="text-xs">•</span>
                               <span className="text-xs font-semibold text-accent">
-                                ⭐ {anime.rating}
+                                ⭐ {Number(anime.ertekeles || anime.rating).toFixed(1)}
                               </span>
                             </>
                           )}

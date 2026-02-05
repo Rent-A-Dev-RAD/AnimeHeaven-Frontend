@@ -18,11 +18,9 @@ export async function getAllAnimes(): Promise<ApiResponse<Anime[]>> {
         throw new Error('Nem sikerült betölteni az animéket')
       }
       
-      const data = await response.json()
-      return {
-        success: true,
-        data: data
-      }
+      const result = await response.json()
+      // Backend már {success: true, data: [...]} formátumban válaszol
+      return result
     } else {
       // Mock adatok használata
       return {
@@ -60,11 +58,9 @@ export async function getAnimeById(id: number): Promise<ApiResponse<Anime>> {
         throw new Error('Az anime nem található')
       }
       
-      const data = await response.json()
-      return {
-        success: true,
-        data: data
-      }
+      const result = await response.json()
+      // Backend már {success: true, data: anime} formátumban válaszol
+      return result
     } else {
       // Mock adatok használata
       const anime = mockAnimes.find(a => a.id === id)
@@ -118,6 +114,7 @@ export async function searchAnimes(filters: AnimeFilters): Promise<PaginatedResp
         throw new Error('Hiba a keresés során')
       }
       
+      // Backend már teljes formátumban válaszol
       return await response.json()
     } else {
       // Mock szűrés

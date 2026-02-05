@@ -145,18 +145,18 @@ export default function WatchAnimePage({ params }: { params: Promise<{ id: strin
                         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
                             {/* Bal oldal - Címek */}
                             <div className="flex-1">
-                                {anime?.title_japanese && anime?.title_english && anime.title_japanese !== anime.title_english ? (
+                                {(anime?.japan_cim || anime?.title_japanese) && (anime?.angol_cim || anime?.title_english) && (anime?.japan_cim || anime?.title_japanese) !== (anime?.angol_cim || anime?.title_english) ? (
                                     <>
                                         <Link href={`/anime/${anime.id}`}>
-                                            <h1 className="text-2xl md:text-2xl font-bold mb-2 hover:text-primary transition-colors cursor-pointer">{anime.title_japanese}</h1>
+                                            <h1 className="text-2xl md:text-2xl font-bold mb-2 hover:text-primary transition-colors cursor-pointer">{anime.japan_cim || anime.title_japanese}</h1>
                                         </Link>
                                         <Link href={`/anime/${anime.id}`}>
-                                            <h2 className="text-lg md:text-l text-muted-foreground font-semibold hover:text-primary transition-colors cursor-pointer">{anime.title_english}</h2>
+                                            <h2 className="text-lg md:text-l text-muted-foreground font-semibold hover:text-primary transition-colors cursor-pointer">{anime.angol_cim || anime.title_english}</h2>
                                         </Link>
                                     </>
                                 ) : (
                                     <Link href={`/anime/${anime?.id}`}>
-                                        <h1 className="text-2xl md:text-2xl font-bold mb-2 hover:text-primary transition-colors cursor-pointer">{anime?.title_english || anime?.title_japanese}</h1>
+                                        <h1 className="text-2xl md:text-2xl font-bold mb-2 hover:text-primary transition-colors cursor-pointer">{anime?.angol_cim || anime?.title_english || anime?.japan_cim || anime?.title_japanese}</h1>
                                     </Link>
                                 )}
                             </div>
@@ -164,7 +164,7 @@ export default function WatchAnimePage({ params }: { params: Promise<{ id: strin
                             {/* Jobb oldal - Műfajok és Fordító */}
                             <div className="flex flex-col gap-3 md:items-end">
                                 <div className="flex flex-wrap gap-2">
-                                    {anime?.genre.split(', ').map((g, index) => (
+                                    {(anime?.cimkek || anime?.genre)?.split(', ').map((g, index) => (
                                         <Link key={index} href={`/categories/${encodeURIComponent(g.trim())}`}>
                                             <span className="px-3 py-1 bg-accent text-accent-foreground rounded-full text-sm">
                                                 {g}
@@ -172,9 +172,9 @@ export default function WatchAnimePage({ params }: { params: Promise<{ id: strin
                                         </Link>
                                     ))}
                                 </div>
-                                {anime?.fordito && (
+                                {(anime?.keszito || anime?.fordito) && (
                                     <div className="text-sm text-muted-foreground">
-                                        <span className="font-medium">Fordító:</span> {anime.fordito}
+                                        <span className="font-medium">Fordító:</span> {anime.keszito || anime.fordito}
                                     </div>
                                 )}
                             </div>

@@ -26,10 +26,10 @@ export default function SearchDialog({ open, onOpenChange, animes }: SearchDialo
   const filteredAnimes = animes.filter(anime => {
     const query = searchQuery.toLowerCase()
     return (
-      anime.title_english?.toLowerCase().includes(query) ||
-      anime.title_japanese?.toLowerCase().includes(query) ||
-      anime.genre?.toLowerCase().includes(query) ||
-      anime.studio?.toLowerCase().includes(query)
+      anime.angol_cim?.toLowerCase().includes(query) ||
+      anime.japan_cim?.toLowerCase().includes(query) ||
+      anime.cimkek?.toLowerCase().includes(query) ||
+      anime.studiok?.toLowerCase().includes(query)
     )
   })
 
@@ -86,28 +86,28 @@ export default function SearchDialog({ open, onOpenChange, animes }: SearchDialo
                 <div className="relative w-16 h-24 flex-shrink-0 overflow-hidden rounded">
                   <img
                     src={anime.borito || '/placeholder.svg'}
-                    alt={anime.title_english || anime.title_japanese}
+                    alt={anime.angol_cim || anime.japan_cim}
                     className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-semibold group-hover:text-accent transition-colors line-clamp-1">
-                    {anime.title_english || anime.title_japanese}
+                    {anime.angol_cim || anime.japan_cim}
                   </h3>
-                  {anime.title_japanese && anime.title_english && anime.title_japanese !== anime.title_english && (
+                  {anime.japan_cim && anime.angol_cim && anime.japan_cim !== anime.angol_cim && (
                     <p className="text-sm text-muted-foreground line-clamp-1">
-                      {anime.title_japanese}
+                      {anime.japan_cim}
                     </p>
                   )}
                   <div className="flex items-center gap-2 mt-1">
                     <span className="text-xs text-muted-foreground">
-                      {anime.genre}
+                      {anime.cimkek?.split(', ')[0] || ''}
                     </span>
-                    {anime.rating && (
+                    {anime.ertekeles && (
                       <>
                         <span className="text-xs text-muted-foreground">•</span>
                         <span className="text-xs font-semibold text-accent">
-                          ⭐ {anime.rating}
+                          ⭐ {Number(anime.ertekeles).toFixed(1)}
                         </span>
                       </>
                     )}

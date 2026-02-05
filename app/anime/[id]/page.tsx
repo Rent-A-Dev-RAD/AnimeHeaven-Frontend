@@ -40,7 +40,7 @@ export default async function AnimePage({ params }: { params: Promise<{ id: stri
                             <div className="relative w-full aspect-[2/3] overflow-hidden rounded-lg shadow-lg">
                                 <img
                                     src={anime.borito || "/placeholder.svg"}
-                                    alt={anime.title_english || anime.title_japanese || anime.title || 'Anime cover'}
+                                    alt={anime.angol_cim || anime.japan_cim || 'Anime cover'}
                                     className="w-full h-full object-cover rounded-lg scale-100 transition-transform duration-300"
                                 />
                             </div>
@@ -50,13 +50,20 @@ export default async function AnimePage({ params }: { params: Promise<{ id: stri
                         <div className="w-full md:w-2/3">
                             {/* Címek */}
                             <div className="mb-4">
-                                {anime.title_japanese && anime.title_english && anime.title_japanese !== anime.title_english ? (
+                                {(anime.japan_cim || anime.title_japanese) && (anime.angol_cim || anime.title_english) && 
+                                 (anime.japan_cim !== anime.angol_cim || anime.title_japanese !== anime.title_english) ? (
                                     <>
-                                        <h1 className="text-3xl md:text-4xl font-bold mb-2">{anime.title_japanese}</h1>
-                                        <h2 className="text-xl md:text-2xl text-muted-foreground font-semibold">{anime.title_english}</h2>
+                                        <h1 className="text-3xl md:text-4xl font-bold mb-2">
+                                            {anime.japan_cim || anime.title_japanese}
+                                        </h1>
+                                        <h2 className="text-xl md:text-2xl text-muted-foreground font-semibold">
+                                            {anime.angol_cim || anime.title_english}
+                                        </h2>
                                     </>
                                 ) : (
-                                    <h1 className="text-3xl md:text-4xl font-bold">{anime.title_english || anime.title_japanese || anime.title}</h1>
+                                    <h1 className="text-3xl md:text-4xl font-bold">
+                                        {anime.angol_cim || anime.title_english || anime.japan_cim || anime.title_japanese}
+                                    </h1>
                                 )}
                             </div>
                             
@@ -71,7 +78,7 @@ export default async function AnimePage({ params }: { params: Promise<{ id: stri
                                     <div className="w-full max-w-md">
                                         <AnimeCategorySelect
                                             animeId={String(anime.id)}
-                                            title={anime.title_english || anime.title_japanese || anime.title || "Anime"}
+                                            title={anime.angol_cim || anime.title_english || anime.japan_cim || anime.title_japanese || "Anime"}
                                             coverUrl={anime.borito}
                                         />
                                     </div>
@@ -81,7 +88,7 @@ export default async function AnimePage({ params }: { params: Promise<{ id: stri
                             {/* Műfajok */}
                             <div className="mb-6">
                                 <div className="flex flex-wrap gap-2">
-                                    {anime.genre.split(', ').map((g, index) => (
+                                    {anime.cimkek?.split(', ').map((g, index) => (
                                         <Link key={index} href={`/categories/${encodeURIComponent(g.trim())}`}>
                                             <span className="px-3 py-1 bg-accent text-accent-foreground rounded-full text-sm hover:bg-accent/80 transition-colors cursor-pointer">
                                                 {g}
@@ -97,13 +104,13 @@ export default async function AnimePage({ params }: { params: Promise<{ id: stri
                             </div>
 
                             {/* Információk */}
-                            {anime.studio && (
+                            {anime.studiok && (
                                 <div className="mb-6">
                                     <div className="grid grid-cols-2 gap-x-6 gap-y-2 bg-muted/50 p-4 rounded-lg">
-                                        {anime.fordito && (
+                                        {anime.keszito && (
                                             <>
                                                 <div className="text-sm font-medium text-muted-foreground uppercase">FORDÍTÓ:</div>
-                                                <div className="text-sm text-foreground">{anime.fordito}</div>
+                                                <div className="text-sm text-foreground">{anime.keszito}</div>
                                             </>
                                         )}
                                         {anime.besorolas && (
@@ -136,10 +143,10 @@ export default async function AnimePage({ params }: { params: Promise<{ id: stri
                                                 <div className="text-sm text-foreground">{anime.tipus}</div>
                                             </>
                                         )}
-                                        {anime.studio && (
+                                        {anime.studiok && (
                                             <>
                                                 <div className="text-sm font-medium text-muted-foreground uppercase">STÚDIÓ:</div>
-                                                <div className="text-sm text-foreground">{anime.studio}</div>
+                                                <div className="text-sm text-foreground">{anime.studiok}</div>
                                             </>
                                         )}
                                     </div>
