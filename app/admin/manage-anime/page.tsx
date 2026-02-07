@@ -15,12 +15,10 @@ interface Anime {
   title_english: string
   borito: string
   hatter: string
-  image: string
   rating: number
   genre: string
   malId: number
   leiras: string
-  description: string
   studio: string
   statusz: string
   tipus: string
@@ -245,19 +243,11 @@ export default function ManageAnimePage() {
                         />
                       </div>
                       <div className="md:col-span-2">
-                        <Label>Leírás (magyar)</Label>
+                        <Label>Leírás</Label>
                         <textarea
                           className="w-full min-h-[100px] px-3 py-2 text-sm bg-background border border-input rounded-md"
                           value={editForm?.leiras || ''}
                           onChange={(e) => handleInputChange('leiras', e.target.value)}
-                        />
-                      </div>
-                      <div className="md:col-span-2">
-                        <Label>Leírás (angol)</Label>
-                        <textarea
-                          className="w-full min-h-[100px] px-3 py-2 text-sm bg-background border border-input rounded-md"
-                          value={editForm?.description || ''}
-                          onChange={(e) => handleInputChange('description', e.target.value)}
                         />
                       </div>
                       <div className="md:col-span-2">
