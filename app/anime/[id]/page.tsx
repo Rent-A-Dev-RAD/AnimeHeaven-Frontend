@@ -32,8 +32,18 @@ export default async function AnimePage({ params }: { params: Promise<{ id: stri
             <nav>
                 <Header animes={allAnimes} />
             </nav>
-            <main className="relative bg-background text-foreground min-h-screen">
-                <div className="relative max-w-7xl mx-auto px-4 py-8">
+            <main className="relative bg-background text-foreground min-h-screen overflow-hidden">
+            {/* Elmosott háttér réteg - csak a borító magasságáig */}
+            <div 
+                className="absolute top-0 left-0 right-0 h-[65vh] z-0 bg-cover bg-top opacity-50 filter blur-sm"
+                style={{ backgroundImage: `url(${anime.hatter || "/placeholder.svg"})` }}
+            />
+            
+            {/* Sötétítő réteg gradient-tel */}
+            <div className="absolute top-0 left-0 right-0 h-[65vh] z-0 bg-gradient-to-b from-black/60 via-black/50 to-transparent" />
+
+            {/* Tartalom (Z-10-el a háttér fölé emelve) */}
+            <div className="relative z-10 max-w-7xl mx-auto px-4 py-8">
                     <div className="flex flex-col md:flex-row gap-8">
                         {/* Borító kép */}
                         <div className="w-full md:w-1/4">

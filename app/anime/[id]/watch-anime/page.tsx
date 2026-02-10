@@ -6,6 +6,7 @@ import Header from '@/components/header'
 import Link from 'next/link'
 import { getAllAnimes } from '@/lib/api/anime.service'
 import type { Anime } from '@/lib/types/anime'
+import episodesData from '@/app/data/episodes.json'
 
 export default function WatchAnimePage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params)
@@ -21,53 +22,12 @@ export default function WatchAnimePage({ params }: { params: Promise<{ id: strin
     
     const anime = animes.find(a => a.id === parseInt(id))
 
-    // Epizódok több forrással
-    const episodes = [
-        { number: 1, title: '1. rész', sources: [
-            { name: 'Indavideo', url: 'https://embed.indavideo.hu/player/video/86dd4bef6d' },
-            { name: 'Videa', url: 'https://videa.hu/player?f=8.2115862.1265416.0' }
-        ]},
-        { number: 2, title: '2. rész', sources: [
-            { name: 'Indavideo', url: 'https://embed.indavideo.hu/player/video/14ec055ca2' },
-        ]},
-        { number: 3, title: '3. rész', sources: [
-            { name: 'Videa', url: 'https://videa.hu/player?f=8.2128854.1265416.0' }
-        ]},
-        { number: 4, title: '4. rész', sources: [
-            { name: 'Indavideo', url: 'https://embed.indavideo.hu/player/video/85537f7dda' },
-            { name: 'Videa', url: 'https://videa.hu/player?f=8.2172886.1265416.0' }
-        ]},
-        { number: 5, title: '5. rész', sources: [
-            { name: 'Indavideo', url: 'https://embed.indavideo.hu/player/video/58c17a1a16' },
-            { name: 'Videa', url: 'https://videa.hu/player?f=8.2180532.1265416.0' }
-        ]},
-        { number: 6, title: '6. rész', sources: [
-            { name: 'Videa', url: 'https://videa.hu/player?f=8.2186899.1265416.0' }
-        ]},
-        { number: 7, title: '7. rész', sources: [
-            { name: 'Indavideo', url: 'https://embed.indavideo.hu/player/video/be7f1a793c' },
-            { name: 'Videa', url: 'https://videa.hu/player?f=8.2191775.1265416.0' }
-        ]},
-        { number: 8, title: '8. rész', sources: [
-            { name: 'Indavideo', url: 'https://embed.indavideo.hu/player/video/9a35c1f226' },
-            { name: 'Videa', url: 'https://videa.hu/player?f=8.2198591.1265416.0' }
-        ]},
-        { number: 9, title: '9. rész', sources: [
-            { name: 'Indavideo', url: 'https://embed.indavideo.hu/player/video/9c44d85d15' },
-            { name: 'Videa', url: 'https://videa.hu/player?f=8.2203161.1265416.0' }
-        ]},
-        { number: 10, title: '10. rész', sources: [
-            { name: 'Indavideo', url: 'https://embed.indavideo.hu/player/video/8f9bda6fb2' },
-            { name: 'Videa', url: 'https://videa.hu/player?f=8.2218117.1265416.0' }
-        ]},
-        { number: 11, title: '11. rész', sources: [
-            { name: 'Indavideo', url: 'https://embed.indavideo.hu/player/video/9a9df5b775' },
-        ]},
-        { number: 12, title: '12. rész', sources: [
-            { name: 'Indavideo', url: 'https://embed.indavideo.hu/player/video/745e52f031' },
-            { name: 'Videa', url: 'https://videa.hu/player?f=8.2231170.1265416.0' }
-        ]},
-    ]
+    // Epizódok több forrással (betöltve JSON-ból)
+    const episodes = (episodesData as any) as {
+        number: number
+        title: string
+        sources: { name: string; url: string }[]
+    }[]
 
     const [currentEpisode, setCurrentEpisode] = useState(1)
     const [currentSource, setCurrentSource] = useState(0)
