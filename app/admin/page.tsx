@@ -1,8 +1,8 @@
 import Link from "next/link"
-import { Plus, Tv, Users, BarChart3, Settings } from "lucide-react"
+import { Plus, Tv, Users, BarChart3 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { profile } from "console"
+import { ServerStatusCard } from "@/components/server-status-card"
 
 export default async function AdminPage() {
   return (
@@ -47,17 +47,7 @@ export default async function AdminPage() {
             </div>
           </Card>
 
-          <Card className="p-6 bg-card border-border">
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-green-500/10 rounded-lg">
-                <Settings className="w-6 h-6 text-green-500" />
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Aktív</p>
-                <p className="text-2xl font-bold">Online</p>
-              </div>
-            </div>
-          </Card>
+          <ServerStatusCard />
         </div>
 
         {/* Quick Actions */}
