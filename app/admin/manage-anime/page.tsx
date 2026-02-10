@@ -2,11 +2,9 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Pencil, Trash2, ArrowLeft, Save, X } from "lucide-react"
+import { Pencil, Trash2, ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import Image from "next/image"
 
 interface Anime {
@@ -33,8 +31,6 @@ interface Anime {
 
 export default function ManageAnimePage() {
   const [animes, setAnimes] = useState<Anime[]>([])
-  const [editingId, setEditingId] = useState<number | null>(null)
-  const [editForm, setEditForm] = useState<Anime | null>(null)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -49,45 +45,6 @@ export default function ManageAnimePage() {
     } catch (error) {
       console.error('Hiba az animék betöltésekor:', error)
       alert('Hiba történt az animék betöltésekor!')
-    }
-  }
-
-  const handleEdit = (anime: Anime) => {
-    setEditingId(anime.id)
-    setEditForm({ ...anime })
-  }
-
-  const handleCancelEdit = () => {
-    setEditingId(null)
-    setEditForm(null)
-  }
-
-  const handleSaveEdit = async () => {
-    if (!editForm) return
-    
-    setLoading(true)
-    try {
-      const response = await fetch('/api/update-anime', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(editForm),
-      })
-
-      if (!response.ok) {
-        throw new Error('Sikertelen frissítés')
-      }
-
-      await fetchAnimes()
-      setEditingId(null)
-      setEditForm(null)
-      alert('Az animé sikeresen frissítve!')
-    } catch (error) {
-      console.error('Hiba a frissítés során:', error)
-      alert('Hiba történt a frissítés során!')
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -116,30 +73,22 @@ export default function ManageAnimePage() {
     }
   }
 
-  const handleInputChange = (field: keyof Anime, value: string | number) => {
-    if (editForm) {
-      setEditForm({
-        ...editForm,
-        [field]: value,
-      })
-    }
-  }
-
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-border bg-card">
         <div className="px-6 py-4 flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-primary">Animék kezelése</h1>
-            <p className="text-sm text-muted-foreground">Animék szerkesztése és törlése</p>
+          <div className="flex items-center gap-4">
+            <Link href="/admin">
+              <Button variant="ghost" size="icon">
+                <ArrowLeft className="w-5 h-5" />
+              </Button>
+            </Link>
+            <div>
+              <h1 className="text-2xl font-bold text-primary">Animék kezelése</h1>
+              <p className="text-sm text-muted-foreground">Animék szerkesztése és törlése</p>
+            </div>
           </div>
-          <Link href="/admin">
-            <Button variant="outline">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Vissza az adminhoz
-            </Button>
-          </Link>
         </div>
       </header>
 
@@ -152,135 +101,7 @@ export default function ManageAnimePage() {
         <div className="space-y-4">
           {animes.map((anime) => (
             <Card key={anime.id} className="p-6 bg-card border-border">
-              {editingId === anime.id ? (
-                // Edit Mode
-                <div className="space-y-4">
-                  <div className="flex items-start gap-6">
-                    <div className="relative w-32 h-48 flex-shrink-0 rounded-lg overflow-hidden">
-                      <Image
-                        src={editForm?.borito || anime.borito}
-                        alt={editForm?.title_english || anime.title_english}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                    
-                    <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <Label>Angol cím</Label>
-                        <Input
-                          value={editForm?.title_english || ''}
-                          onChange={(e) => handleInputChange('title_english', e.target.value)}
-                        />
-                      </div>
-                      <div>
-                        <Label>Japán cím</Label>
-                        <Input
-                          value={editForm?.title_japanese || ''}
-                          onChange={(e) => handleInputChange('title_japanese', e.target.value)}
-                        />
-                      </div>
-                      <div>
-                        <Label>Stúdió</Label>
-                        <Input
-                          value={editForm?.studio || ''}
-                          onChange={(e) => handleInputChange('studio', e.target.value)}
-                        />
-                      </div>
-                      <div>
-                        <Label>Műfajok</Label>
-                        <Input
-                          value={editForm?.genre || ''}
-                          onChange={(e) => handleInputChange('genre', e.target.value)}
-                        />
-                      </div>
-                      <div>
-                        <Label>Értékelés (0-10)</Label>
-                        <Input
-                          type="number"
-                          step="0.1"
-                          min="0"
-                          max="10"
-                          value={editForm?.rating || 0}
-                          onChange={(e) => handleInputChange('rating', parseFloat(e.target.value))}
-                        />
-                      </div>
-                      <div>
-                        <Label>Státusz</Label>
-                        <Input
-                          value={editForm?.statusz || ''}
-                          onChange={(e) => handleInputChange('statusz', e.target.value)}
-                        />
-                      </div>
-                      <div>
-                        <Label>Összes epizód</Label>
-                        <Input
-                          type="number"
-                          value={editForm?.osszes_epizod || 0}
-                          onChange={(e) => handleInputChange('osszes_epizod', parseInt(e.target.value))}
-                        />
-                      </div>
-                      <div>
-                        <Label>Jelenlegi epizód</Label>
-                        <Input
-                          type="number"
-                          value={editForm?.jelenlegi_epizod || 0}
-                          onChange={(e) => handleInputChange('jelenlegi_epizod', parseInt(e.target.value))}
-                        />
-                      </div>
-                      <div>
-                        <Label>Megjelenés</Label>
-                        <Input
-                          value={editForm?.megjelenes || ''}
-                          onChange={(e) => handleInputChange('megjelenes', e.target.value)}
-                        />
-                      </div>
-                      <div>
-                        <Label>Besorolás</Label>
-                        <Input
-                          value={editForm?.besorolas || ''}
-                          onChange={(e) => handleInputChange('besorolas', e.target.value)}
-                        />
-                      </div>
-                      <div className="md:col-span-2">
-                        <Label>Leírás</Label>
-                        <textarea
-                          className="w-full min-h-[100px] px-3 py-2 text-sm bg-background border border-input rounded-md"
-                          value={editForm?.leiras || ''}
-                          onChange={(e) => handleInputChange('leiras', e.target.value)}
-                        />
-                      </div>
-                      <div className="md:col-span-2">
-                        <Label>Borító URL</Label>
-                        <Input
-                          value={editForm?.borito || ''}
-                          onChange={(e) => handleInputChange('borito', e.target.value)}
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-2 justify-end">
-                    <Button
-                      variant="outline"
-                      onClick={handleCancelEdit}
-                      disabled={loading}
-                    >
-                      <X className="w-4 h-4 mr-2" />
-                      Mégse
-                    </Button>
-                    <Button
-                      onClick={handleSaveEdit}
-                      disabled={loading}
-                    >
-                      <Save className="w-4 h-4 mr-2" />
-                      {loading ? 'Mentés...' : 'Mentés'}
-                    </Button>
-                  </div>
-                </div>
-              ) : (
-                // View Mode
-                <div className="flex items-start gap-6">
+              <div className="flex items-start gap-6">
                   <div className="relative w-32 h-48 flex-shrink-0 rounded-lg overflow-hidden">
                     <Image
                       src={anime.borito}
@@ -321,15 +142,16 @@ export default function ManageAnimePage() {
                     </div>
 
                     <div className="flex gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleEdit(anime)}
-                        disabled={loading}
-                      >
-                        <Pencil className="w-4 h-4 mr-2" />
-                        Szerkesztés
-                      </Button>
+                      <Link href={`/admin/manage-anime/edit-anime?id=${anime.id}`}>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          disabled={loading}
+                        >
+                          <Pencil className="w-4 h-4 mr-2" />
+                          Szerkesztés
+                        </Button>
+                      </Link>
                       <Button
                         variant="destructive"
                         size="sm"
@@ -342,10 +164,9 @@ export default function ManageAnimePage() {
                     </div>
                   </div>
                 </div>
-              )}
-            </Card>
-          ))}
-        </div>
+              </Card>
+            ))}
+          </div>
       </div>
     </div>
   )
