@@ -23,12 +23,16 @@ export interface Anime {
   lathatosag?: number
   reszek?: Episode[]        // Epizódok lista
   
-  // Backward compatibility alias-ok (ha használod valahol)
+  // Backward compatibility alias-ok (mock adatok és komponensek miatt)
   title_japanese?: string
   title_english?: string
   rating?: number
   genre?: string
   studio?: string
+  malId?: number            // Mock formátum
+  image?: string            // Mock formátum (háttérkép)
+  description?: string      // Mock formátum (leiras helyett)
+  feltoltesDatuma?: string  // Mock formátum (feltoltes_ido helyett)
 }
 
 // Epizód típus

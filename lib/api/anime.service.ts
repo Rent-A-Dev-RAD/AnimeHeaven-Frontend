@@ -2,7 +2,7 @@ import type { Anime, ApiResponse, PaginatedResponse, AnimeFilters } from '@/lib/
 import { API_CONFIG, getApiUrl } from '@/lib/config/api.config'
 import animesData from '@/app/data/animes.json'
 
-const mockAnimes: Anime[] = animesData as Anime[]
+const mockAnimes: Anime[] = animesData as unknown as Anime[]
 
 export async function getAllAnimes(): Promise<ApiResponse<Anime[]>> {
   try {
@@ -133,7 +133,8 @@ export async function searchAnimes(filters: AnimeFilters): Promise<PaginatedResp
       // Műfaj szűrés
       if (filters.genre) {
         filtered = filtered.filter(anime => 
-          anime.genre.toLowerCase().includes(filters.genre!.toLowerCase())
+          anime.genre?.toLowerCase().includes(filters.genre!.toLowerCase()) ||
+          anime.cimkek?.toLowerCase().includes(filters.genre!.toLowerCase())
         )
       }
       
@@ -153,7 +154,10 @@ export async function searchAnimes(filters: AnimeFilters): Promise<PaginatedResp
       
       // Rating szűrés
       if (filters.rating) {
-        filtered = filtered.filter(anime => anime.rating >= filters.rating!)
+        filtered = filtered.filter(anime => {
+          const rating = anime.rating || (anime.ertekeles ? Number(anime.ertekeles) : 0)
+          return rating >= filters.rating!
+        })
       }
       
       // Pagination
@@ -203,7 +207,11 @@ export async function getPopularAnimes(limit: number = 6): Promise<ApiResponse<A
     
     // Rating alapján rendezés és limit
     const popular = [...result.data]
-      .sort((a, b) => b.rating - a.rating)
+      .sort((a, b) => {
+        const ratingB = b.rating || (b.ertekeles ? Number(b.ertekeles) : 0)
+        const ratingA = a.rating || (a.ertekeles ? Number(a.ertekeles) : 0)
+        return ratingB - ratingA
+      })
       .slice(0, limit)
     
     return {

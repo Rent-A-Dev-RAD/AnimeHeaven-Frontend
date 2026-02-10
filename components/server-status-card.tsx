@@ -35,7 +35,7 @@ export function ServerStatusCard() {
       } else {
         setError(true)
       }
-    } catch (err) {
+    } catch {
       setError(true)
     } finally {
       setLoading(false)

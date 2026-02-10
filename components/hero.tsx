@@ -4,11 +4,14 @@ import { useState, useEffect } from 'react'
 import { ChevronLeft, ChevronRight, Play, Info } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import animesData from '@/app/data/animes.json'
+import type { Anime } from '@/lib/types/anime'
 
-const featuredAnimes = animesData.slice(0, 4)
+interface HeroProps {
+  animes: Anime[]
+}
 
-export default function Hero() {
+export default function Hero({ animes = [] }: HeroProps) {
+  const featuredAnimes = animes.slice(0, 4)
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isAutoplay, setIsAutoplay] = useState(true)
 
@@ -20,7 +23,7 @@ export default function Hero() {
     }, 5000)
 
     return () => clearInterval(timer)
-  }, [isAutoplay])
+  }, [isAutoplay, featuredAnimes.length])
 
   const goToSlide = (index: number) => {
     setCurrentSlide(index)
@@ -101,7 +104,7 @@ export default function Hero() {
               }`}
             >
               <img
-                src={item.image || "/placeholder.svg"}
+                src={item.hatter || item.image || "/placeholder.svg"}
                 alt={item.angol_cim || item.title_english || item.japan_cim || item.title_japanese || 'Anime'}
                 className="w-full h-full object-cover"
               />
@@ -124,7 +127,7 @@ export default function Hero() {
               </p>
             )}
             <p className="text-gray-300 mb-6 max-w-lg text-sm md:text-base leading-relaxed">
-              {anime.description}
+              {anime.leiras || anime.description}
             </p>
             <div className="flex items-center gap-2 mb-4">
               <span className="text-yellow-500 font-semibold">{ratingDisplay}</span>

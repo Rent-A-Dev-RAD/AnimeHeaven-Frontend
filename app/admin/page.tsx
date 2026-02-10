@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Plus, Tv, Users, BarChart3 } from "lucide-react"
+import { Plus, Tv, Users } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { ServerStatusCard } from "@/components/server-status-card"

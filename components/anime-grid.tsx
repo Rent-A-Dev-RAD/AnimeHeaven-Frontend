@@ -1,6 +1,5 @@
 'use client'
 
-import { useEffect, useState } from "react"
 import { Card } from '@/components/ui/card'
 import { Play, Plus } from 'lucide-react'
 import Link from "next/link"
