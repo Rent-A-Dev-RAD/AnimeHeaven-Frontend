@@ -22,7 +22,6 @@ export default function ProfilePage() {
   const [avatar, setAvatar] = useState<string | null>(null);
   const [allAnimes, setAllAnimes] = useState<Anime[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortBy, setSortBy] = useState<'time-desc' | 'time-asc'>('time-desc');
   const itemsPerPage = 20;
   const fileRef = useRef<HTMLInputElement | null>(null);
 
@@ -88,22 +87,11 @@ export default function ProfilePage() {
     return entries.filter((x) => x.category === active);
   }, [entries, active]);
 
-  // 🔹 Rendezés
-  const sortedList = useMemo(() => {
-    return [...filteredList].sort((a, b) => {
-      if (sortBy === 'time-desc') {
-        return b.updatedAt - a.updatedAt;
-      } else {
-        return a.updatedAt - b.updatedAt;
-      }
-    });
-  }, [filteredList, sortBy]);
-
   // 🔹 Pagination számítások
-  const totalPages = Math.ceil(sortedList.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredList.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentList = sortedList.slice(startIndex, endIndex);
+  const currentList = filteredList.slice(startIndex, endIndex);
 
   // 🔹 Oldal váltás
   const goToPage = (page: number) => {
@@ -178,48 +166,24 @@ export default function ProfilePage() {
           )}
         </div>
 
-        {/* 🔹 Kategóriák és Rendezés */}
-        <div className="relative mt-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          {/* Bal oldal: Kategória gombok */}
-          <div className="flex flex-wrap gap-2">
-            {CATEGORIES.map((c) => (
-              <button
-                key={c}
-                onClick={() => {
-                  setActive(c);
-                  setCurrentPage(1);
-                }}
-                className={`rounded-full px-4 py-1 text-sm font-medium transition cursor-pointer ${
-                  active === c
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted text-muted-foreground hover:bg-muted/80"
-                }`}
-              >
-                {c} ({counts.get(c) || 0})
-              </button>
-            ))}
-          </div>
-
-          {/* Jobb oldal: Rendezés */}
-          {filteredList.length > 0 && (
-            <div className="flex items-center gap-2">
-              <label htmlFor="sort" className="text-sm text-muted-foreground whitespace-nowrap">
-                Rendezés:
-              </label>
-              <select
-                id="sort"
-                value={sortBy}
-                onChange={(e) => {
-                  setSortBy(e.target.value as 'time-desc' | 'time-asc');
-                  setCurrentPage(1);
-                }}
-                className="bg-card border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent cursor-pointer"
-              >
-                <option value="time-desc">Legújabb elöl</option>
-                <option value="time-asc">Legrégebbi elöl</option>
-              </select>
-            </div>
-          )}
+        {/* 🔹 Kategóriák */}
+        <div className="mt-10 flex flex-wrap gap-2">
+          {CATEGORIES.map((c) => (
+            <button
+              key={c}
+              onClick={() => {
+                setActive(c);
+                setCurrentPage(1);
+              }}
+              className={`rounded-full px-4 py-1 text-sm font-medium transition cursor-pointer ${
+                active === c
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-muted text-muted-foreground hover:bg-muted/80"
+              }`}
+            >
+              {c} ({counts.get(c) || 0})
+            </button>
+          ))}
         </div>
 
         {/* 🔹 Lista */}
