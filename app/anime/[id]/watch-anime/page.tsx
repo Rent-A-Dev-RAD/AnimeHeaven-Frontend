@@ -1,76 +1,79 @@
 'use client'
 
-import { useState, use, useEffect } from 'react'
+import { useState, use, useEffect, useRef } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import Header from '@/components/header'
 import Link from 'next/link'
-import { getAllAnimes } from '@/lib/api/anime.service'
-import type { Anime } from '@/lib/types/anime'
-import episodesData from '@/app/data/episodes.json'
+import { getAllAnimes, getEpisodesByAnimeId } from '@/lib/api/anime.service'
+import type { Anime, Episode } from '@/lib/types/anime'
 
 export default function WatchAnimePage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params)
     const [animes, setAnimes] = useState<Anime[]>([])
+    const [episodes, setEpisodes] = useState<Episode[]>([])
     const [loading, setLoading] = useState(true)
     
     useEffect(() => {
-        getAllAnimes().then(result => {
-            setAnimes(result.data || [])
+        Promise.all([
+            getAllAnimes(),
+            getEpisodesByAnimeId(parseInt(id))
+        ]).then(([animesResult, episodesResult]) => {
+            setAnimes(animesResult.data || [])
+            setEpisodes(episodesResult.data || [])
             setLoading(false)
         })
-    }, [])
-    
+    }, [id])
     const anime = animes.find(a => a.id === parseInt(id))
 
-    // Epizódok több forrással (betöltve JSON-ból)
-    const episodes = (episodesData as any) as {
-        number: number
-        title: string
-        sources: { name: string; url: string }[]
-    }[]
-
     const [currentEpisode, setCurrentEpisode] = useState(1)
-    const [currentSource, setCurrentSource] = useState(0)
-    const [preferredSourceName, setPreferredSourceName] = useState<string | null>(null)
+    const [currentSource, setCurrentSource] = useState<number>(0)
+    const preferredSourceNameRef = useRef<string | null>(null)
+    const isInitializedRef = useRef(false)
     const totalEpisodes = episodes.length
-    const currentVideoUrl = episodes[currentEpisode - 1]?.sources[currentSource]?.url
+    const currentEpisodeData = episodes[currentEpisode - 1]
+    const currentVideoUrl = currentEpisodeData?.forras_elems?.[currentSource ?? 0]?.link
 
-    // Betöltjük a preferált forrás nevét a localStorage-ból
+    // Betöltjük a preferált forrás nevét a localStorage-ból és beállítjuk a kezdő forrást
     useEffect(() => {
+        if (episodes.length === 0 || isInitializedRef.current) return
+        
         const savedSourceName = localStorage.getItem('preferredVideoSource')
         if (savedSourceName) {
-            setPreferredSourceName(savedSourceName)
+            preferredSourceNameRef.current = savedSourceName
             // Megkeressük az első epizódnál a preferált forrást
-            const sourceIndex = episodes[0]?.sources.findIndex(s => s.name === savedSourceName)
-            if (sourceIndex !== -1) {
-                setCurrentSource(sourceIndex)
+            const sourceIndex = episodes[0]?.forras_elems?.findIndex(s => s.forra.nev === savedSourceName)
+            if (sourceIndex !== undefined && sourceIndex !== -1) {
+                preferredSourceNameRef.current = savedSourceName
             }
         }
-    }, [])
+        isInitializedRef.current = true
+    }, [episodes])
 
     // Mentjük a forrás választást a localStorage-ba
     useEffect(() => {
-        const sourceName = episodes[currentEpisode - 1]?.sources[currentSource]?.name
+        const sourceName = currentEpisodeData?.forras_elems?.[currentSource]?.forra.nev
         if (sourceName) {
             localStorage.setItem('preferredVideoSource', sourceName)
-            setPreferredSourceName(sourceName)
+            preferredSourceNameRef.current = sourceName
         }
-    }, [currentSource, currentEpisode])
+    }, [currentSource, currentEpisodeData])
 
     // Amikor epizódot váltunk, megpróbáljuk betölteni a preferált forrást
     useEffect(() => {
-        if (preferredSourceName) {
-            const currentEpisodeData = episodes[currentEpisode - 1]
-            const preferredIndex = currentEpisodeData?.sources.findIndex(s => s.name === preferredSourceName)
-            
-            if (preferredIndex !== -1 && preferredIndex !== currentSource) {
+        if (!currentEpisodeData?.forras_elems || isInitializedRef.current === false) return
+        
+        const preferredName = preferredSourceNameRef.current
+        if (preferredName) {
+            const preferredIndex = currentEpisodeData.forras_elems.findIndex(s => s.forra.nev === preferredName)
+            if (preferredIndex !== -1) {
                 setCurrentSource(preferredIndex)
-            } else if (preferredIndex === -1) {
-                // Ha nincs meg a preferált forrás, alapértelmezett az első
+            } else {
                 setCurrentSource(0)
             }
+        } else {
+            setCurrentSource(0)
         }
-    }, [currentEpisode])
+    }, [currentEpisode, currentEpisodeData])
 
     const handlePrevious = () => {
         if (currentEpisode > 1) setCurrentEpisode(currentEpisode - 1)
@@ -187,7 +190,7 @@ export default function WatchAnimePage({ params }: { params: Promise<{ id: strin
                             {/* Szerver választó */}
                             <div className="bg-card border border-border rounded-lg p-4">
                                 <div className="flex items-center justify-center gap-2">
-                                    {episodes[currentEpisode - 1]?.sources.map((source, index) => (
+                                    {currentEpisodeData?.forras_elems?.map((source, index) => (
                                         <button
                                             key={index}
                                             onClick={() => setCurrentSource(index)}
@@ -197,7 +200,7 @@ export default function WatchAnimePage({ params }: { params: Promise<{ id: strin
                                                     : 'bg-accent/10 hover:bg-accent/20 text-muted-foreground'
                                             }`}
                                         >
-                                            SZERVER #{index + 1} • {source.name.toUpperCase()}
+                                            SZERVER #{index + 1} • {source.forra.nev.toUpperCase()}
                                         </button>
                                     ))}
                                 </div>
@@ -213,16 +216,16 @@ export default function WatchAnimePage({ params }: { params: Promise<{ id: strin
                                 <div className="max-h-[600px] overflow-y-auto">
                                     {episodes.map((episode) => (
                                         <button
-                                            key={episode.number}
-                                            onClick={() => setCurrentEpisode(episode.number)}
+                                            key={episode.id}
+                                            onClick={() => setCurrentEpisode(episode.sorrend)}
                                             className={`cursor-pointer w-full text-left px-4 py-3 border-b border-border/50 transition hover:bg-accent/10 ${
-                                                currentEpisode === episode.number
+                                                currentEpisode === episode.sorrend
                                                     ? 'bg-accent/20 border-l-4 border-l-accent'
                                                     : ''
                                             }`}
                                         >
                                             <div className="flex items-center justify-between">
-                                                <span className="font-medium">{episode.number}. Rész</span>
+                                                <span className="font-medium">{episode.resz}</span>
                                             </div>
                                         </button>
                                     ))}

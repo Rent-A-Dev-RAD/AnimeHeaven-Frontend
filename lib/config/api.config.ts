@@ -10,6 +10,7 @@ export const API_CONFIG = {
     ANIME_BY_ID: '/animes/:id',
     SEARCH_ANIMES: '/animes/search',
     FILTER_ANIMES: '/animes/filter',
+    EPISODES_BY_ANIME: '/episodes/anime/:animeId',
   },
   
   TIMEOUT: 10000,

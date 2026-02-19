@@ -33,6 +33,7 @@ export interface Anime {
   image?: string            // Mock formátum (háttérkép)
   description?: string      // Mock formátum (leiras helyett)
   feltoltesDatuma?: string  // Mock formátum (feltoltes_ido helyett)
+  fordito?: string          // Alias for keszito
 }
 
 // Epizód típus
@@ -40,8 +41,29 @@ export interface Episode {
   id: number
   sorrend: number
   resz: string
-  lathatosag: number
+  lathatosag: boolean
   anime_id?: number
+  forras_elems?: EpisodeSource[]
+}
+
+// Epizód forrás típus
+export interface EpisodeSource {
+  id: number
+  forras_id: number
+  resz_id: number
+  link: string
+  forra: {
+    id: number
+    nev: string
+  }
+}
+
+// Episodes API válasz típus
+export interface EpisodesApiResponse {
+  success: boolean
+  count: number
+  data: Episode[]
+  error?: string
 }
 
 // API Response típusok

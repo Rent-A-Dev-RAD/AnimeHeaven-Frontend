@@ -1,8 +1,10 @@
-import type { Anime, ApiResponse, PaginatedResponse, AnimeFilters } from '@/lib/types/anime'
+import type { Anime, ApiResponse, PaginatedResponse, AnimeFilters, Episode, EpisodesApiResponse } from '@/lib/types/anime'
 import { API_CONFIG, getApiUrl } from '@/lib/config/api.config'
 import animesData from '@/app/data/animes.json'
+import episodesData from '@/app/data/episodes.json'
 
 const mockAnimes: Anime[] = animesData as unknown as Anime[]
+const mockEpisodes: Episode[] = episodesData as unknown as Episode[]
 
 export async function getAllAnimes(): Promise<ApiResponse<Anime[]>> {
   try {
@@ -259,6 +261,47 @@ export async function getLatestAnimes(limit: number = 6): Promise<ApiResponse<An
       success: false,
       error: error instanceof Error ? error.message : 'Ismeretlen hiba',
       data: []
+    }
+  }
+}
+
+/**
+ * Epizódok lekérése anime ID alapján
+ */
+export async function getEpisodesByAnimeId(animeId: number): Promise<EpisodesApiResponse> {
+  try {
+    if (API_CONFIG.USE_REAL_API) {
+      const response = await fetch(
+        getApiUrl(API_CONFIG.ENDPOINTS.EPISODES_BY_ANIME, { animeId }), 
+        {
+          next: { 
+            revalidate: API_CONFIG.CACHE.REVALIDATE,
+            tags: [API_CONFIG.CACHE.TAGS.ANIME, `episodes-${animeId}`] 
+          }
+        }
+      )
+      
+      if (!response.ok) {
+        throw new Error('Az epizódok nem tölthetők be')
+      }
+      
+      const result = await response.json()
+      return result
+    } else {
+      // Mock adatok használata (fallback)
+      return {
+        success: true,
+        count: mockEpisodes.length,
+        data: mockEpisodes
+      }
+    }
+  } catch (error) {
+    console.error(`Hiba az epizódok betöltése közben (Anime ID: ${animeId}):`, error)
+    return {
+      success: false,
+      count: 0,
+      data: [],
+      error: error instanceof Error ? error.message : 'Ismeretlen hiba'
     }
   }
 }
