@@ -6,6 +6,10 @@ import { ArrowLeft, Search, Edit2, Trash2, Check, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/lib/contexts/AuthContext";
+import { canManageUsers } from "@/lib/utils/roles";
+import { useRouter } from "next/navigation";
+import ProtectedRoute from "@/components/protected-route";
 
 interface Profile {
   id: number;
@@ -37,11 +41,21 @@ const getRoleLabel = (jogosultsag: number) => {
 };
 
 export default function ManageProfilesPage() {
+  const { user, isAuthenticated } = useAuth();
+  const router = useRouter();
+  
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editForm, setEditForm] = useState<Partial<Profile>>({});
   const [loading, setLoading] = useState(true);
+
+  // Ellenőrizzük, hogy van-e jogosultsága
+  useEffect(() => {
+    if (isAuthenticated && !canManageUsers(user?.role)) {
+      router.push('/admin');
+    }
+  }, [isAuthenticated, user, router]);
 
   const filteredProfiles = useMemo(() => {
     return profiles.filter((profile) => {

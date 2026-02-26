@@ -67,7 +67,6 @@ class AuthService {  // Regisztráció
       };
     }
   }
-
   // Bejelentkezés
   async login(data: LoginData): Promise<AuthResponse> {
     try {
@@ -81,6 +80,7 @@ class AuthService {  // Regisztráció
       });
 
       const result = await response.json();
+      console.log('🟢 auth.service login response:', { status: response.status, result });
 
       if (!response.ok) {
         return {
@@ -91,11 +91,13 @@ class AuthService {  // Regisztráció
 
       // Token mentése
       if (result.token) {
+        console.log('🟢 Saving token...');
         this.setToken(result.token);
       }
 
       // User adatok mentése
       if (result.user) {
+        console.log('🟢 Saving user:', result.user);
         this.setUser(result.user);
       }
 

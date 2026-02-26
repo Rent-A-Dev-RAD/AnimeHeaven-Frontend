@@ -35,10 +35,10 @@ export default function LoginPage() {
     if (!email.includes("@")) return setError("Adj meg egy érvényes email címet.");
     if (password.length < 6) return setError("A jelszónak legalább 6 karakternek kell lennie.");
 
-    setLoading(true);
-
-    try {
+    setLoading(true);    try {
       const result = await login(email, password);
+
+      console.log('🔵 Login result:', result);
 
       if (result.success) {
         setSuccess("Sikeres bejelentkezés! Átirányítás...");

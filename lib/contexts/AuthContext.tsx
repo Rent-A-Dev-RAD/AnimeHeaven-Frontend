@@ -43,10 +43,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     initAuth();
   }, []);
-
   const login = async (email: string, password: string) => {
     const result = await authService.login({ email, password });
+    console.log('🔵 AuthContext login result:', result);
     if (result.success && result.user) {
+      console.log('🔵 AuthContext setting user:', result.user);
       setUser(result.user);
     }
     return result;

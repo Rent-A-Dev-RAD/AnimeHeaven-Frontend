@@ -11,6 +11,7 @@ import RandomAnimeButton from './random-anime-button'
 import type { Anime } from '@/lib/types/anime'
 import { useAuth } from '@/lib/contexts/AuthContext'
 import { useRouter } from 'next/navigation'
+import { canAccessAdmin } from '@/lib/utils/roles'
 
 interface HeaderProps {
   animes?: Anime[]
@@ -24,6 +25,14 @@ export default function Header({ animes = [] }: HeaderProps) {
   const { user, isAuthenticated, logout } = useAuth()
   const router = useRouter()
   const userMenuRef = useRef<HTMLDivElement>(null)
+
+  // Debug logolás
+  useEffect(() => {
+    console.log('🔵 Header - User:', user)
+    console.log('🔵 Header - User role:', user?.role)
+    console.log('🔵 Header - isAuthenticated:', isAuthenticated)
+    console.log('🔵 Header - canAccessAdmin:', canAccessAdmin(user?.role))
+  }, [user, isAuthenticated])
 
   // Bezárja a user menüt, ha kívülre kattintunk
   useEffect(() => {
@@ -74,9 +83,7 @@ export default function Header({ animes = [] }: HeaderProps) {
             priority
             unoptimized
           />
-        </Link>
-
-        {/* Navigation - PC */}
+        </Link>        {/* Navigation - PC */}
         <nav className="hidden md:flex gap-8">
           <Link href="/" className="hover:text-accent transition">
             Kezdőlap
@@ -90,10 +97,12 @@ export default function Header({ animes = [] }: HeaderProps) {
           <Link href="/categories" className="hover:text-accent transition">
             Kategóriák
           </Link>
-          <Link href="/admin" className="hover:text-accent transition">
-            Admin
-          </Link>
-        </nav>        {/* Header jobb oldali elemei */}
+          {canAccessAdmin(user?.role) && (
+            <Link href="/admin" className="hover:text-accent transition">
+              Admin
+            </Link>
+          )}
+        </nav>{/* Header jobb oldali elemei */}
         <div className="flex items-center gap-2 md:gap-4">
           <Button 
             variant="ghost" 
@@ -179,9 +188,7 @@ export default function Header({ animes = [] }: HeaderProps) {
         open={isNotificationsOpen}
         onOpenChange={setIsNotificationsOpen}
         isLoggedIn={isAuthenticated}
-      />
-
-      {/* Telefon Menu */}
+      />      {/* Telefon Menu */}
       {isMenuOpen && (
         <nav className="md:hidden bg-card border-t border-border px-4 py-4 space-y-3">
           <Link href="/" className="block hover:text-accent transition">
@@ -196,9 +203,11 @@ export default function Header({ animes = [] }: HeaderProps) {
           <Link href="/categories" className="block hover:text-accent transition">
             Kategóriák
           </Link>
-          <Link href="/admin" className="block hover:text-accent transition">
-            Admin
-          </Link>
+          {canAccessAdmin(user?.role) && (
+            <Link href="/admin" className="block hover:text-accent transition">
+              Admin
+            </Link>
+          )}
         </nav>
       )}
     </header>
