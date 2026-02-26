@@ -4,13 +4,17 @@ export const API_CONFIG = {
   
   // Egyelőre false, később true-ra állítod
   USE_REAL_API: process.env.NEXT_PUBLIC_USE_REAL_API === 'true' || false,
-  
-  ENDPOINTS: {
+    ENDPOINTS: {
     ANIMES: '/animes',
     ANIME_BY_ID: '/animes/:id',
     SEARCH_ANIMES: '/animes/search',
     FILTER_ANIMES: '/animes/filter',
     EPISODES_BY_ANIME: '/episodes/anime/:animeId',
+    
+    // Auth endpoints
+    AUTH_REGISTER: '/auth/register',
+    AUTH_LOGIN: '/auth/login',
+    AUTH_ME: '/auth/me',
   },
   
   TIMEOUT: 10000,

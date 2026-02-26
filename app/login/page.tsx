@@ -3,33 +3,60 @@
 import Header from "@/components/header";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
+import { useAuth } from "@/lib/contexts/AuthContext";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { login, isAuthenticated } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+
+  // Ha már be van jelentkezve, irányítsa át
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push("/");
+    }
+  }, [isAuthenticated, router]);
 
   const canSubmit = useMemo(() => {
     return email.trim().length > 0 && password.trim().length >= 6 && !loading;
   }, [email, password, loading]);
-
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    setSuccess(null);
 
     if (!email.includes("@")) return setError("Adj meg egy érvényes email címet.");
     if (password.length < 6) return setError("A jelszónak legalább 6 karakternek kell lennie.");
 
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 900));
-    setLoading(false);
 
-    router.push("/");
+    try {
+      const result = await login(email, password);
+
+      if (result.success) {
+        setSuccess("Sikeres bejelentkezés! Átirányítás...");
+        // A context automatikusan frissíti a user state-et
+        // Kis késleltetés hogy lássa a felhasználó a sikeres üzenetet
+        setTimeout(() => {
+          router.push("/");
+          window.location.reload(); // Hard refresh hogy biztosan frissüljön a header
+        }, 800);
+      } else {
+        setError(result.message || "Bejelentkezés sikertelen.");
+      }
+    } catch (err) {
+      setError("Váratlan hiba történt.");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -44,11 +71,15 @@ export default function LoginPage() {
             <h1 className="mb-1 text-2xl font-bold">Bejelentkezés</h1>
             <p className="mb-6 text-sm text-foreground/70">
               Lépj be a fiókodba.
-            </p>
-
-            {error && (
+            </p>            {error && (
               <div className="mb-4 rounded border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm">
                 {error}
+              </div>
+            )}
+
+            {success && (
+              <div className="mb-4 rounded border border-green-500/40 bg-green-500/10 px-3 py-2 text-sm text-green-600">
+                {success}
               </div>
             )}
 

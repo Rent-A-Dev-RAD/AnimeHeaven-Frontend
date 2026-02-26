@@ -3,10 +3,12 @@
 import Header from "@/components/header";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
+import { useAuth } from "@/lib/contexts/AuthContext";
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { register, isAuthenticated } = useAuth();
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -15,6 +17,14 @@ export default function RegisterPage() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+
+  // Ha már be van jelentkezve, irányítsa át
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push("/");
+    }
+  }, [isAuthenticated, router]);
 
   const canSubmit = useMemo(() => {
     return (
@@ -29,17 +39,29 @@ export default function RegisterPage() {
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    setSuccess(null);
 
-    if (username.length < 3) return setError("A felhasználónév túl rövid.");
-    if (!email.includes("@")) return setError("Érvénytelen email.");
-    if (password.length < 6) return setError("A jelszó túl rövid.");
-    if (password !== password2) return setError("A jelszavak nem egyeznek.");
+    if (username.length < 3) return setError("A felhasználónév túl rövid (min. 3 karakter).");
+    if (!email.includes("@")) return setError("Érvénytelen email cím.");
+    if (password.length < 6) return setError("A jelszó túl rövid (min. 6 karakter).");    if (password !== password2) return setError("A jelszavak nem egyeznek.");    setLoading(true);
 
-    setLoading(true);
-    await new Promise((r) => setTimeout(r, 900));
-    setLoading(false);
+    try {
+      const result = await register(username, email, password);
 
-    router.push("/login");
+      if (result.success) {
+        setSuccess("Sikeres regisztráció! Átirányítás a bejelentkezéshez...");
+        setTimeout(() => {
+          router.push("/login");
+        }, 2000);
+      } else {
+        setError(result.message || "Regisztráció sikertelen.");
+      }
+    } catch (err) {
+      setError("Váratlan hiba történt.");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -54,11 +76,15 @@ export default function RegisterPage() {
             <h1 className="mb-1 text-2xl font-bold">Regisztráció</h1>
             <p className="mb-6 text-sm text-foreground/70">
               Hozz létre egy új fiókot.
-            </p>
-
-            {error && (
+            </p>            {error && (
               <div className="mb-4 rounded border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm">
                 {error}
+              </div>
+            )}
+
+            {success && (
+              <div className="mb-4 rounded border border-green-500/40 bg-green-500/10 px-3 py-2 text-sm text-green-600">
+                {success}
               </div>
             )}
 

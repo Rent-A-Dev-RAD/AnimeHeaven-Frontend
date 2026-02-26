@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { Menu, Search, Bell} from 'lucide-react'
+import { useState, useEffect, useRef } from 'react'
+import { Menu, Search, Bell, User, LogOut } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from "next/link"
 import Image from "next/image"
@@ -9,6 +9,8 @@ import SearchDialog from './search-dialog'
 import NotificationsDialog from './notifications-dialog'
 import RandomAnimeButton from './random-anime-button'
 import type { Anime } from '@/lib/types/anime'
+import { useAuth } from '@/lib/contexts/AuthContext'
+import { useRouter } from 'next/navigation'
 
 interface HeaderProps {
   animes?: Anime[]
@@ -18,9 +20,35 @@ export default function Header({ animes = [] }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false)
-  
-  // TODO: Később ezt a backend-ből fogjuk lekérni
-  const isLoggedIn = false
+  const [showUserMenu, setShowUserMenu] = useState(false)
+  const { user, isAuthenticated, logout } = useAuth()
+  const router = useRouter()
+  const userMenuRef = useRef<HTMLDivElement>(null)
+
+  // Bezárja a user menüt, ha kívülre kattintunk
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setShowUserMenu(false)
+      }
+    }
+
+    if (showUserMenu) {
+      document.addEventListener('mousedown', handleClickOutside)
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside)
+      }
+    }
+  }, [showUserMenu])
+
+  const handleLogout = () => {
+    setShowUserMenu(false)
+    logout()
+    // A logout már megjeleníti a toast-ot az AuthContext-ben
+    setTimeout(() => {
+      router.push('/')
+    }, 500)
+  }
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b border-border">
@@ -65,9 +93,7 @@ export default function Header({ animes = [] }: HeaderProps) {
           <Link href="/admin" className="hover:text-accent transition">
             Admin
           </Link>
-        </nav>
-
-        {/* Header jobb oldali elemei */}
+        </nav>        {/* Header jobb oldali elemei */}
         <div className="flex items-center gap-2 md:gap-4">
           <Button 
             variant="ghost" 
@@ -85,11 +111,54 @@ export default function Header({ animes = [] }: HeaderProps) {
           >
             <Bell className="w-5 h-5" />
           </Button>
-          <Link href="/login">
+            {isAuthenticated ? (
+            <div className="relative" ref={userMenuRef}>
+              <Button 
+                variant="ghost" 
+                size="icon"
+                className="hover:bg-accent/10 hover:text-accent"
+                onClick={() => setShowUserMenu(!showUserMenu)}
+              >
+                <User className="w-5 h-5" />
+              </Button>
+              
+              {showUserMenu && (
+                <div className="absolute right-0 mt-2 w-48 bg-card border border-border rounded-lg shadow-lg overflow-hidden z-50">
+                  <div className="px-4 py-3 border-b border-border">
+                    <p className="text-sm font-semibold">{user?.username}</p>
+                    <p className="text-xs text-muted-foreground">{user?.email}</p>
+                  </div>
+                  <Link 
+                    href="/profile" 
+                    className="block px-4 py-2 hover:bg-accent/10 transition"
+                    onClick={() => setShowUserMenu(false)}
+                  >
+                    <div className="flex items-center gap-2">
+                      <User className="w-4 h-4" />
+                      Profil
+                    </div>
+                  </Link>
+                  <button
+                    onClick={() => {
+                      setShowUserMenu(false)
+                      handleLogout()
+                    }}
+                    className="w-full text-left px-4 py-2 hover:bg-accent/10 transition flex items-center gap-2"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Kijelentkezés
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link href="/login">
               <Button className="hidden sm:inline bg-accent text-accent-foreground hover:bg-accent/80 transition-colors">
                 Bejelentkezés
               </Button>
-          </Link>
+            </Link>
+          )}
+          
           <Button
             variant="ghost"
             size="icon"
@@ -100,8 +169,7 @@ export default function Header({ animes = [] }: HeaderProps) {
           </Button>
         </div>
       </div>
-      
-      {/* Dialógusok */}
+        {/* Dialógusok */}
       <SearchDialog 
         open={isSearchOpen} 
         onOpenChange={setIsSearchOpen}
@@ -110,7 +178,7 @@ export default function Header({ animes = [] }: HeaderProps) {
       <NotificationsDialog
         open={isNotificationsOpen}
         onOpenChange={setIsNotificationsOpen}
-        isLoggedIn={isLoggedIn}
+        isLoggedIn={isAuthenticated}
       />
 
       {/* Telefon Menu */}

@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Header from "@/components/header";
+import ProtectedRoute from "@/components/protected-route";
 import { Card } from "@/components/ui/card";
 import { Play, Plus } from "lucide-react";
 import Link from "next/link";
@@ -14,9 +15,11 @@ import {
   getAllEntries,
   ListEntry,
 } from "@/lib/anime-list";
+import { useAuth } from "@/lib/contexts/AuthContext";
 
 export default function ProfilePage() {
   const router = useRouter();
+  const { user } = useAuth();
   const [active, setActive] = useState<Category>("Megnézendő");
   const [entries, setEntries] = useState<ListEntry[]>([]);
   const [avatar, setAvatar] = useState<string | null>(null);
@@ -98,18 +101,18 @@ export default function ProfilePage() {
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <nav>
-        <Header animes={allAnimes} />
-      </nav>
+    <ProtectedRoute>
+      <div className="min-h-screen bg-background text-foreground">
+        <nav>
+          <Header animes={allAnimes} />
+        </nav>
 
-      <main className="mx-auto max-w-6xl px-4 py-8">
-        <h1 className="text-2xl font-bold">Profil</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Itt tudsz szűrni az animék között kategóriák szerint.
-        </p>
+        <main className="mx-auto max-w-6xl px-4 py-8">
+          <h1 className="text-2xl font-bold">Profil</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Üdvözöllek, {user?.username || 'felhasználó'}! Itt kezelheted a listádat.
+          </p>
 
         {/* 🔹 Profilkép */}
         <div className="relative mt-6 flex items-center gap-4">
@@ -287,10 +290,10 @@ export default function ProfilePage() {
               className="px-4 py-2 rounded-lg bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground disabled:opacity-50 disabled:cursor-not-allowed transition cursor-pointer"
             >
               Következő →
-            </button>
-          </div>
+            </button>          </div>
         )}
       </main>
     </div>
+    </ProtectedRoute>
   );
 }
