@@ -55,6 +55,7 @@ export async function POST(req: Request) {
           id: data.user.id,
           username: data.user.felhasznalonev || data.user.username,
           email: data.user.email,
+          profileImage: data.user.profilkep ?? data.user.profileImage ?? null,
           role: data.user.jogosultsag !== undefined 
             ? getRoleFromNumber(data.user.jogosultsag) 
             : data.user.role

@@ -88,8 +88,6 @@ export default async function AnimePage({ params }: { params: Promise<{ id: stri
                                     <div className="w-full max-w-md">
                                         <AnimeCategorySelect
                                             animeId={String(anime.id)}
-                                            title={anime.angol_cim || anime.title_english || anime.japan_cim || anime.title_japanese || "Anime"}
-                                            coverUrl={anime.borito}
                                         />
                                     </div>
                                 </div>

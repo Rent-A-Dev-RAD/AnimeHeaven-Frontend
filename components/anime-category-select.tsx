@@ -1,37 +1,81 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { CATEGORIES, Category, getEntry, setEntry } from "@/lib/anime-list";
+import { CATEGORIES, Category } from "@/lib/anime-list";
+import { getAnimeCategory, upsertAnimeCategory } from "@/lib/api/list.service";
+import { useAuth } from "@/lib/contexts/AuthContext";
 
 type Props = {
   animeId: string;
-  title: string;
-  coverUrl?: string;
 };
 
 type SelectValue = Category | "NONE";
 
-export default function AnimeCategorySelect({ animeId, title, coverUrl }: Props) {
+export default function AnimeCategorySelect({ animeId }: Props) {
+  const { showToast, isAuthenticated } = useAuth();
   const [value, setValue] = useState<SelectValue>("NONE");
+  const [isSaving, setIsSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const existing = getEntry(animeId);
-    setValue(existing?.category ?? "NONE");
-  }, [animeId]);
+    let isMounted = true;
+
+    async function loadInitialValue() {
+      if (!isAuthenticated) {
+        if (isMounted) {
+          setValue("NONE");
+          setIsLoading(false);
+        }
+        return;
+      }
+
+      try {
+        setIsLoading(true);
+        const existing = await getAnimeCategory(Number(animeId));
+        if (!isMounted) return;
+        setValue(existing ?? "NONE");
+      } catch (error) {
+        if (!isMounted) return;
+        const message = error instanceof Error ? error.message : "Nem sikerult lekerdezni a kategoriat.";
+        showToast(message, "error");
+        setValue("NONE");
+      } finally {
+        if (isMounted) setIsLoading(false);
+      }
+    }
+
+    loadInitialValue();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [animeId, isAuthenticated, showToast]);
 
   const label = useMemo(() => {
     if (value === "NONE") return "Kategória: nincs";
     return `Kategória: ${value}`;
   }, [value]);
 
-  function onChange(v: SelectValue) {
+  async function onChange(v: SelectValue) {
+    if (!isAuthenticated) {
+      showToast("A besorolashoz jelentkezz be.", "error");
+      return;
+    }
+
+    const previousValue = value;
     setValue(v);
-    setEntry({
-      animeId,
-      title,
-      coverUrl,
-      category: v === "NONE" ? null : v,
-    });
+
+    try {
+      setIsSaving(true);
+      await upsertAnimeCategory(Number(animeId), v === "NONE" ? null : v);
+      showToast("A lista besorolas mentve.", "success");
+    } catch (error) {
+      setValue(previousValue);
+      const message = error instanceof Error ? error.message : "Nem sikerult menteni a besorolast.";
+      showToast(message, "error");
+    } finally {
+      setIsSaving(false);
+    }
   }
 
   return (
@@ -51,9 +95,11 @@ export default function AnimeCategorySelect({ animeId, title, coverUrl }: Props)
         ))}
       </select>
 
-      <div className="mt-2 text-xs text-foreground/70">
-        
-      </div>
+      {(isLoading || isSaving) && (
+        <div className="mt-2 text-xs text-foreground/70">
+          {isLoading ? "Kategoria lekerese..." : "Mentes folyamatban..."}
+        </div>
+      )}
     </div>
   );
 }

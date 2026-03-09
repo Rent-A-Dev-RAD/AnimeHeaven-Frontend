@@ -19,6 +19,7 @@ export interface AuthResponse {
     username: string;
     email: string;
     role?: string;
+    profileImage?: string | null;
   };
 }
 
@@ -27,6 +28,7 @@ export interface User {
   username: string;
   email: string;
   role?: string;
+  profileImage?: string | null;
 }
 
 class AuthService {  // Regisztráció
