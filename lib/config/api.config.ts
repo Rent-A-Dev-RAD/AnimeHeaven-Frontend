@@ -1,9 +1,25 @@
+// Runtime environment check
+const getBaseUrl = () => {
+  // Server-side rendering esetén
+  if (typeof window === 'undefined') {
+    return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api'
+  }
+  // Client-side esetén
+  return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api'
+}
+
+const getUseRealApi = () => {
+  return process.env.NEXT_PUBLIC_USE_REAL_API === 'true'
+}
+
 export const API_CONFIG = {
-  // BASE_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api'
-  BASE_URL: process.env.NEXT_PUBLIC_API_URL || '',
+  get BASE_URL() {
+    return getBaseUrl()
+  },
   
-  // Egyelőre false, később true-ra állítod
-  USE_REAL_API: process.env.NEXT_PUBLIC_USE_REAL_API === 'true' || false,
+  get USE_REAL_API() {
+    return getUseRealApi()
+  },
     ENDPOINTS: {
     ANIMES: '/animes',
     ANIME_BY_ID: '/animes/:id',

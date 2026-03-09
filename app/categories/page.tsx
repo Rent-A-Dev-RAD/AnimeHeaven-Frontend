@@ -11,9 +11,12 @@ export default async function CategoriesPage() {
   const genresMap = new Map<string, number>()
   
   animes.forEach(anime => {
+    // Backend most már küldi a 'cimkek' mezőt GROUP_CONCAT-tel vesszővel elválasztva
     const genreField = anime.cimkek || anime.genre
+    
     if (genreField) {
-      const genres = genreField.split(',').map(g => g.trim())
+      // Szétbontjuk a vesszővel elválasztott stringet
+      const genres = genreField.split(',').map(g => g.trim()).filter(g => g.length > 0)
       genres.forEach(genre => {
         genresMap.set(genre, (genresMap.get(genre) || 0) + 1)
       })

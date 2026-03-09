@@ -15,6 +15,14 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: '**.tmdb.org',
       },
+      {
+        protocol: 'https',
+        hostname: 'www.themoviedb.org',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.themoviedb.org',
+      },
     ],
   },
 };

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Tv } from 'lucide-react'
 import { Card } from '@/components/ui/card'
+import { getAllAnimes } from '@/lib/api/anime.service'
 
 export function AnimeStatsCard() {
   const [count, setCount] = useState<number | null>(null)
@@ -12,21 +13,10 @@ export function AnimeStatsCard() {
 
   const fetchAnimeCount = async () => {
     try {
-      const response = await fetch('/api/animes')
-      if (response.ok) {
-        const result = await response.json()
-        // API response lehet tömb vagy { success: true, data: [...] } formátum
-        let animes: unknown[] = []
-        
-        if (Array.isArray(result)) {
-          animes = result
-        } else if (result.success && Array.isArray(result.data)) {
-          animes = result.data
-        } else if (result.data && Array.isArray(result.data)) {
-          animes = result.data
-        }
-        
-        setCount(animes.length)
+      const result = await getAllAnimes()
+      
+      if (result.success && result.data) {
+        setCount(result.data.length)
         setError(false)
         setLastUpdated(new Date().toLocaleTimeString('hu-HU', { 
           hour: '2-digit', 

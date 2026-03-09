@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Image from "next/image"
 import episodesData from "@/app/data/episodes.json"
+import { getAnimeById, updateAnime } from "@/lib/api/anime.service"
 
 interface Anime {
   id: number
@@ -77,14 +78,15 @@ export default function EditAnimePage() {
     try {
       setLoading(true)
       
-      // Fetch anime data
-      const animeResponse = await fetch('/api/animes')
-      const animesData = await animeResponse.json()
-      const foundAnime = animesData.find((a: Anime) => a.id === parseInt(animeId!))
+      // Fetch anime data using service
+      const result = await getAnimeById(parseInt(animeId!))
       
-      if (foundAnime) {
-        setAnime(foundAnime)
-        setEditForm({ ...foundAnime })
+      if (result.success && result.data) {
+        setAnime(result.data)
+        setEditForm({ ...result.data })
+      } else {
+        console.error('Anime nem található:', result.error)
+        alert('Hiba történt az anime betöltésekor!')
       }
       
       // Load episodes from JSON file and convert to editable format
@@ -133,25 +135,18 @@ export default function EditAnimePage() {
       })
     }
   }
-
   const handleSaveAnime = async () => {
     if (!editForm) return
     
     setSaving(true)
     try {
-      const response = await fetch('/api/update-anime', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(editForm),
-      })
+      const result = await updateAnime(editForm.id, editForm)
 
-      if (!response.ok) {
-        throw new Error('Sikertelen frissítés')
+      if (!result.success) {
+        throw new Error(result.error || 'Sikertelen frissítés')
       }
 
-      alert('Az animé sikeresen frissítve!')
+      alert(result.message || 'Az animé sikeresen frissítve!')
       router.push('/admin/manage-anime')
     } catch (error) {
       console.error('Hiba a frissítés során:', error)
@@ -159,6 +154,7 @@ export default function EditAnimePage() {
     } finally {
       setSaving(false)
     }
+  } }
   }
 
   const handleEpisodeChange = (episodeId: number, field: keyof EditableEpisode, value: string | number) => {

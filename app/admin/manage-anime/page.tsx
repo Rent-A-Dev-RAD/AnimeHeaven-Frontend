@@ -6,6 +6,7 @@ import { Pencil, Trash2, ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import Image from "next/image"
+import { getAllAnimes, deleteAnime } from "@/lib/api/anime.service"
 
 interface Anime {
   id: number
@@ -39,9 +40,13 @@ export default function ManageAnimePage() {
 
   const fetchAnimes = async () => {
     try {
-      const response = await fetch('/api/animes')
-      const data = await response.json()
-      setAnimes(data)
+      const result = await getAllAnimes()
+      if (result.success && result.data) {
+        setAnimes(result.data)
+      } else {
+        console.error('Hiba az animék betöltésekor:', result.error)
+        alert('Hiba történt az animék betöltésekor!')
+      }
     } catch (error) {
       console.error('Hiba az animék betöltésekor:', error)
       alert('Hiba történt az animék betöltésekor!')
@@ -55,16 +60,14 @@ export default function ManageAnimePage() {
 
     setLoading(true)
     try {
-      const response = await fetch(`/api/delete-anime?id=${id}`, {
-        method: 'DELETE',
-      })
+      const result = await deleteAnime(id)
 
-      if (!response.ok) {
-        throw new Error('Sikertelen törlés')
+      if (!result.success) {
+        throw new Error(result.error || 'Sikertelen törlés')
       }
 
       await fetchAnimes()
-      alert('Az animé sikeresen törölve!')
+      alert(result.message || 'Az animé sikeresen törölve!')
     } catch (error) {
       console.error('Hiba a törlés során:', error)
       alert('Hiba történt a törlés során!')
@@ -99,13 +102,22 @@ export default function ManageAnimePage() {
 
         {/* Anime List */}
         <div className="space-y-4">
-          {animes.map((anime) => (
+          {animes.map((anime) => {
+            // Backend mezőnevek kezelése
+            const title_english = anime.angol_cim || anime.title_english || 'Nincs cím'
+            const title_japanese = anime.japan_cim || anime.title_japanese || ''
+            const studio = anime.studiok || anime.studio || 'Ismeretlen'
+            const rating = anime.ertekeles || anime.rating || 0
+            const genre = anime.cimkek || anime.genre || 'Nincs megadva'
+            const cover = anime.borito || '/placeholder.jpg'
+            
+            return (
             <Card key={anime.id} className="p-6 bg-card border-border">
               <div className="flex items-start gap-6">
                   <div className="relative w-32 h-48 flex-shrink-0 rounded-lg overflow-hidden">
                     <Image
-                      src={anime.borito}
-                      alt={anime.title_english}
+                      src={cover}
+                      alt={title_english}
                       fill
                       className="object-cover"
                     />
@@ -113,32 +125,32 @@ export default function ManageAnimePage() {
                   
                   <div className="flex-1">
                     <div className="mb-2">
-                      <h3 className="text-xl font-bold">{anime.title_english}</h3>
-                      <p className="text-muted-foreground">{anime.title_japanese}</p>
+                      <h3 className="text-xl font-bold">{title_english}</h3>
+                      <p className="text-muted-foreground">{title_japanese}</p>
                     </div>
                     
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                       <div>
                         <p className="text-sm text-muted-foreground">Stúdió</p>
-                        <p className="font-medium">{anime.studio}</p>
+                        <p className="font-medium">{studio}</p>
                       </div>
                       <div>
                         <p className="text-sm text-muted-foreground">Értékelés</p>
-                        <p className="font-medium">{anime.rating}/10</p>
+                        <p className="font-medium">{rating}/10</p>
                       </div>
                       <div>
                         <p className="text-sm text-muted-foreground">Epizódok</p>
-                        <p className="font-medium">{anime.jelenlegi_epizod}/{anime.osszes_epizod}</p>
+                        <p className="font-medium">{anime.jelenlegi_epizod || 0}/{anime.osszes_epizod || 0}</p>
                       </div>
                       <div>
                         <p className="text-sm text-muted-foreground">Státusz</p>
-                        <p className="font-medium">{anime.statusz}</p>
+                        <p className="font-medium">{anime.statusz || 'Ismeretlen'}</p>
                       </div>
                     </div>
                     
                     <div className="mb-4">
                       <p className="text-sm text-muted-foreground mb-1">Műfajok</p>
-                      <p className="text-sm">{anime.genre}</p>
+                      <p className="text-sm">{genre}</p>
                     </div>
 
                     <div className="flex gap-2">
@@ -155,7 +167,7 @@ export default function ManageAnimePage() {
                       <Button
                         variant="destructive"
                         size="sm"
-                        onClick={() => handleDelete(anime.id, anime.title_english)}
+                        onClick={() => handleDelete(anime.id, title_english)}
                         disabled={loading}
                       >
                         <Trash2 className="w-4 h-4 mr-2" />
@@ -165,7 +177,8 @@ export default function ManageAnimePage() {
                   </div>
                 </div>
               </Card>
-            ))}
+            )
+          })}
           </div>
       </div>
     </div>

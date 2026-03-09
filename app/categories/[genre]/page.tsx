@@ -22,7 +22,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   const [loading, setLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
   const [sortBy, setSortBy] = useState<'rating' | 'title-jp' | 'title-en'>('rating')
-  const itemsPerPage = 1 // Teszteléshez 2, később állítsd vissza 20-ra
+  const itemsPerPage = 20 // Teszteléshez 2, később állítsd vissza 20-ra
 
   useEffect(() => {
     getAllAnimes().then(result => {

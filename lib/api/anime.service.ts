@@ -9,20 +9,30 @@ const mockEpisodes: Episode[] = episodesData as unknown as Episode[]
 export async function getAllAnimes(): Promise<ApiResponse<Anime[]>> {
   try {
     if (API_CONFIG.USE_REAL_API) {
-      const response = await fetch(getApiUrl(API_CONFIG.ENDPOINTS.ANIMES), {
-        next: { 
-          revalidate: API_CONFIG.CACHE.REVALIDATE,
-          tags: [API_CONFIG.CACHE.TAGS.ANIMES] 
+      const apiUrl = getApiUrl(API_CONFIG.ENDPOINTS.ANIMES)
+      
+      try {
+        const response = await fetch(apiUrl, {
+          cache: 'no-store', // Disable cache to get fresh data
+          next: { revalidate: 0 }
+        })
+        
+        if (!response.ok) {
+          console.error('Backend response not OK:', response.status)
+          throw new Error('Nem sikerült betölteni az animéket')
         }
-      })
-      
-      if (!response.ok) {
-        throw new Error('Nem sikerült betölteni az animéket')
+        
+        const result = await response.json()
+        // Backend már {success: true, data: [...]} formátumban válaszol
+        return result
+      } catch (fetchError) {
+        // Ha a backend nem elérhető, fallback mock adatokra
+        console.warn('Backend nem elérhető, mock adatok használata:', fetchError)
+        return {
+          success: true,
+          data: mockAnimes
+        }
       }
-      
-      const result = await response.json()
-      // Backend már {success: true, data: [...]} formátumban válaszol
-      return result
     } else {
       // Mock adatok használata
       return {
@@ -32,10 +42,10 @@ export async function getAllAnimes(): Promise<ApiResponse<Anime[]>> {
     }
   } catch (error) {
     console.error('Hiba az animék betöltése közben:', error)
+    // Fallback mock adatokra hiba esetén is
     return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Ismeretlen hiba',
-      data: [] // Fallback üres tömb
+      success: true,
+      data: mockAnimes
     }
   }
 }
@@ -302,6 +312,93 @@ export async function getEpisodesByAnimeId(animeId: number): Promise<EpisodesApi
       count: 0,
       data: [],
       error: error instanceof Error ? error.message : 'Ismeretlen hiba'
+    }
+  }
+}
+
+/**
+ * Anime törlése (admin funkció)
+ */
+export async function deleteAnime(id: number): Promise<ApiResponse<void>> {
+  try {
+    if (API_CONFIG.USE_REAL_API) {
+      const response = await fetch(
+        `${getApiUrl(API_CONFIG.ENDPOINTS.ANIMES)}/${id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
+      )
+      
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.message || 'Nem sikerült törölni az animét')
+      }
+      
+      const result = await response.json()
+      return {
+        success: true,
+        message: result.message || 'Az animé sikeresen törölve!'
+      }
+    } else {
+      // Mock törlés - csak szimuláció
+      return {
+        success: true,
+        message: 'Mock: Az animé törölve (nincs backend kapcsolat)'
+      }
+    }
+  } catch (error) {
+    console.error(`Hiba az anime törlése közben (ID: ${id}):`, error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Ismeretlen hiba történt a törlés során'
+    }
+  }
+}
+
+/**
+ * Anime frissítése (admin funkció)
+ */
+export async function updateAnime(id: number, animeData: Partial<Anime>): Promise<ApiResponse<Anime>> {
+  try {
+    if (API_CONFIG.USE_REAL_API) {
+      const response = await fetch(
+        `${getApiUrl(API_CONFIG.ENDPOINTS.ANIMES)}/${id}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(animeData)
+        }
+      )
+      
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.message || 'Nem sikerült frissíteni az animét')
+      }
+      
+      const result = await response.json()
+      return {
+        success: true,
+        data: result.data,
+        message: result.message || 'Az animé sikeresen frissítve!'
+      }
+    } else {
+      // Mock frissítés - csak szimuláció
+      return {
+        success: true,
+        data: { ...animeData, id } as Anime,
+        message: 'Mock: Az animé frissítve (nincs backend kapcsolat)'
+      }
+    }
+  } catch (error) {
+    console.error(`Hiba az anime frissítése közben (ID: ${id}):`, error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Ismeretlen hiba történt a frissítés során'
     }
   }
 }
