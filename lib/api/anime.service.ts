@@ -359,6 +359,99 @@ export async function deleteAnime(id: number): Promise<ApiResponse<void>> {
 }
 
 /**
+ * Epizód létrehozása (admin funkció)
+ */
+export async function createEpisode(animeId: number, episodeData: any): Promise<ApiResponse<any>> {
+  try {
+    if (API_CONFIG.USE_REAL_API) {
+      // Bővített payload az animeId-vel
+      const payload = { ...episodeData, anime_id: animeId }
+      
+      const response = await fetch(
+        getApiUrl(API_CONFIG.ENDPOINTS.CREATE_EPISODE),
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload)
+        }
+      )
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.message || 'Nem sikerült létrehozni az epizódot')
+      }
+      
+      const result = await response.json()
+      return {
+        success: true,
+        data: result.data,
+        message: result.message || 'Az epizód sikeresen létrehozva!'
+      }
+    } else {
+      // Mock létrehozás
+      return {
+        success: true,
+        data: { ...episodeData, id: Date.now(), anime_id: animeId },
+        message: 'Mock: Az epizód létrehozva (nincs backend kapcsolat)'
+      }
+    }
+  } catch (error) {
+    console.error(`Hiba az epizód létrehozása közben:`, error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Ismeretlen hiba történt a létrehozás során'
+    }
+  }
+}
+
+/**
+ * Epizód frissítése (admin funkció)
+ */
+export async function updateEpisode(episodeId: number, episodeData: any): Promise<ApiResponse<any>> {
+  try {
+    if (API_CONFIG.USE_REAL_API) {
+      const response = await fetch(
+        getApiUrl(API_CONFIG.ENDPOINTS.EPISODE_BY_ID, { id: episodeId }),
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(episodeData)
+        }
+      )
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.message || 'Nem sikerült frissíteni az epizódot')
+      }
+      
+      const result = await response.json()
+      return {
+        success: true,
+        data: result.data,
+        message: result.message || 'Az epizód sikeresen frissítve!'
+      }
+    } else {
+      // Mock frissítés
+      return {
+        success: true,
+        data: { ...episodeData, id: episodeId },
+        message: 'Mock: Az epizód frissítve (nincs backend kapcsolat)'
+      }
+    }
+  } catch (error) {
+    console.error(`Hiba az epizód frissítése közben (ID: ${episodeId}):`, error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Ismeretlen hiba történt a frissítés során'
+    }
+  }
+}
+
+/**
  * Anime frissítése (admin funkció)
  */
 export async function updateAnime(id: number, animeData: Partial<Anime>): Promise<ApiResponse<Anime>> {

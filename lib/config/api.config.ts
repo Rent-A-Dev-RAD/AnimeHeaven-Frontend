@@ -26,6 +26,8 @@ export const API_CONFIG = {
     SEARCH_ANIMES: '/animes/search',
     FILTER_ANIMES: '/animes/filter',
     EPISODES_BY_ANIME: '/episodes/anime/:animeId',
+    EPISODE_BY_ID: '/episodes/:id',
+    CREATE_EPISODE: '/episodes',
     
     // Auth endpoints
     AUTH_REGISTER: '/auth/register',

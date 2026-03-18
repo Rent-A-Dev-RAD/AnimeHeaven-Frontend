@@ -9,7 +9,7 @@ import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Image from "next/image"
-import { getAnimeById, updateAnime, getEpisodesByAnimeId } from "@/lib/api/anime.service"
+import { getAnimeById, updateAnime, getEpisodesByAnimeId, updateEpisode, createEpisode } from "@/lib/api/anime.service"
 
 interface Anime {
   id: number
@@ -218,12 +218,20 @@ export default function EditAnimePage() {
       inda: "",
       videa: "",
     }
-    setEpisodes([...episodes, newEpisode])
+    setEpisodes([newEpisode, ...episodes])
+    setCurrentPage(1)
   }
 
   const handleDeleteEpisode = (episodeId: number) => {
     if (confirm('Biztosan törölni szeretnéd ezt az epizódot?')) {
-      setEpisodes(episodes.filter(ep => ep.id !== episodeId))
+      const updatedEpisodes = episodes.filter(ep => ep.id !== episodeId)
+      setEpisodes(updatedEpisodes)
+      
+      // Ha az utolsó oldal üres maradna, vissza kell lépni az előző oldalra
+      const newTotalPages = Math.ceil(updatedEpisodes.length / episodesPerPage)
+      if (currentPage > newTotalPages && newTotalPages > 0) {
+        setCurrentPage(newTotalPages)
+      }
     }
   }
 
@@ -233,15 +241,45 @@ export default function EditAnimePage() {
     ))
   }
 
-  const handleSaveEpisodes = async () => {
+  const handleSaveSingleEpisode = async (episodeId: number) => {
+    const episode = episodes.find(ep => ep.id === episodeId)
+    if (!episode) return
+
     setSaving(true)
     try {
-      // TODO: Implement save episodes API call
-      console.log('Saving episodes:', episodes)
-      alert('Epizódok sikeresen mentve!')
+      // Összeállítjuk a backendnek megfelelő payload-ot
+      const payload = {
+        sorrend: episode.sorrend,
+        resz: episode.resz,
+        lathatosag: episode.lathatosag,
+        indavideo: episode.inda,
+        videa: episode.videa
+      }
+
+      let result;
+      // Ha id nagyon nagy szám (Date.now()), akkor még új, ezért POST kérés kell
+      if (episode.id > 1000000000000) {
+        result = await createEpisode(Number(animeId), payload)
+        
+        // Frissítsük az epizódot az új ID-val amit a backend adott (ha sikeres)
+        if (result.success && result.data && result.data.id) {
+          setEpisodes(prev => prev.map(ep => 
+            ep.id === episodeId ? { ...ep, id: result.data.id } : ep
+          ))
+        }
+      } else {
+        // Meglévő epizód frissítése
+        result = await updateEpisode(episode.id, payload)
+      }
+      
+      if (!result.success) {
+        throw new Error(result.error || 'Sikertelen mentés')
+      }
+
+      alert(result.message || 'Epizód sikeresen mentve!')
     } catch (error) {
-      console.error('Hiba az epizódok mentése során:', error)
-      alert('Hiba történt az epizódok mentése során!')
+      console.error('Hiba az epizód mentése során:', error)
+      alert('Hiba történt az epizód mentése során!')
     } finally {
       setSaving(false)
     }
@@ -450,10 +488,6 @@ export default function EditAnimePage() {
                 <Plus className="w-4 h-4 mr-2" />
                 Új epizód
               </Button>
-              <Button onClick={handleSaveEpisodes} disabled={saving}>
-                <Save className="w-4 h-4 mr-2" />
-                {saving ? 'Mentés...' : 'Epizódok mentése'}
-              </Button>
             </div>
           </div>
 
@@ -484,6 +518,16 @@ export default function EditAnimePage() {
                     </div>
                   </div>
                   <div className="flex gap-2">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleSaveSingleEpisode(episode.id)}
+                      disabled={saving}
+                      title="Epizód mentése"
+                      className="text-blue-500 hover:text-blue-600"
+                    >
+                      <Save className="w-4 h-4" />
+                    </Button>
                     <Button
                       variant="ghost"
                       size="icon"
