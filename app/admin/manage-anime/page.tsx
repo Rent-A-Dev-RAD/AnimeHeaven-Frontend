@@ -2,36 +2,43 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Pencil, Trash2, ArrowLeft } from "lucide-react"
+import { Pencil, Trash2, ArrowLeft, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
 import Image from "next/image"
 import { getAllAnimes, deleteAnime } from "@/lib/api/anime.service"
 
 interface Anime {
   id: number
-  title_japanese: string
-  title_english: string
-  borito: string
-  hatter: string
-  rating: number
-  genre: string
-  malId: number
-  leiras: string
-  studio: string
-  statusz: string
-  tipus: string
-  osszes_epizod: number
-  jelenlegi_epizod: number
-  megjelenes: string
-  fordito: string
-  besorolas: string
-  feltoltesDatuma: string
-  trailer: string
+  title_japanese?: string
+  title_english?: string
+  angol_cim?: string
+  japan_cim?: string
+  studiok?: string
+  ertekeles?: number
+  cimkek?: string
+  borito?: string
+  hatter?: string
+  rating?: number
+  genre?: string
+  malId?: number
+  leiras?: string
+  studio?: string
+  statusz?: string
+  tipus?: string
+  osszes_epizod?: number
+  jelenlegi_epizod?: number
+  megjelenes?: string
+  fordito?: string
+  besorolas?: string
+  feltoltesDatuma?: string
+  trailer?: string
 }
 
 export default function ManageAnimePage() {
   const [animes, setAnimes] = useState<Anime[]>([])
+  const [searchQuery, setSearchQuery] = useState("")
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -76,6 +83,13 @@ export default function ManageAnimePage() {
     }
   }
 
+  const filteredAnimes = animes.filter(anime => {
+    const searchLower = searchQuery.toLowerCase()
+    const titleEng = (anime.angol_cim || anime.title_english || '').toLowerCase()
+    const titleJap = (anime.japan_cim || anime.title_japanese || '').toLowerCase()
+    return titleEng.includes(searchLower) || titleJap.includes(searchLower)
+  })
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -96,13 +110,23 @@ export default function ManageAnimePage() {
       </header>
 
       <div className="max-w-7xl mx-auto px-6 py-8">
-        <div className="mb-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
           <p className="text-muted-foreground">Összesen {animes.length} animé</p>
+          <div className="relative w-full md:w-72">
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Keresés cím alapján..."
+              className="pl-9"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
         </div>
 
         {/* Anime List */}
         <div className="space-y-4">
-          {animes.map((anime) => {
+          {filteredAnimes.map((anime) => {
             // Backend mezőnevek kezelése
             const title_english = anime.angol_cim || anime.title_english || 'Nincs cím'
             const title_japanese = anime.japan_cim || anime.title_japanese || ''

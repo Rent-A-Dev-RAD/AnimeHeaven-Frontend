@@ -9,8 +9,7 @@ import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Image from "next/image"
-import episodesData from "@/app/data/episodes.json"
-import { getAnimeById, updateAnime } from "@/lib/api/anime.service"
+import { getAnimeById, updateAnime, getEpisodesByAnimeId } from "@/lib/api/anime.service"
 
 interface Anime {
   id: number
@@ -34,24 +33,12 @@ interface Anime {
   trailer: string
 }
 
-interface Episode {
-  number: number
-  title: string
-  sources: {
-    name: string
-    url: string
-  }[]
-}
-
 interface EditableEpisode {
   id: number
   sorrend: number
   resz: string
   inda?: string
   videa?: string
-  rumble?: string
-  cda?: string
-  dailymotion?: string
   lathatosag: number
 }
 
@@ -147,33 +134,35 @@ export default function EditAnimePage() {
         alert('Hiba történt az anime betöltésekor!')
       }
       
-      // Load episodes from JSON file and convert to editable format
-      const loadedEpisodes: EditableEpisode[] = (episodesData as Episode[]).map((ep) => {
-        const editableEp: EditableEpisode = {
-          id: ep.number,
-          sorrend: ep.number,
-          resz: ep.title,
-          lathatosag: 1
-        }
-        
-        // Convert sources array to individual fields
-        ep.sources.forEach((source) => {
-          const sourceName = source.name.toLowerCase()
-          if (sourceName === 'indavideo') {
-            editableEp.inda = source.url
-          } else if (sourceName === 'videa') {
-            editableEp.videa = source.url
-          } else if (sourceName === 'rumble') {
-            editableEp.rumble = source.url
-          } else if (sourceName === 'cda') {
-            editableEp.cda = source.url
-          } else if (sourceName === 'dailymotion') {
-            editableEp.dailymotion = source.url
+      // Fetch episodes
+      const episodesResult = await getEpisodesByAnimeId(parseInt(animeId!))
+      
+      let loadedEpisodes: EditableEpisode[] = []
+      
+      if (episodesResult.success && episodesResult.data) {
+        loadedEpisodes = episodesResult.data.map((ep: any) => {
+          const editableEp: EditableEpisode = {
+            id: ep.id,
+            sorrend: ep.sorrend || 1,
+            resz: ep.resz || `${ep.sorrend || 1}. rész`,
+            lathatosag: ep.lathatosag ? 1 : 0
           }
+          
+          if (ep.forras_elems) {
+            ep.forras_elems.forEach((source: any) => {
+              if (!source?.forra?.nev) return
+              const sourceName = source.forra.nev.toLowerCase()
+              if (sourceName === 'indavideo') {
+                editableEp.inda = source.link
+              } else if (sourceName === 'videa') {
+                editableEp.videa = source.link
+              }
+            })
+          }
+          
+          return editableEp
         })
-        
-        return editableEp
-      })
+      }
       
       setEpisodes(loadedEpisodes)
       
@@ -223,15 +212,11 @@ export default function EditAnimePage() {
 
   const handleAddEpisode = () => {
     const newEpisode: EditableEpisode = {
-      id: Date.now(), // Temporary ID
+      id: Date.now(), // Temporary ID 
       sorrend: episodes.length + 1,
       resz: `${episodes.length + 1}. rész`,
       inda: "",
       videa: "",
-      rumble: "",
-      cda: "",
-      dailymotion: "",
-      lathatosag: 1
     }
     setEpisodes([...episodes, newEpisode])
   }

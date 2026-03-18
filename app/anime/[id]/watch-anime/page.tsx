@@ -19,7 +19,15 @@ export default function WatchAnimePage({ params }: { params: Promise<{ id: strin
             getEpisodesByAnimeId(parseInt(id))
         ]).then(([animesResult, episodesResult]) => {
             setAnimes(animesResult.data || [])
-            setEpisodes(episodesResult.data || [])
+            
+            // Szűrjük ki azokat a részeket, amelyek láthatósága nem engedélyezett (pl. lathatosag === 0 vagy false)
+            const visibleEpisodes = (episodesResult.data || []).filter(ep => {
+                // A lathatosag az új API szerint lehet boolean vagy number
+                const lathatosag = ep.lathatosag as unknown as boolean | number;
+                return lathatosag === true || lathatosag === 1;
+            });
+            
+            setEpisodes(visibleEpisodes)
             setLoading(false)
         })
     }, [id])
