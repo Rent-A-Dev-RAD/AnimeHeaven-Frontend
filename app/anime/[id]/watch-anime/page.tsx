@@ -3,7 +3,7 @@
 import { useState, use, useEffect, useRef } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import Header from '@/components/header'
-import Link from 'next/link'
+import Link from 'next/link';
 import { getAllAnimes, getEpisodesByAnimeId } from '@/lib/api/anime.service'
 import type { Anime, Episode } from '@/lib/types/anime'
 

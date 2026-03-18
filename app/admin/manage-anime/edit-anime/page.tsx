@@ -9,7 +9,8 @@ import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Image from "next/image"
-import { getAnimeById, updateAnime, getEpisodesByAnimeId, updateEpisode, createEpisode } from "@/lib/api/anime.service"
+import { getAnimeById, updateAnime, getEpisodesByAnimeId } from "@/lib/api/anime.service"
+import { updateEpisode, createEpisode, deleteEpisode } from "@/lib/api/episode.service"
 
 interface Anime {
   id: number
@@ -31,6 +32,7 @@ interface Anime {
   besorolas: string
   feltoltesDatuma: string
   trailer: string
+  lathatosag: number
 }
 
 interface EditableEpisode {
@@ -60,10 +62,10 @@ function mapApiAnimeToEditForm(data: Record<string, unknown>): Anime {
     borito: String(data.borito || ''),
     hatter: String(data.hatter || ''),
     rating: Number(data.rating ?? data.ertekeles ?? 0),
-    genre: String(data.genre || data.cimkek || ''),
+    genre: Array.isArray(data.genre || data.cimkek) ? ((data.genre || data.cimkek) as string[]).join(', ') : String(data.genre || data.cimkek || ''),
     malId: Number(data.malId ?? data.mal_id ?? 0),
     leiras: String(data.leiras || ''),
-    studio: String(data.studio || data.studiok || ''),
+    studio: Array.isArray(data.studio || data.studiok) ? ((data.studio || data.studiok) as string[]).join(', ') : String(data.studio || data.studiok || ''),
     statusz: normalizeStatusForBackend(String(data.statusz || 'befejezett')),
     tipus: String(data.tipus || ''),
     osszes_epizod: Number(data.osszes_epizod ?? 0),
@@ -73,6 +75,7 @@ function mapApiAnimeToEditForm(data: Record<string, unknown>): Anime {
     besorolas: String(data.besorolas || ''),
     feltoltesDatuma: String(data.feltoltesDatuma || data.feltoltes_ido || ''),
     trailer: String(data.trailer || ''),
+    lathatosag: Number(data.lathatosag ?? 1),
   }
 }
 
@@ -83,9 +86,9 @@ function mapEditFormToBackendPayload(form: Anime) {
     borito: form.borito,
     hatter: form.hatter,
     ertekeles: form.rating,
-    cimkek: form.genre,
+    cimkek: form.genre ? form.genre.split(',').map((s: string) => s.trim()).filter(Boolean) : [],
     leiras: form.leiras,
-    studiok: form.studio,
+    studiok: form.studio ? form.studio.split(',').map((s: string) => s.trim()).filter(Boolean) : [],
     statusz: normalizeStatusForBackend(form.statusz),
     tipus: form.tipus,
     osszes_epizod: form.osszes_epizod,
@@ -95,6 +98,7 @@ function mapEditFormToBackendPayload(form: Anime) {
     besorolas: form.besorolas,
     feltoltes_ido: form.feltoltesDatuma,
     trailer: form.trailer,
+    lathatosag: form.lathatosag,
     mal_id: form.malId,
   }
 }
@@ -139,7 +143,7 @@ export default function EditAnimePage() {
       
       let loadedEpisodes: EditableEpisode[] = []
       
-      if (episodesResult.success && episodesResult.data) {
+      if (episodesResult.success && episodesResult.data && Array.isArray(episodesResult.data)) {
         loadedEpisodes = episodesResult.data.map((ep: any) => {
           const editableEp: EditableEpisode = {
             id: ep.id,
@@ -149,7 +153,10 @@ export default function EditAnimePage() {
           }
           
           if (ep.forras_elems) {
-            ep.forras_elems.forEach((source: any) => {
+            // forras_elems lehet tömb vagy objektum - normalizáljuk tömbré
+            const sourcesArray = Array.isArray(ep.forras_elems) ? ep.forras_elems : [ep.forras_elems]
+            
+            sourcesArray.forEach((source: any) => {
               if (!source?.forra?.nev) return
               const sourceName = source.forra.nev.toLowerCase()
               if (sourceName === 'indavideo') {
@@ -162,6 +169,8 @@ export default function EditAnimePage() {
           
           return editableEp
         })
+      } else if (!episodesResult.success) {
+        console.warn('Epizódok lekérése sikertelen:', episodesResult.error)
       }
       
       setEpisodes(loadedEpisodes)
@@ -217,13 +226,35 @@ export default function EditAnimePage() {
       resz: `${episodes.length + 1}. rész`,
       inda: "",
       videa: "",
+      lathatosag: 1,
     }
-    setEpisodes([newEpisode, ...episodes])
+    setEpisodes([...episodes, newEpisode])
     setCurrentPage(1)
   }
 
-  const handleDeleteEpisode = (episodeId: number) => {
+  const handleDeleteEpisode = async (episodeId: number) => {
     if (confirm('Biztosan törölni szeretnéd ezt az epizódot?')) {
+      // Ha az ID nem egy temporális ID (nem Date.now()), akkor törölni kell a backendről is
+      if (episodeId <= 1000000000000) {
+        setSaving(true)
+        try {
+          const result = await deleteEpisode(episodeId)
+          
+          if (!result.success) {
+            throw new Error(result.error || 'Sikertelen törlés')
+          }
+          
+          alert(result.message || 'Az epizód sikeresen törölve!')
+        } catch (error) {
+          console.error('Hiba az epizód törlése során:', error)
+          alert('Hiba történt az epizód törlése során!')
+          setSaving(false)
+          return
+        } finally {
+          setSaving(false)
+        }
+      }
+      
       const updatedEpisodes = episodes.filter(ep => ep.id !== episodeId)
       setEpisodes(updatedEpisodes)
       
@@ -247,16 +278,32 @@ export default function EditAnimePage() {
 
     setSaving(true)
     try {
-      // Összeállítjuk a backendnek megfelelő payload-ot
+      // Összeállítjuk a forras_elems tömböt
+      const forrasElems = []
+      
+      if (episode.inda) {
+        forrasElems.push({
+          link: episode.inda,
+          forra: { nev: 'Indavideo' }
+        })
+      }
+      
+      if (episode.videa) {
+        forrasElems.push({
+          link: episode.videa,
+          forra: { nev: 'Videa' }
+        })
+      }
+      
+      // Összeasseállítjuk a backendnek megfelelő payload-ot
       const payload = {
         sorrend: episode.sorrend,
         resz: episode.resz,
         lathatosag: episode.lathatosag,
-        indavideo: episode.inda,
-        videa: episode.videa
+        forras_elems: forrasElems
       }
 
-      let result;
+      let result: any;
       // Ha id nagyon nagy szám (Date.now()), akkor még új, ezért POST kérés kell
       if (episode.id > 1000000000000) {
         result = await createEpisode(Number(animeId), payload)
@@ -276,6 +323,38 @@ export default function EditAnimePage() {
         throw new Error(result.error || 'Sikertelen mentés')
       }
 
+      // Újra fetch az epizódokat, hogy az új forras_elems adatok megjelenjenek
+      const episodesResult = await getEpisodesByAnimeId(parseInt(animeId!))
+      
+      if (episodesResult.success && episodesResult.data) {
+        const loadedEpisodes = episodesResult.data.map((ep: any) => {
+          const editableEp: EditableEpisode = {
+            id: ep.id,
+            sorrend: ep.sorrend || 1,
+            resz: ep.resz || `${ep.sorrend || 1}. rész`,
+            lathatosag: ep.lathatosag ? 1 : 0
+          }
+          
+          if (ep.forras_elems) {
+            // forras_elems lehet tömb vagy objektum - normalizáljuk tömbré
+            const sourcesArray = Array.isArray(ep.forras_elems) ? ep.forras_elems : [ep.forras_elems]
+            
+            sourcesArray.forEach((source: any) => {
+              if (!source?.forra?.nev) return
+              const sourceName = source.forra.nev.toLowerCase()
+              if (sourceName === 'indavideo') {
+                editableEp.inda = source.link
+              } else if (sourceName === 'videa') {
+                editableEp.videa = source.link
+              }
+            })
+          }
+          
+          return editableEp
+        })
+        setEpisodes(loadedEpisodes)
+      }
+
       alert(result.message || 'Epizód sikeresen mentve!')
     } catch (error) {
       console.error('Hiba az epizód mentése során:', error)
@@ -286,9 +365,10 @@ export default function EditAnimePage() {
   }
 
   // Pagination
+  const sortedEpisodes = [...episodes].reverse()
   const indexOfLastEpisode = currentPage * episodesPerPage
   const indexOfFirstEpisode = indexOfLastEpisode - episodesPerPage
-  const currentEpisodes = episodes.slice(indexOfFirstEpisode, indexOfLastEpisode)
+  const currentEpisodes = sortedEpisodes.slice(indexOfFirstEpisode, indexOfLastEpisode)
   const totalPages = Math.ceil(episodes.length / episodesPerPage)
 
   if (loading) {
@@ -394,6 +474,17 @@ export default function EditAnimePage() {
                   <option value="befejezett">Befejezett</option>
                   <option value="folyamatban">Folyamatban</option>
                   <option value="tervezett">Tervezett</option>
+                </select>
+              </div>
+              <div>
+                <Label>Láthatóság</Label>
+                <select
+                  className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm"
+                  value={editForm.lathatosag}
+                  onChange={(e) => handleAnimeInputChange('lathatosag', parseInt(e.target.value))}
+                >
+                  <option value={1}>Látható</option>
+                  <option value={0}>Láthatatlan</option>
                 </select>
               </div>
               <div>

@@ -15,9 +15,9 @@ interface Anime {
   title_english?: string
   angol_cim?: string
   japan_cim?: string
-  studiok?: string
+  studiok?: string | string[]
   ertekeles?: number
-  cimkek?: string
+  cimkek?: string | string[]
   borito?: string
   hatter?: string
   rating?: number
@@ -34,6 +34,7 @@ interface Anime {
   besorolas?: string
   feltoltesDatuma?: string
   trailer?: string
+  lathatosag?: number
 }
 
 export default function ManageAnimePage() {
@@ -172,11 +173,16 @@ export default function ManageAnimePage() {
                       </div>
                     </div>
                     
-                    <div className="mb-4">
-                      <p className="text-sm text-muted-foreground mb-1">Műfajok</p>
-                      <p className="text-sm">{genre}</p>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                      <div>
+                        <p className="text-sm text-muted-foreground mb-1">Műfajok</p>
+                        <p className="text-sm">{genre}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-muted-foreground mb-1">Láthatóság</p>
+                        <p className="text-sm">{anime.lathatosag === 1 ? 'Látható' : 'Láthatatlan'}</p>
+                      </div>
                     </div>
-
                     <div className="flex gap-2">
                       <Link href={`/admin/manage-anime/edit-anime?id=${anime.id}`}>
                         <Button

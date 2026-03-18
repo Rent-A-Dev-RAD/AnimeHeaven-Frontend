@@ -31,7 +31,8 @@ export default function AddAnimePage() {
     backgroundUrl: "",
     type: "",
     translator: "",
-    rating: ""
+    rating: "",
+    lathatosag: "1"
   })
 
   const handleFetchFromMAL = async () => {
@@ -78,6 +79,7 @@ export default function AddAnimePage() {
         type: data.type || "",
         translator: "", // Manually filled
         rating: data.rating || "",
+        lathatosag: "1",
       })
     } catch (error) {
       console.error("Hiba történt:", error)
@@ -236,6 +238,17 @@ export default function AddAnimePage() {
                     onChange={(e) => handleChange("status", e.target.value)}
                     placeholder="Finished Airing"
                   />
+                </div>
+                <div>
+                  <Label className="mb-2 block">Láthatóság</Label>
+                  <select
+                    className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm"
+                    value={animeData.lathatosag}
+                    onChange={(e) => handleChange("lathatosag", e.target.value)}
+                  >
+                    <option value="1">Látható</option>
+                    <option value="0">Rejtett</option>
+                  </select>
                 </div>
                 <div>
                   <Label className="mb-2 block">Besorolás</Label>

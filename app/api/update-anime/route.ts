@@ -21,7 +21,8 @@ export async function PUT(request: NextRequest) {
       )
     }
     
-    animes[animeIndex] = updatedAnime
+    // Merge updated fields with existing data to preserve all fields
+    animes[animeIndex] = { ...animes[animeIndex], ...updatedAnime }
     
     // Write back to the file
     await fs.writeFile(filePath, JSON.stringify(animes, null, 2), 'utf8')
@@ -29,7 +30,7 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ 
       success: true, 
       message: 'Anime successfully updated',
-      anime: updatedAnime
+      data: animes[animeIndex]
     })
   } catch (error) {
     console.error('Error updating anime:', error)

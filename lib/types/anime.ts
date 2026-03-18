@@ -6,8 +6,8 @@ export interface Anime {
   borito?: string
   hatter?: string
   ertekeles: number          // Backend: ertekeles (nem rating)
-  cimkek: string            // Backend: cimkek (nem genre) - vesszővel elválasztva
-  studiok?: string          // Backend: studiok (nem studio) - vesszővel elválasztva
+  cimkek: string            // Backend: cimkek (nem genre) - vesszővel elválasztva vagy tömb
+  studiok?: string          // Backend: studiok (nem studio) - vesszővel elválasztva vagy tömb
   mal_link: string          // Backend: mal_link (URL string, nem ID)
   leiras?: string
   statusz?: string

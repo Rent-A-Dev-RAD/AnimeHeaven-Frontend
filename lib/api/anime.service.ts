@@ -277,33 +277,72 @@ export async function getLatestAnimes(limit: number = 6): Promise<ApiResponse<An
 
 /**
  * Epizódok lekérése anime ID alapján
+ * Először a valódi API-t próbálja meg több végponton, majd a mock adatokra fallback
  */
 export async function getEpisodesByAnimeId(animeId: number): Promise<EpisodesApiResponse> {
   try {
     if (API_CONFIG.USE_REAL_API) {
-      const response = await fetch(
-        getApiUrl(API_CONFIG.ENDPOINTS.EPISODES_BY_ANIME, { animeId }), 
-        {
-          next: { 
-            revalidate: API_CONFIG.CACHE.REVALIDATE,
-            tags: [API_CONFIG.CACHE.TAGS.ANIME, `episodes-${animeId}`] 
+      // Próbáljunk meg több API endpoint-ot
+      const endpoints = [
+        // Variáció 1: /episodes/anime/:animeId
+        getApiUrl(API_CONFIG.ENDPOINTS.EPISODES_BY_ANIME, { animeId }),
+        // Variáció 2: /animes/:id/episodes
+        `${getApiUrl(API_CONFIG.ENDPOINTS.ANIME_BY_ID, { id: animeId })}/episodes`,
+        // Variáció 3: /episodes?anime_id=:animeId
+        `${API_CONFIG.BASE_URL}/episodes?anime_id=${animeId}`,
+      ]
+      
+      for (const endpoint of endpoints) {
+        try {
+          const response = await fetch(endpoint, {
+            cache: 'no-store',
+            next: { revalidate: 0 }
+          })
+          
+          if (response.ok) {
+            const result = await response.json()
+            return result
           }
+        } catch (endpointError) {
+          continue
         }
-      )
-      
-      if (!response.ok) {
-        throw new Error('Az epizódok nem tölthetők be')
       }
-      
-      const result = await response.json()
-      return result
-    } else {
-      // Mock adatok használata (fallback)
+    }
+    
+    // Fallback: Mock adatok
+    const anime = mockAnimes.find(a => a.id === animeId)
+    
+    if (!anime) {
       return {
         success: true,
-        count: mockEpisodes.length,
-        data: mockEpisodes
+        count: 0,
+        data: []
       }
+    }
+    
+    // Ha nincs reszek mező, üres tömb
+    if (!anime.reszek || anime.reszek.length === 0) {
+      return {
+        success: true,
+        count: 0,
+        data: []
+      }
+    }
+
+    // Az epizódokat adjuk vissza az anime reszek mezőjéből
+    const episodes = anime.reszek.map((ep: any) => ({
+      id: ep.id || 1,
+      anime_id: animeId,
+      sorrend: ep.sorrend || 1,
+      resz: ep.resz || '',
+      lathatosag: ep.lathatosag !== false,  // default true
+      forras_elems: ep.forras_elems || []
+    }))
+    
+    return {
+      success: true,
+      count: episodes.length,
+      data: episodes
     }
   } catch (error) {
     console.error(`Hiba az epizódok betöltése közben (Anime ID: ${animeId}):`, error)
@@ -363,39 +402,30 @@ export async function deleteAnime(id: number): Promise<ApiResponse<void>> {
  */
 export async function createEpisode(animeId: number, episodeData: any): Promise<ApiResponse<any>> {
   try {
-    if (API_CONFIG.USE_REAL_API) {
-      // Bővített payload az animeId-vel
-      const payload = { ...episodeData, anime_id: animeId }
-      
-      const response = await fetch(
-        getApiUrl(API_CONFIG.ENDPOINTS.CREATE_EPISODE),
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload)
-        }
-      )
-      
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}))
-        throw new Error(errorData.message || 'Nem sikerült létrehozni az epizódot')
+    // Bővített payload az animeId-vel
+    const payload = { ...episodeData, anime_id: animeId }
+    
+    const response = await fetch(
+      '/api/episodes',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
       }
-      
-      const result = await response.json()
-      return {
-        success: true,
-        data: result.data,
-        message: result.message || 'Az epizód sikeresen létrehozva!'
-      }
-    } else {
-      // Mock létrehozás
-      return {
-        success: true,
-        data: { ...episodeData, id: Date.now(), anime_id: animeId },
-        message: 'Mock: Az epizód létrehozva (nincs backend kapcsolat)'
-      }
+    )
+    
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}))
+      throw new Error(errorData.message || 'Nem sikerült létrehozni az epizódot')
+    }
+    
+    const result = await response.json()
+    return {
+      success: true,
+      data: result.data,
+      message: result.message || 'Az epizód sikeresen létrehozva!'
     }
   } catch (error) {
     console.error(`Hiba az epizód létrehozása közben:`, error)
@@ -411,36 +441,27 @@ export async function createEpisode(animeId: number, episodeData: any): Promise<
  */
 export async function updateEpisode(episodeId: number, episodeData: any): Promise<ApiResponse<any>> {
   try {
-    if (API_CONFIG.USE_REAL_API) {
-      const response = await fetch(
-        getApiUrl(API_CONFIG.ENDPOINTS.EPISODE_BY_ID, { id: episodeId }),
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(episodeData)
-        }
-      )
-      
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}))
-        throw new Error(errorData.message || 'Nem sikerült frissíteni az epizódot')
+    const response = await fetch(
+      `/api/episodes/${episodeId}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(episodeData)
       }
-      
-      const result = await response.json()
-      return {
-        success: true,
-        data: result.data,
-        message: result.message || 'Az epizód sikeresen frissítve!'
-      }
-    } else {
-      // Mock frissítés
-      return {
-        success: true,
-        data: { ...episodeData, id: episodeId },
-        message: 'Mock: Az epizód frissítve (nincs backend kapcsolat)'
-      }
+    )
+    
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}))
+      throw new Error(errorData.message || 'Nem sikerült frissíteni az epizódot')
+    }
+    
+    const result = await response.json()
+    return {
+      success: true,
+      data: result.data,
+      message: result.message || 'Az epizód sikeresen frissítve!'
     }
   } catch (error) {
     console.error(`Hiba az epizód frissítése közben (ID: ${episodeId}):`, error)
@@ -454,7 +475,7 @@ export async function updateEpisode(episodeId: number, episodeData: any): Promis
 /**
  * Anime frissítése (admin funkció)
  */
-export async function updateAnime(id: number, animeData: Partial<Anime>): Promise<ApiResponse<Anime>> {
+export async function updateAnime(id: number, animeData: Partial<Anime> | Record<string, any>): Promise<ApiResponse<Anime>> {
   try {
     if (API_CONFIG.USE_REAL_API) {
       const response = await fetch(
@@ -476,7 +497,7 @@ export async function updateAnime(id: number, animeData: Partial<Anime>): Promis
       const result = await response.json()
       return {
         success: true,
-        data: result.data,
+        data: result.data || result.anime,
         message: result.message || 'Az animé sikeresen frissítve!'
       }
     } else {
@@ -495,3 +516,38 @@ export async function updateAnime(id: number, animeData: Partial<Anime>): Promis
     }
   }
 }
+
+/**
+ * Epizód törlése (admin funkció)
+ */
+export async function deleteEpisode(episodeId: number): Promise<ApiResponse<void>> {
+  try {
+    const response = await fetch(
+      `/api/episodes/${episodeId}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      }
+    )
+    
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}))
+      throw new Error(errorData.message || 'Nem sikerült törölni az epizódot')
+    }
+    
+    const result = await response.json()
+    return {
+      success: true,
+      message: result.message || 'Az epizód sikeresen törölve!'
+    }
+  } catch (error) {
+    console.error(`Hiba az epizód törlése közben (ID: ${episodeId}):`, error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Ismeretlen hiba történt a törlés során'
+    }
+  }
+}
+
