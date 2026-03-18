@@ -55,6 +55,63 @@ interface EditableEpisode {
   lathatosag: number
 }
 
+function normalizeStatusForBackend(status: string): string {
+  const normalized = (status || '').trim().toLowerCase()
+
+  if (normalized === 'befejezett') return 'befejezett'
+  if (normalized === 'folyamatban') return 'folyamatban'
+  if (normalized === 'tervezett') return 'tervezett'
+
+  return normalized
+}
+
+function mapApiAnimeToEditForm(data: Record<string, unknown>): Anime {
+  return {
+    id: Number(data.id || 0),
+    title_japanese: String(data.title_japanese || data.japan_cim || ''),
+    title_english: String(data.title_english || data.angol_cim || ''),
+    borito: String(data.borito || ''),
+    hatter: String(data.hatter || ''),
+    rating: Number(data.rating ?? data.ertekeles ?? 0),
+    genre: String(data.genre || data.cimkek || ''),
+    malId: Number(data.malId ?? data.mal_id ?? 0),
+    leiras: String(data.leiras || ''),
+    studio: String(data.studio || data.studiok || ''),
+    statusz: normalizeStatusForBackend(String(data.statusz || 'befejezett')),
+    tipus: String(data.tipus || ''),
+    osszes_epizod: Number(data.osszes_epizod ?? 0),
+    jelenlegi_epizod: Number(data.jelenlegi_epizod ?? 0),
+    megjelenes: String(data.megjelenes || ''),
+    fordito: String(data.fordito || data.keszito || ''),
+    besorolas: String(data.besorolas || ''),
+    feltoltesDatuma: String(data.feltoltesDatuma || data.feltoltes_ido || ''),
+    trailer: String(data.trailer || ''),
+  }
+}
+
+function mapEditFormToBackendPayload(form: Anime) {
+  return {
+    japan_cim: form.title_japanese,
+    angol_cim: form.title_english,
+    borito: form.borito,
+    hatter: form.hatter,
+    ertekeles: form.rating,
+    cimkek: form.genre,
+    leiras: form.leiras,
+    studiok: form.studio,
+    statusz: normalizeStatusForBackend(form.statusz),
+    tipus: form.tipus,
+    osszes_epizod: form.osszes_epizod,
+    jelenlegi_epizod: form.jelenlegi_epizod,
+    megjelenes: form.megjelenes,
+    keszito: form.fordito,
+    besorolas: form.besorolas,
+    feltoltes_ido: form.feltoltesDatuma,
+    trailer: form.trailer,
+    mal_id: form.malId,
+  }
+}
+
 export default function EditAnimePage() {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -82,8 +139,9 @@ export default function EditAnimePage() {
       const result = await getAnimeById(parseInt(animeId!))
       
       if (result.success && result.data) {
-        setAnime(result.data)
-        setEditForm({ ...result.data })
+        const mappedAnime = mapApiAnimeToEditForm(result.data as unknown as Record<string, unknown>)
+        setAnime(mappedAnime)
+        setEditForm(mappedAnime)
       } else {
         console.error('Anime nem található:', result.error)
         alert('Hiba történt az anime betöltésekor!')
@@ -140,7 +198,8 @@ export default function EditAnimePage() {
     
     setSaving(true)
     try {
-      const result = await updateAnime(editForm.id, editForm)
+      const backendPayload = mapEditFormToBackendPayload(editForm)
+      const result = await updateAnime(editForm.id, backendPayload)
 
       if (!result.success) {
         throw new Error(result.error || 'Sikertelen frissítés')
@@ -154,7 +213,6 @@ export default function EditAnimePage() {
     } finally {
       setSaving(false)
     }
-  } }
   }
 
   const handleEpisodeChange = (episodeId: number, field: keyof EditableEpisode, value: string | number) => {
@@ -239,7 +297,7 @@ export default function EditAnimePage() {
             </Link>
             <div>
               <h1 className="text-2xl font-bold text-primary">Anime szerkesztése</h1>
-              <p className="text-sm text-muted-foreground">{anime.title_english}</p>
+              <p className="text-sm text-muted-foreground">{anime.title_english || anime.title_japanese || `Anime #${anime.id}`}</p>
             </div>
           </div>
           <Button onClick={handleSaveAnime} disabled={saving}>
@@ -257,7 +315,7 @@ export default function EditAnimePage() {
             <div className="relative w-40 h-56 flex-shrink-0 rounded-lg overflow-hidden">
               <Image
                 src={editForm.borito}
-                alt={editForm.title_english}
+                alt={editForm.title_english || editForm.title_japanese || 'Anime borító'}
                 fill
                 className="object-cover"
               />
@@ -305,11 +363,15 @@ export default function EditAnimePage() {
               </div>
               <div>
                 <Label>Státusz</Label>
-                <Input
+                <select
+                  className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm"
                   value={editForm.statusz}
                   onChange={(e) => handleAnimeInputChange('statusz', e.target.value)}
-                  placeholder="Befejezett / Folyamatban"
-                />
+                >
+                  <option value="befejezett">Befejezett</option>
+                  <option value="folyamatban">Folyamatban</option>
+                  <option value="tervezett">Tervezett</option>
+                </select>
               </div>
               <div>
                 <Label>Fordító</Label>
