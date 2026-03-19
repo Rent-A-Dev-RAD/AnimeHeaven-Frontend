@@ -1,5 +1,6 @@
 import Header from '@/components/header'
 import AnimeCategorySelect from "@/components/anime-category-select";
+import { AdminEditButton } from "@/components/admin-edit-button";
 import { Button } from "@/components/ui/button"
 import Link from 'next/link';
 import { getAnimeById, getAllAnimes } from '@/lib/api/anime.service'
@@ -79,11 +80,14 @@ export default async function AnimePage({ params }: { params: Promise<{ id: stri
                             
                         {/* Kategória kezelő és Megtekintés gomb */}
                             <div className="mb-6 flex flex-col sm:flex-row gap-6 items-center">
-                                <Link href={`/anime/${anime.id}/watch-anime`}>
-                                    <Button variant="default" size="lg" className=" bg-accent text-accent-foreground hover:bg-accent/90">
-                                        Megtekintés
-                                    </Button>
-                                </Link>
+                                <div className="flex items-center">
+                                    <Link href={`/anime/${anime.id}/watch-anime`}>
+                                        <Button variant="default" size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
+                                            Megtekintés
+                                        </Button>
+                                    </Link>
+                                    <AdminEditButton animeId={anime.id} />
+                                </div>
                                 <div className="flex-1 flex justify-end">
                                     <div className="w-full max-w-md">
                                         <AnimeCategorySelect

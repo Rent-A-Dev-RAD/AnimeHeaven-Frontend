@@ -1,350 +1,442 @@
 [
-    {
-        "id":  1,
-        "title_japanese":  "Chainsaw Man",
-        "title_english":  "Chainsaw Man",
-        "borito":  "https://cdn.myanimelist.net/images/anime/1806/126216l.webp",
-        "hatter":  "https://image.tmdb.org/t/p/original/onn6JPGNwqcOUkp73ADq0PEpuLv.jpg",
-        "rating":  9,
-        "genre":  "Action, Fantasy",
-        "malId":  44511,
-        "leiras":  "Denji a szĂ„â€šĂ„Ëťlei halĂ„â€šĂ‹â€ˇla utĂ„â€šĂ‹â€ˇn hatalmas tartozĂ„â€šĂ‹â€ˇst Ă„â€šĂ‚Â¶rĂ„â€šĂ‚Â¶kĂ„â€šĂ‚Â¶l. Hogy kifizesse, dĂ„â€šĂ‚Â©monokra vadĂ„â€šĂ‹â€ˇszik Pochita nevĂ„Ä…Ă‚Â± dĂ„â€šĂ‚Â©mon-lĂ„â€šĂ‹â€ˇncfĂ„Ä…Ă‚Â±rĂ„â€šĂ‚Â©sz-kutyĂ„â€šĂ‹â€ˇja segĂ„â€šĂ‚Â­tsĂ„â€šĂ‚Â©gĂ„â€šĂ‚Â©vel. Nem vĂ„â€šĂ‹â€ˇgynak mĂ„â€šĂ‹â€ˇsra, csak egy normĂ„â€šĂ‹â€ˇlis Ă„â€šĂ‚Â©letre. Viszont a jakuza elĂ„â€šĂ‹â€ˇrulja Ă„Ä…Ă˘â‚¬Âket, Ă„â€šĂ‚Â­gy feldarabolva vĂ„â€šĂ‚Â©gzik egy szemetesben. Itt egyezsĂ„â€šĂ‚Â©get kĂ„â€šĂ‚Â¶tnek, amelynek hĂ„â€šĂ‹â€ˇla egy erĂ„Ä…Ă˘â‚¬Âsebb testen osztoznak majd. EzutĂ„â€šĂ‹â€ˇn egy professzionĂ„â€šĂ‹â€ˇlis dĂ„â€šĂ‚Â©monvadĂ„â€šĂ‹â€ˇsz csapat befogadja Ă„Ä…Ă˘â‚¬Âket. Ă„â€šÄąÂ¤gy a harc a normĂ„â€šĂ‹â€ˇlis Ă„â€šĂ‚Â©letĂ„â€šĂ‚Â©rt tovĂ„â€šĂ‹â€ˇbb folyik.",
-        "studio":  "MAPPA",
-        "statusz":  "Befejezett",
-        "tipus":  "TV",
-        "osszes_epizod":  12,
-        "jelenlegi_epizod":  12,
-        "megjelenes":  "2022 Ă„Ä…Ă‚ÂSZ",
-        "fordito":  "Anime Heaven Fansub",
-        "besorolas":  "R-17+",
-        "feltoltesDatuma":  "2022-10-12",
-        "trailer":  "https://www.youtube-nocookie.com/embed/jk7QSGwupPA?enablejsapi=1\u0026wmode=opaque\u0026autoplay=0",
-        "reszek":  [
-                       {
-                           "id":  1,
-                           "forras_elems":  [
-                                                {
-                                                    "link":  "https://embed.indavideo.hu/player/video/86dd4bef6d",
-                                                    "forra":  {
-                                                                  "nev":  "Indavideo"
-                                                              }
-                                                },
-                                                {
-                                                    "link":  "https://videa.hu/player?f=8.2115862.1265416.0",
-                                                    "forra":  {
-                                                                  "nev":  "Videa"
-                                                              }
-                                                }
-                                            ],
-                           "anime_id":  1,
-                           "resz":  "1. rĂ©sz",
-                           "sorrend":  1,
-                           "lathatosag":  1
-                       },
-                       {
-                           "id":  2,
-                           "forras_elems":  {
-                                                "link":  "https://embed.indavideo.hu/player/video/14ec055ca2",
-                                                "forra":  {
-                                                              "nev":  "Indavideo"
-                                                          }
-                                            },
-                           "anime_id":  1,
-                           "resz":  "2. rĂ©sz",
-                           "sorrend":  2,
-                           "lathatosag":  1
-                       },
-                       {
-                           "id":  3,
-                           "forras_elems":  {
-                                                "link":  "https://videa.hu/player?f=8.2128854.1265416.0",
-                                                "forra":  {
-                                                              "nev":  "Videa"
-                                                          }
-                                            },
-                           "anime_id":  1,
-                           "resz":  "3. rĂ©sz",
-                           "sorrend":  3,
-                           "lathatosag":  1
-                       },
-                       {
-                           "id":  4,
-                           "forras_elems":  [
-                                                {
-                                                    "link":  "https://embed.indavideo.hu/player/video/85537f7dda",
-                                                    "forra":  {
-                                                                  "nev":  "Indavideo"
-                                                              }
-                                                },
-                                                {
-                                                    "link":  "https://videa.hu/player?f=8.2172886.1265416.0",
-                                                    "forra":  {
-                                                                  "nev":  "Videa"
-                                                              }
-                                                }
-                                            ],
-                           "anime_id":  1,
-                           "resz":  "4. rĂ©sz",
-                           "sorrend":  4,
-                           "lathatosag":  1
-                       },
-                       {
-                           "id":  5,
-                           "forras_elems":  [
-                                                {
-                                                    "link":  "https://embed.indavideo.hu/player/video/58c17a1a16",
-                                                    "forra":  {
-                                                                  "nev":  "Indavideo"
-                                                              }
-                                                },
-                                                {
-                                                    "link":  "https://videa.hu/player?f=8.2180532.1265416.0",
-                                                    "forra":  {
-                                                                  "nev":  "Videa"
-                                                              }
-                                                }
-                                            ],
-                           "anime_id":  1,
-                           "resz":  "5. rĂ©sz",
-                           "sorrend":  5,
-                           "lathatosag":  1
-                       },
-                       {
-                           "id":  6,
-                           "forras_elems":  {
-                                                "link":  "https://videa.hu/player?f=8.2186899.1265416.0",
-                                                "forra":  {
-                                                              "nev":  "Videa"
-                                                          }
-                                            },
-                           "anime_id":  1,
-                           "resz":  "6. rĂ©sz",
-                           "sorrend":  6,
-                           "lathatosag":  1
-                       },
-                       {
-                           "id":  7,
-                           "forras_elems":  [
-                                                {
-                                                    "link":  "https://embed.indavideo.hu/player/video/be7f1a793c",
-                                                    "forra":  {
-                                                                  "nev":  "Indavideo"
-                                                              }
-                                                },
-                                                {
-                                                    "link":  "https://videa.hu/player?f=8.2191775.1265416.0",
-                                                    "forra":  {
-                                                                  "nev":  "Videa"
-                                                              }
-                                                }
-                                            ],
-                           "anime_id":  1,
-                           "resz":  "7. rĂ©sz",
-                           "sorrend":  7,
-                           "lathatosag":  1
-                       },
-                       {
-                           "id":  8,
-                           "forras_elems":  [
-                                                {
-                                                    "link":  "https://embed.indavideo.hu/player/video/9a35c1f226",
-                                                    "forra":  {
-                                                                  "nev":  "Indavideo"
-                                                              }
-                                                },
-                                                {
-                                                    "link":  "https://videa.hu/player?f=8.2198591.1265416.0",
-                                                    "forra":  {
-                                                                  "nev":  "Videa"
-                                                              }
-                                                }
-                                            ],
-                           "anime_id":  1,
-                           "resz":  "8. rĂ©sz",
-                           "sorrend":  8,
-                           "lathatosag":  1
-                       },
-                       {
-                           "id":  9,
-                           "forras_elems":  [
-                                                {
-                                                    "link":  "https://embed.indavideo.hu/player/video/9c44d85d15",
-                                                    "forra":  {
-                                                                  "nev":  "Indavideo"
-                                                              }
-                                                },
-                                                {
-                                                    "link":  "https://videa.hu/player?f=8.2203161.1265416.0",
-                                                    "forra":  {
-                                                                  "nev":  "Videa"
-                                                              }
-                                                }
-                                            ],
-                           "anime_id":  1,
-                           "resz":  "9. rĂ©sz",
-                           "sorrend":  9,
-                           "lathatosag":  1
-                       },
-                       {
-                           "id":  10,
-                           "forras_elems":  [
-                                                {
-                                                    "link":  "https://embed.indavideo.hu/player/video/8f9bda6fb2",
-                                                    "forra":  {
-                                                                  "nev":  "Indavideo"
-                                                              }
-                                                },
-                                                {
-                                                    "link":  "https://videa.hu/player?f=8.2218117.1265416.0",
-                                                    "forra":  {
-                                                                  "nev":  "Videa"
-                                                              }
-                                                }
-                                            ],
-                           "anime_id":  1,
-                           "resz":  "10. rĂ©sz",
-                           "sorrend":  10,
-                           "lathatosag":  1
-                       },
-                       {
-                           "id":  11,
-                           "forras_elems":  {
-                                                "link":  "https://embed.indavideo.hu/player/video/9a9df5b775",
-                                                "forra":  {
-                                                              "nev":  "Indavideo"
-                                                          }
-                                            },
-                           "anime_id":  1,
-                           "resz":  "11. rĂ©sz",
-                           "sorrend":  11,
-                           "lathatosag":  1
-                       },
-                       {
-                           "id":  12,
-                           "forras_elems":  [
-                                                {
-                                                    "link":  "https://embed.indavideo.hu/player/video/745e52f031",
-                                                    "forra":  {
-                                                                  "nev":  "Indavideo"
-                                                              }
-                                                },
-                                                {
-                                                    "link":  "https://videa.hu/player?f=8.2231170.1265416.0",
-                                                    "forra":  {
-                                                                  "nev":  "Videa"
-                                                              }
-                                                }
-                                            ],
-                           "anime_id":  1,
-                           "resz":  "12. rĂ©sz",
-                           "sorrend":  12,
-                           "lathatosag":  1
-                       }
-                   ]
-    },
-    {
-        "id":  2,
-        "title_japanese":  "Yofukashi no Uta",
-        "title_english":  "Call Of The Night",
-        "borito":  "https://cdn.myanimelist.net/images/anime/1045/123711l.webp",
-        "hatter":  "https://image.tmdb.org/t/p/original/veh7M4ho0vgqkW0n0hx1Up42elV.jpg",
-        "rating":  8.9,
-        "genre":  "Supernatural, Romance",
-        "malId":  50346,
-        "leiras":  "Ko Yamori Ă„â€šĂ‚Â©jszakĂ„â€šĂ‹â€ˇnkĂ„â€šĂ‚Â©nt bolyong az utcĂ„â€šĂ‹â€ˇkon, mert nem tud aludni. Egy Ă„â€šĂ‚Â©jszaka talĂ„â€šĂ‹â€ˇlkozik Nazuna NanakusĂ„â€šĂ‹â€ˇval, egy titokzatos lĂ„â€šĂ‹â€ˇnnyal, aki felfedi, hogy vĂ„â€šĂ‹â€ˇmpĂ„â€šĂ‚Â­r. Nazuna megmutatja Ko-nak az Ă„â€šĂ‚Â©jszakai Ă„â€šĂ‚Â©let varĂ„â€šĂ‹â€ˇzsĂ„â€šĂ‹â€ˇt Ă„â€šĂ‚Â©s szabadsĂ„â€šĂ‹â€ˇgĂ„â€šĂ‹â€ˇt, mikĂ„â€šĂ‚Â¶zben kĂ„â€šĂ„ËťlĂ„â€šĂ‚Â¶nĂ„â€šĂ‚Â¶s kapcsolat alakul ki kĂ„â€šĂ‚Â¶zĂ„â€šĂ‚Â¶ttĂ„â€šĂ„Ëťk.",
-        "studio":  "Lidenfilms",
-        "statusz":  "Befejezett",
-        "tipus":  "TV",
-        "osszes_epizod":  13,
-        "jelenlegi_epizod":  13,
-        "megjelenes":  "2022 NyĂ„â€šĂ‹â€ˇr",
-        "fordito":  "Anime Heaven Fansub",
-        "besorolas":  "R-17+",
-        "feltoltesDatuma":  "2022-07-08",
-        "trailer":  "https://www.youtube-nocookie.com/embed/a4bSbmqwhso?enablejsapi=1\u0026wmode=opaque\u0026autoplay=0"
-    },
-    {
-        "id":  3,
-        "title_japanese":  "Jujutsu Kaisen",
-        "title_english":  "Jujutsu Kaisen",
-        "borito":  "https://cdn.myanimelist.net/images/anime/1171/109222l.webp",
-        "hatter":  "https://image.tmdb.org/t/p/original/j0gsESaBzFmYVhnBTXzIE9PsgY8.jpg",
-        "rating":  8.8,
-        "genre":  "Action, Fantasy, Shounen",
-        "malId":  40748,
-        "leiras":  "Yuuji Itadori egy rendkĂ„â€šĂ‚Â­vĂ„â€šĂ„Ëťli fizikai kĂ„â€šĂ‚Â©pessĂ„â€šĂ‚Â©gekkel rendelkezĂ„Ä…Ă˘â‚¬Â kĂ„â€šĂ‚Â¶zĂ„â€šĂ‚Â©piskolĂ„â€šĂ‹â€ˇs. Egyik napja azzal kezdĂ„Ä…Ă˘â‚¬Âdik, hogy talĂ„â€šĂ‹â€ˇlkozik egy jujutsu varĂ„â€šĂ‹â€ˇzslĂ„â€šÄąâ€šval, aki elĂ„â€šĂ‹â€ˇtkozott tĂ„â€šĂ‹â€ˇrgyakat kutat. Amikor barĂ„â€šĂ‹â€ˇtai veszĂ„â€šĂ‚Â©lybe kerĂ„â€šĂ„Ëťlnek, Yuuji lenyeli egy erĂ„Ä…Ă˘â‚¬Âs Ă„â€šĂ‹â€ˇtok ujjĂ„â€šĂ‹â€ˇt, hogy megmentse Ă„Ä…Ă˘â‚¬Âket.",
-        "studio":  "MAPPA",
-        "statusz":  "Folyamatban",
-        "tipus":  "TV",
-        "osszes_epizod":  24,
-        "jelenlegi_epizod":  24,
-        "megjelenes":  "2020 Ă„Ä…Ă‚Âsz",
-        "fordito":  "Anime Heaven Fansub",
-        "besorolas":  "R-17+",
-        "feltoltesDatuma":  "2020-10-03",
-        "trailer":  "https://www.youtube-nocookie.com/embed/4A_X-Dvl0ws?enablejsapi=1\u0026wmode=opaque\u0026autoplay=0"
-    },
-    {
-        "id":  4,
-        "title_japanese":  "Sono Bisque Doll wa Koi wo Suru",
-        "title_english":  "My Dress-Up Darling",
-        "borito":  "https://cdn.myanimelist.net/images/anime/1179/119897l.webp",
-        "hatter":  "https://image.tmdb.org/t/p/original/c22TSmxhIuKEHhY7YKKBdaHnR61.jpg",
-        "rating":  8.7,
-        "genre":  "Romance, Slice of Life",
-        "malId":  48736,
-        "leiras":  "Wakana Gojou egy kĂ„â€šĂ‚Â¶zĂ„â€šĂ‚Â©piskolĂ„â€šĂ‹â€ˇs fiĂ„â€šÄąĹş, aki hina babĂ„â€šĂ‹â€ˇk kĂ„â€šĂ‚Â©szĂ„â€šĂ‚Â­tĂ„â€šĂ‚Â©sĂ„â€šĂ‚Â©vel foglalkozik. Egy nap osztĂ„â€šĂ‹â€ˇlytĂ„â€šĂ‹â€ˇrsa, Marin Kitagawa felfedezi Wakana tehetsĂ„â€šĂ‚Â©gĂ„â€šĂ‚Â©t, Ă„â€šĂ‚Â©s megkĂ„â€šĂ‚Â©ri, hogy segĂ„â€šĂ‚Â­tsen neki cosplay jelmezek kĂ„â€šĂ‚Â©szĂ„â€šĂ‚Â­tĂ„â€šĂ‚Â©sĂ„â€šĂ‚Â©ben. Ă„â€šÄąÂ¤gy kezdĂ„Ä…Ă˘â‚¬Âdik kettejĂ„â€šĂ„Ëťk kĂ„â€šĂ„ËťlĂ„â€šĂ‚Â¶nleges barĂ„â€šĂ‹â€ˇtsĂ„â€šĂ‹â€ˇga.",
-        "studio":  "CloverWorks",
-        "statusz":  "Befejezett",
-        "tipus":  "TV",
-        "osszes_epizod":  12,
-        "jelenlegi_epizod":  12,
-        "megjelenes":  "2022 TĂ„â€šĂ‚Â©l",
-        "fordito":  "Anime Heaven Fansub",
-        "besorolas":  "PG-13",
-        "feltoltesDatuma":  "2022-01-09",
-        "trailer":  "https://www.youtube-nocookie.com/embed/tFKDKd8z-NU?enablejsapi=1\u0026wmode=opaque\u0026autoplay=0"
-    },
-    {
-        "id":  5,
-        "title_japanese":  "Death Note",
-        "title_english":  "Death Note",
-        "borito":  "https://cdn.myanimelist.net/images/anime/9/9453l.webp",
-        "hatter":  "https://image.tmdb.org/t/p/original/mOlEbXcb6ufRJKogI35KqsSlCfB.jpg",
-        "rating":  8.6,
-        "genre":  "Thriller, Supernatural",
-        "malId":  1535,
-        "leiras":  "Light Yagami egy kivĂ„â€šĂ‹â€ˇlĂ„â€šÄąâ€š tanulĂ„â€šÄąâ€š, aki egy kĂ„â€šĂ„ËťlĂ„â€šĂ‚Â¶nleges noteszre bukkan, a Death Note-ra. BĂ„â€šĂ‹â€ˇrki neve, akit a noteszba Ă„â€šĂ‚Â­rnak, meghal. Light Ă„â€šÄąĹşgy dĂ„â€šĂ‚Â¶nt, hogy megtisztĂ„â€šĂ‚Â­tja a vilĂ„â€šĂ‹â€ˇgot a gonosztĂ„â€šÄąâ€šl, de hamarosan egy titokzatos nyomozĂ„â€šÄąâ€š, L nyomĂ„â€šĂ‹â€ˇba ered.",
-        "studio":  "Madhouse",
-        "statusz":  "Befejezett",
-        "tipus":  "TV",
-        "osszes_epizod":  37,
-        "jelenlegi_epizod":  37,
-        "megjelenes":  "2006 Ă„Ä…Ă‚Âsz",
-        "fordito":  "Anime Heaven Fansub",
-        "besorolas":  "R-17+",
-        "feltoltesDatuma":  "2006-10-04",
-        "trailer":  "https://www.youtube-nocookie.com/embed/Vt_3c8BgxV4?enablejsapi=1\u0026wmode=opaque\u0026autoplay=0"
-    },
-    {
-        "id":  6,
-        "title_japanese":  "Otonari no Tenshi-sama ni Itsunomanika Dame Ningen ni Sareteita Ken",
-        "title_english":  "The Angel Next Door Spoils Me Rotten",
-        "borito":  "https://cdn.myanimelist.net/images/anime/1240/133638l.webp",
-        "hatter":  "https://image.tmdb.org/t/p/original/lt6iImp0S1cFOUs8i0hr1ycqyCu.jpg",
-        "rating":  9,
-        "genre":  "Romance, Slice of Life",
-        "malId":  50739,
-        "leiras":  "Amane Fujimiya egy magĂ„â€šĂ‹â€ˇnyos kĂ„â€šĂ‚Â¶zĂ„â€šĂ‚Â©piskolĂ„â€šĂ‹â€ˇs fiĂ„â€šÄąĹş, aki egy napon talĂ„â€šĂ‹â€ˇlkozik szomszĂ„â€šĂ‚Â©djĂ„â€šĂ‹â€ˇval, Mahiru ShiinĂ„â€šĂ‹â€ˇval, akit az iskolĂ„â€šĂ‹â€ˇban angyalnak hĂ„â€šĂ‚Â­vnak. Amikor Mahiru Ă„â€šĂ‚Â©szreveszi Amane rendetlen Ă„â€šĂ‚Â©letmĂ„â€šÄąâ€šdjĂ„â€šĂ‹â€ˇt, eldĂ„â€šĂ‚Â¶nti, hogy gondoskodik rĂ„â€šÄąâ€šla.",
-        "studio":  "Project No.9",
-        "statusz":  "Befejezett",
-        "tipus":  "TV",
-        "osszes_epizod":  12,
-        "jelenlegi_epizod":  12,
-        "megjelenes":  "2023 TĂ„â€šĂ‚Â©l",
-        "fordito":  "Muteki Fansub",
-        "besorolas":  "PG-13",
-        "feltoltesDatuma":  "2023-01-07",
-        "trailer":  "https://www.youtube-nocookie.com/embed/IUq59ARXtdg?enablejsapi=1\u0026wmode=opaque\u0026autoplay=0"
-    }
+  {
+    "id": 1,
+    "title_japanese": "Chainsaw Man",
+    "title_english": "Chainsaw Man",
+    "borito": "https://cdn.myanimelist.net/images/anime/1806/126216l.webp",
+    "hatter": "https://image.tmdb.org/t/p/original/onn6JPGNwqcOUkp73ADq0PEpuLv.jpg",
+    "rating": 9,
+    "genre": "Action, Fantasy",
+    "malId": 44511,
+    "leiras": "Denji a szĂ„â€šĂ„Ëťlei halĂ„â€šĂ‹â€ˇla utĂ„â€šĂ‹â€ˇn hatalmas tartozĂ„â€šĂ‹â€ˇst Ă„â€šĂ‚Â¶rĂ„â€šĂ‚Â¶kĂ„â€šĂ‚Â¶l. Hogy kifizesse, dĂ„â€šĂ‚Â©monokra vadĂ„â€šĂ‹â€ˇszik Pochita nevĂ„Ä…Ă‚Â± dĂ„â€šĂ‚Â©mon-lĂ„â€šĂ‹â€ˇncfĂ„Ä…Ă‚Â±rĂ„â€šĂ‚Â©sz-kutyĂ„â€šĂ‹â€ˇja segĂ„â€šĂ‚Â­tsĂ„â€šĂ‚Â©gĂ„â€šĂ‚Â©vel. Nem vĂ„â€šĂ‹â€ˇgynak mĂ„â€šĂ‹â€ˇsra, csak egy normĂ„â€šĂ‹â€ˇlis Ă„â€šĂ‚Â©letre. Viszont a jakuza elĂ„â€šĂ‹â€ˇrulja Ă„Ä…Ă˘â‚¬Âket, Ă„â€šĂ‚Â­gy feldarabolva vĂ„â€šĂ‚Â©gzik egy szemetesben. Itt egyezsĂ„â€šĂ‚Â©get kĂ„â€šĂ‚Â¶tnek, amelynek hĂ„â€šĂ‹â€ˇla egy erĂ„Ä…Ă˘â‚¬Âsebb testen osztoznak majd. EzutĂ„â€šĂ‹â€ˇn egy professzionĂ„â€šĂ‹â€ˇlis dĂ„â€šĂ‚Â©monvadĂ„â€šĂ‹â€ˇsz csapat befogadja Ă„Ä…Ă˘â‚¬Âket. Ă„â€šÄąÂ¤gy a harc a normĂ„â€šĂ‹â€ˇlis Ă„â€šĂ‚Â©letĂ„â€šĂ‚Â©rt tovĂ„â€šĂ‹â€ˇbb folyik.",
+    "studio": "MAPPA",
+    "statusz": "Befejezett",
+    "tipus": "TV",
+    "osszes_epizod": 12,
+    "jelenlegi_epizod": 12,
+    "megjelenes": "2022 Ă„Ä…Ă‚ÂSZ",
+    "fordito": "Anime Heaven Fansub",
+    "besorolas": "R-17+",
+    "feltoltesDatuma": "2022-10-12",
+    "trailer": "https://www.youtube-nocookie.com/embed/jk7QSGwupPA?enablejsapi=1&wmode=opaque&autoplay=0",
+    "reszek": [
+      {
+        "id": 1,
+        "forras_elems": [
+          {
+            "link": "https://embed.indavideo.hu/player/video/86dd4bef6d",
+            "forra": {
+              "nev": "Indavideo"
+            }
+          },
+          {
+            "link": "https://videa.hu/player?f=8.2115862.1265416.0",
+            "forra": {
+              "nev": "Videa"
+            }
+          }
+        ],
+        "anime_id": 1,
+        "resz": "1. rĂ©sz",
+        "sorrend": 1,
+        "lathatosag": 1
+      },
+      {
+        "id": 2,
+        "forras_elems": {
+          "link": "https://embed.indavideo.hu/player/video/14ec055ca2",
+          "forra": {
+            "nev": "Indavideo"
+          }
+        },
+        "anime_id": 1,
+        "resz": "2. rĂ©sz",
+        "sorrend": 2,
+        "lathatosag": 1
+      },
+      {
+        "id": 3,
+        "forras_elems": {
+          "link": "https://videa.hu/player?f=8.2128854.1265416.0",
+          "forra": {
+            "nev": "Videa"
+          }
+        },
+        "anime_id": 1,
+        "resz": "3. rĂ©sz",
+        "sorrend": 3,
+        "lathatosag": 1
+      },
+      {
+        "id": 4,
+        "forras_elems": [
+          {
+            "link": "https://embed.indavideo.hu/player/video/85537f7dda",
+            "forra": {
+              "nev": "Indavideo"
+            }
+          },
+          {
+            "link": "https://videa.hu/player?f=8.2172886.1265416.0",
+            "forra": {
+              "nev": "Videa"
+            }
+          }
+        ],
+        "anime_id": 1,
+        "resz": "4. rĂ©sz",
+        "sorrend": 4,
+        "lathatosag": 1
+      },
+      {
+        "id": 5,
+        "forras_elems": [
+          {
+            "link": "https://embed.indavideo.hu/player/video/58c17a1a16",
+            "forra": {
+              "nev": "Indavideo"
+            }
+          },
+          {
+            "link": "https://videa.hu/player?f=8.2180532.1265416.0",
+            "forra": {
+              "nev": "Videa"
+            }
+          }
+        ],
+        "anime_id": 1,
+        "resz": "5. rĂ©sz",
+        "sorrend": 5,
+        "lathatosag": 1
+      },
+      {
+        "id": 6,
+        "forras_elems": {
+          "link": "https://videa.hu/player?f=8.2186899.1265416.0",
+          "forra": {
+            "nev": "Videa"
+          }
+        },
+        "anime_id": 1,
+        "resz": "6. rĂ©sz",
+        "sorrend": 6,
+        "lathatosag": 1
+      },
+      {
+        "id": 7,
+        "forras_elems": [
+          {
+            "link": "https://embed.indavideo.hu/player/video/be7f1a793c",
+            "forra": {
+              "nev": "Indavideo"
+            }
+          },
+          {
+            "link": "https://videa.hu/player?f=8.2191775.1265416.0",
+            "forra": {
+              "nev": "Videa"
+            }
+          }
+        ],
+        "anime_id": 1,
+        "resz": "7. rĂ©sz",
+        "sorrend": 7,
+        "lathatosag": 1
+      },
+      {
+        "id": 8,
+        "forras_elems": [
+          {
+            "link": "https://embed.indavideo.hu/player/video/9a35c1f226",
+            "forra": {
+              "nev": "Indavideo"
+            }
+          },
+          {
+            "link": "https://videa.hu/player?f=8.2198591.1265416.0",
+            "forra": {
+              "nev": "Videa"
+            }
+          }
+        ],
+        "anime_id": 1,
+        "resz": "8. rĂ©sz",
+        "sorrend": 8,
+        "lathatosag": 1
+      },
+      {
+        "id": 9,
+        "forras_elems": [
+          {
+            "link": "https://embed.indavideo.hu/player/video/9c44d85d15",
+            "forra": {
+              "nev": "Indavideo"
+            }
+          },
+          {
+            "link": "https://videa.hu/player?f=8.2203161.1265416.0",
+            "forra": {
+              "nev": "Videa"
+            }
+          }
+        ],
+        "anime_id": 1,
+        "resz": "9. rĂ©sz",
+        "sorrend": 9,
+        "lathatosag": 1
+      },
+      {
+        "id": 10,
+        "forras_elems": [
+          {
+            "link": "https://embed.indavideo.hu/player/video/8f9bda6fb2",
+            "forra": {
+              "nev": "Indavideo"
+            }
+          },
+          {
+            "link": "https://videa.hu/player?f=8.2218117.1265416.0",
+            "forra": {
+              "nev": "Videa"
+            }
+          }
+        ],
+        "anime_id": 1,
+        "resz": "10. rĂ©sz",
+        "sorrend": 10,
+        "lathatosag": 1
+      },
+      {
+        "id": 11,
+        "forras_elems": {
+          "link": "https://embed.indavideo.hu/player/video/9a9df5b775",
+          "forra": {
+            "nev": "Indavideo"
+          }
+        },
+        "anime_id": 1,
+        "resz": "11. rĂ©sz",
+        "sorrend": 11,
+        "lathatosag": 1
+      },
+      {
+        "id": 12,
+        "forras_elems": [
+          {
+            "link": "https://embed.indavideo.hu/player/video/745e52f031",
+            "forra": {
+              "nev": "Indavideo"
+            }
+          },
+          {
+            "link": "https://videa.hu/player?f=8.2231170.1265416.0",
+            "forra": {
+              "nev": "Videa"
+            }
+          }
+        ],
+        "anime_id": 1,
+        "resz": "12. rĂ©sz",
+        "sorrend": 12,
+        "lathatosag": 1
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title_japanese": "Yofukashi no Uta",
+    "title_english": "Call Of The Night",
+    "borito": "https://cdn.myanimelist.net/images/anime/1045/123711l.webp",
+    "hatter": "https://image.tmdb.org/t/p/original/veh7M4ho0vgqkW0n0hx1Up42elV.jpg",
+    "rating": 8.9,
+    "genre": "Supernatural, Romance",
+    "malId": 50346,
+    "leiras": "Ko Yamori Ă„â€šĂ‚Â©jszakĂ„â€šĂ‹â€ˇnkĂ„â€šĂ‚Â©nt bolyong az utcĂ„â€šĂ‹â€ˇkon, mert nem tud aludni. Egy Ă„â€šĂ‚Â©jszaka talĂ„â€šĂ‹â€ˇlkozik Nazuna NanakusĂ„â€šĂ‹â€ˇval, egy titokzatos lĂ„â€šĂ‹â€ˇnnyal, aki felfedi, hogy vĂ„â€šĂ‹â€ˇmpĂ„â€šĂ‚Â­r. Nazuna megmutatja Ko-nak az Ă„â€šĂ‚Â©jszakai Ă„â€šĂ‚Â©let varĂ„â€šĂ‹â€ˇzsĂ„â€šĂ‹â€ˇt Ă„â€šĂ‚Â©s szabadsĂ„â€šĂ‹â€ˇgĂ„â€šĂ‹â€ˇt, mikĂ„â€šĂ‚Â¶zben kĂ„â€šĂ„ËťlĂ„â€šĂ‚Â¶nĂ„â€šĂ‚Â¶s kapcsolat alakul ki kĂ„â€šĂ‚Â¶zĂ„â€šĂ‚Â¶ttĂ„â€šĂ„Ëťk.",
+    "studio": "Lidenfilms",
+    "statusz": "Befejezett",
+    "tipus": "TV",
+    "osszes_epizod": 13,
+    "jelenlegi_epizod": 13,
+    "megjelenes": "2022 NyĂ„â€šĂ‹â€ˇr",
+    "fordito": "Anime Heaven Fansub",
+    "besorolas": "R-17+",
+    "feltoltesDatuma": "2022-07-08",
+    "trailer": "https://www.youtube-nocookie.com/embed/a4bSbmqwhso?enablejsapi=1&wmode=opaque&autoplay=0"
+  },
+  {
+    "id": 3,
+    "title_japanese": "Jujutsu Kaisen",
+    "title_english": "Jujutsu Kaisen",
+    "borito": "https://cdn.myanimelist.net/images/anime/1171/109222l.webp",
+    "hatter": "https://image.tmdb.org/t/p/original/j0gsESaBzFmYVhnBTXzIE9PsgY8.jpg",
+    "rating": 8.8,
+    "genre": "Action, Fantasy, Shounen",
+    "malId": 40748,
+    "leiras": "Yuuji Itadori egy rendkĂ„â€šĂ‚Â­vĂ„â€šĂ„Ëťli fizikai kĂ„â€šĂ‚Â©pessĂ„â€šĂ‚Â©gekkel rendelkezĂ„Ä…Ă˘â‚¬Â kĂ„â€šĂ‚Â¶zĂ„â€šĂ‚Â©piskolĂ„â€šĂ‹â€ˇs. Egyik napja azzal kezdĂ„Ä…Ă˘â‚¬Âdik, hogy talĂ„â€šĂ‹â€ˇlkozik egy jujutsu varĂ„â€šĂ‹â€ˇzslĂ„â€šÄąâ€šval, aki elĂ„â€šĂ‹â€ˇtkozott tĂ„â€šĂ‹â€ˇrgyakat kutat. Amikor barĂ„â€šĂ‹â€ˇtai veszĂ„â€šĂ‚Â©lybe kerĂ„â€šĂ„Ëťlnek, Yuuji lenyeli egy erĂ„Ä…Ă˘â‚¬Âs Ă„â€šĂ‹â€ˇtok ujjĂ„â€šĂ‹â€ˇt, hogy megmentse Ă„Ä…Ă˘â‚¬Âket.",
+    "studio": "MAPPA",
+    "statusz": "Folyamatban",
+    "tipus": "TV",
+    "osszes_epizod": 24,
+    "jelenlegi_epizod": 24,
+    "megjelenes": "2020 Ă„Ä…Ă‚Âsz",
+    "fordito": "Anime Heaven Fansub",
+    "besorolas": "R-17+",
+    "feltoltesDatuma": "2020-10-03",
+    "trailer": "https://www.youtube-nocookie.com/embed/4A_X-Dvl0ws?enablejsapi=1&wmode=opaque&autoplay=0"
+  },
+  {
+    "id": 4,
+    "title_japanese": "Sono Bisque Doll wa Koi wo Suru",
+    "title_english": "My Dress-Up Darling",
+    "borito": "https://cdn.myanimelist.net/images/anime/1179/119897l.webp",
+    "hatter": "https://image.tmdb.org/t/p/original/c22TSmxhIuKEHhY7YKKBdaHnR61.jpg",
+    "rating": 8.7,
+    "genre": "Romance, Slice of Life",
+    "malId": 48736,
+    "leiras": "Wakana Gojou egy kĂ„â€šĂ‚Â¶zĂ„â€šĂ‚Â©piskolĂ„â€šĂ‹â€ˇs fiĂ„â€šÄąĹş, aki hina babĂ„â€šĂ‹â€ˇk kĂ„â€šĂ‚Â©szĂ„â€šĂ‚Â­tĂ„â€šĂ‚Â©sĂ„â€šĂ‚Â©vel foglalkozik. Egy nap osztĂ„â€šĂ‹â€ˇlytĂ„â€šĂ‹â€ˇrsa, Marin Kitagawa felfedezi Wakana tehetsĂ„â€šĂ‚Â©gĂ„â€šĂ‚Â©t, Ă„â€šĂ‚Â©s megkĂ„â€šĂ‚Â©ri, hogy segĂ„â€šĂ‚Â­tsen neki cosplay jelmezek kĂ„â€šĂ‚Â©szĂ„â€šĂ‚Â­tĂ„â€šĂ‚Â©sĂ„â€šĂ‚Â©ben. Ă„â€šÄąÂ¤gy kezdĂ„Ä…Ă˘â‚¬Âdik kettejĂ„â€šĂ„Ëťk kĂ„â€šĂ„ËťlĂ„â€šĂ‚Â¶nleges barĂ„â€šĂ‹â€ˇtsĂ„â€šĂ‹â€ˇga.",
+    "studio": "CloverWorks",
+    "statusz": "Befejezett",
+    "tipus": "TV",
+    "osszes_epizod": 12,
+    "jelenlegi_epizod": 12,
+    "megjelenes": "2022 TĂ„â€šĂ‚Â©l",
+    "fordito": "Anime Heaven Fansub",
+    "besorolas": "PG-13",
+    "feltoltesDatuma": "2022-01-09",
+    "trailer": "https://www.youtube-nocookie.com/embed/tFKDKd8z-NU?enablejsapi=1&wmode=opaque&autoplay=0"
+  },
+  {
+    "id": 5,
+    "title_japanese": "Death Note",
+    "title_english": "Death Note",
+    "borito": "https://cdn.myanimelist.net/images/anime/9/9453l.webp",
+    "hatter": "https://image.tmdb.org/t/p/original/mOlEbXcb6ufRJKogI35KqsSlCfB.jpg",
+    "rating": 8.6,
+    "genre": "Thriller, Supernatural",
+    "malId": 1535,
+    "leiras": "Light Yagami egy kivĂ„â€šĂ‹â€ˇlĂ„â€šÄąâ€š tanulĂ„â€šÄąâ€š, aki egy kĂ„â€šĂ„ËťlĂ„â€šĂ‚Â¶nleges noteszre bukkan, a Death Note-ra. BĂ„â€šĂ‹â€ˇrki neve, akit a noteszba Ă„â€šĂ‚Â­rnak, meghal. Light Ă„â€šÄąĹşgy dĂ„â€šĂ‚Â¶nt, hogy megtisztĂ„â€šĂ‚Â­tja a vilĂ„â€šĂ‹â€ˇgot a gonosztĂ„â€šÄąâ€šl, de hamarosan egy titokzatos nyomozĂ„â€šÄąâ€š, L nyomĂ„â€šĂ‹â€ˇba ered.",
+    "studio": "Madhouse",
+    "statusz": "Befejezett",
+    "tipus": "TV",
+    "osszes_epizod": 37,
+    "jelenlegi_epizod": 37,
+    "megjelenes": "2006 Ă„Ä…Ă‚Âsz",
+    "fordito": "Anime Heaven Fansub",
+    "besorolas": "R-17+",
+    "feltoltesDatuma": "2006-10-04",
+    "trailer": "https://www.youtube-nocookie.com/embed/Vt_3c8BgxV4?enablejsapi=1&wmode=opaque&autoplay=0"
+  },
+  {
+    "id": 6,
+    "title_japanese": "Otonari no Tenshi-sama ni Itsunomanika Dame Ningen ni Sareteita Ken",
+    "title_english": "The Angel Next Door Spoils Me Rotten",
+    "borito": "https://cdn.myanimelist.net/images/anime/1240/133638l.webp",
+    "hatter": "https://image.tmdb.org/t/p/original/lt6iImp0S1cFOUs8i0hr1ycqyCu.jpg",
+    "rating": 9,
+    "genre": "Romance, Slice of Life",
+    "malId": 50739,
+    "leiras": "Amane Fujimiya egy magĂ„â€šĂ‹â€ˇnyos kĂ„â€šĂ‚Â¶zĂ„â€šĂ‚Â©piskolĂ„â€šĂ‹â€ˇs fiĂ„â€šÄąĹş, aki egy napon talĂ„â€šĂ‹â€ˇlkozik szomszĂ„â€šĂ‚Â©djĂ„â€šĂ‹â€ˇval, Mahiru ShiinĂ„â€šĂ‹â€ˇval, akit az iskolĂ„â€šĂ‹â€ˇban angyalnak hĂ„â€šĂ‚Â­vnak. Amikor Mahiru Ă„â€šĂ‚Â©szreveszi Amane rendetlen Ă„â€šĂ‚Â©letmĂ„â€šÄąâ€šdjĂ„â€šĂ‹â€ˇt, eldĂ„â€šĂ‚Â¶nti, hogy gondoskodik rĂ„â€šÄąâ€šla.",
+    "studio": "Project No.9",
+    "statusz": "Befejezett",
+    "tipus": "TV",
+    "osszes_epizod": 12,
+    "jelenlegi_epizod": 12,
+    "megjelenes": "2023 TĂ„â€šĂ‚Â©l",
+    "fordito": "Muteki Fansub",
+    "besorolas": "PG-13",
+    "feltoltesDatuma": "2023-01-07",
+    "trailer": "https://www.youtube-nocookie.com/embed/IUq59ARXtdg?enablejsapi=1&wmode=opaque&autoplay=0",
+    "reszek": [
+      {
+        "id": 1,
+        "anime_id": 6,
+        "sorrend": 13,
+        "resz": "13. rész",
+        "lathatosag": true,
+        "forras_elems": [
+          {
+            "link": "https://embed.indavideo.hu/player/video/891dc7228d",
+            "forra": {
+              "nev": "Indavideo"
+            }
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "anime_id": 6,
+        "sorrend": 13,
+        "resz": "13. rész",
+        "lathatosag": true,
+        "forras_elems": [
+          {
+            "link": "https://embed.indavideo.hu/player/video/891dc7228d",
+            "forra": {
+              "nev": "Indavideo"
+            }
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "anime_id": 6,
+        "sorrend": 13,
+        "resz": "13. rész",
+        "lathatosag": 1,
+        "forras_elems": [
+          {
+            "link": "https://embed.indavideo.hu/player/video/891dc7228d",
+            "forra": {
+              "nev": "Indavideo"
+            }
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "anime_id": 6,
+        "sorrend": 13,
+        "resz": "13. rész",
+        "lathatosag": 1,
+        "forras_elems": [
+          {
+            "link": "https://embed.indavideo.hu/player/video/891dc7228d",
+            "forra": {
+              "nev": "Indavideo"
+            }
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "anime_id": 6,
+        "sorrend": 13,
+        "resz": "13. rész",
+        "lathatosag": 1,
+        "forras_elems": [
+          {
+            "link": "https://embed.indavideo.hu/player/video/891dc7228d",
+            "forra": {
+              "nev": "Indavideo"
+            }
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "anime_id": 6,
+        "sorrend": 13,
+        "resz": "13. rész",
+        "lathatosag": 0,
+        "forras_elems": [
+          {
+            "link": "https://embed.indavideo.hu/player/video/891dc7228d",
+            "forra": {
+              "nev": "Indavideo"
+            }
+          }
+        ]
+      }
+    ]
+  }
 ]

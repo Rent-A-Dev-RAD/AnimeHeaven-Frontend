@@ -534,7 +534,7 @@ export async function deleteEpisode(episodeId: number): Promise<ApiResponse<void
     
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}))
-      throw new Error(errorData.message || 'Nem sikerült törölni az epizódot')
+      throw new Error(errorData.error || 'Nem sikerült törölni az epizódot')
     }
     
     const result = await response.json()

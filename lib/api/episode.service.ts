@@ -1,12 +1,17 @@
 import type { Episode, ApiResponse, EpisodesApiResponse } from '@/lib/types/anime'
+import { API_CONFIG, getApiUrl } from '@/lib/config/api.config'
 
 /**
  * Epizód lekérése ID alapján
  */
 export async function getEpisodeById(episodeId: number): Promise<ApiResponse<Episode>> {
   try {
+    const url = API_CONFIG.USE_REAL_API 
+      ? getApiUrl(API_CONFIG.ENDPOINTS.EPISODE_BY_ID, { id: episodeId })
+      : `/api/episodes/${episodeId}`;
+
     const response = await fetch(
-      `/api/episodes/${episodeId}`,
+      url,
       {
         next: { 
           revalidate: 0,
@@ -37,14 +42,24 @@ export async function createEpisode(animeId: number, episodeData: {
   sorrend: number
   resz: string
   lathatosag: boolean | number
-  forras_elems?: any[]
+  forrasok?: any[]
+  inda?: string
+  videa?: string
 }): Promise<ApiResponse<Episode>> {
   try {
-    // Bővített payload az animeId-vel
-    const payload = { ...episodeData, anime_id: animeId }
+    // Bővített payload az animeId-vel, megbizonyosodunk róla, hogy bekerül a payloadba
+    const payload = { 
+      ...episodeData, 
+      anime_id: animeId,
+      lathatosag: episodeData.lathatosag === 1 || episodeData.lathatosag === true
+    }
     
+    const url = API_CONFIG.USE_REAL_API 
+      ? `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.CREATE_EPISODE}`
+      : '/api/episodes';
+
     const response = await fetch(
-      '/api/episodes',
+      url,
       {
         method: 'POST',
         headers: {
@@ -54,30 +69,25 @@ export async function createEpisode(animeId: number, episodeData: {
       }
     )
     
-    if (response.ok) {
-      const result = await response.json()
-      return {
-        success: true,
-        data: result.data,
-        message: result.message || 'Az epizód sikeresen létrehozva!'
-      }
-    } else {
-      // Ha az API nem működik, de nem kritikus - visszatérünk sikerrel
-      // Az UI frissítése lokálisan megtörténik
-      const tempId = Math.floor(Math.random() * 1000000) + 1000000
-      return {
-        success: true,
-        data: { id: tempId, ...episodeData, anime_id: animeId } as any,
-        message: 'Az epizód mentve lett (offline mód)'
-      }
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}))
+      console.error('Backend hiba részletei (POST):', errorData)
+      const errorMsg = errorData.message || errorData.error || 
+                       (errorData.errors ? JSON.stringify(errorData.errors) : 'Nem sikerült létrehozzni az epizódot');
+      throw new Error(errorMsg)
     }
-  } catch (error) {
-    // Hálózati hiba - offline mód, de sikeresen "mentjük" lokálisan
-    const tempId = Math.floor(Math.random() * 1000000) + 1000000
+    
+    const result = await response.json()
     return {
       success: true,
-      data: { id: tempId, ...episodeData, anime_id: animeId } as any,
-      message: 'Az epizód mentve lett (offline mód)'
+      data: result.data || result, // A backend válaszától függően
+      message: result.message || 'Az epizód sikeresen létrehozva!'
+    }
+  } catch (error) {
+    console.error(`Hiba az epizód létrehozása közben:`, error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Ismeretlen hiba történt a létrehozás során'
     }
   }
 }
@@ -86,45 +96,56 @@ export async function createEpisode(animeId: number, episodeData: {
  * Epizód frissítése (admin funkció)
  */
 export async function updateEpisode(episodeId: number, episodeData: {
+  anime_id?: number
   sorrend?: number
   resz?: string
   lathatosag?: boolean | number
-  forras_elems?: any[]
+  forrasok?: any[]
+  inda?: string
+  videa?: string
 }): Promise<ApiResponse<Episode>> {
   try {
+    const url = API_CONFIG.USE_REAL_API 
+      ? getApiUrl(API_CONFIG.ENDPOINTS.EPISODE_BY_ID, { id: episodeId })
+      : `/api/episodes/${episodeId}`;
+
+    // Fix payload lathatosag cast
+    const payload = {
+      ...episodeData,
+      lathatosag: episodeData.lathatosag === 1 || episodeData.lathatosag === true
+    }
+
     const response = await fetch(
-      `/api/episodes/${episodeId}`,
+      url,
       {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(episodeData)
+        body: JSON.stringify(payload)
       }
     )
     
-    if (response.ok) {
-      const result = await response.json()
-      return {
-        success: true,
-        data: result.data,
-        message: result.message || 'Az epizód sikeresen frissítve!'
-      }
-    } else {
-      // Ha az API nem működik, de nem kritikus - visszatérünk sikerrel
-      // Az UI frissítése lokálisan megtörténik
-      return {
-        success: true,
-        data: { id: episodeId, ...episodeData } as any,
-        message: 'Az epizód mentve lett (offline mód)'
-      }
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}))
+      console.error('Backend hiba részletei (PUT):', errorData)
+            
+      const errorMsg = errorData.message || errorData.error || 
+                       (errorData.errors ? JSON.stringify(errorData.errors) : 'Nem sikerült frissíteni az epizódot');
+      throw new Error(errorMsg)
     }
-  } catch (error) {
-    // Hálózati hiba - offline mód, de sikeresen "mentjük" lokálisan
+    
+    const result = await response.json()
     return {
       success: true,
-      data: { id: episodeId, ...episodeData } as any,
-      message: 'Az epizód mentve lett (offline mód)'
+      data: result.data || episodeData as any,
+      message: result.message || 'Az epizód sikeresen frissítve!'
+    }
+  } catch (error) {
+    console.error(`Hiba az epizód frissítése közben (ID: ${episodeId}):`, error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Ismeretlen hiba történt a frissítés során'
     }
   }
 }
@@ -134,8 +155,12 @@ export async function updateEpisode(episodeId: number, episodeData: {
  */
 export async function deleteEpisode(episodeId: number): Promise<ApiResponse<void>> {
   try {
+    const url = API_CONFIG.USE_REAL_API 
+      ? getApiUrl(API_CONFIG.ENDPOINTS.EPISODE_BY_ID, { id: episodeId })
+      : `/api/episodes/${episodeId}`;
+
     const response = await fetch(
-      `/api/episodes/${episodeId}`,
+      url,
       {
         method: 'DELETE',
         headers: {
@@ -146,7 +171,7 @@ export async function deleteEpisode(episodeId: number): Promise<ApiResponse<void
     
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}))
-      throw new Error(errorData.message || 'Nem sikerült törölni az epizódot')
+      throw new Error(errorData.error || 'Nem sikerült törölni az epizódot')
     }
     
     const result = await response.json()

@@ -278,30 +278,36 @@ export default function EditAnimePage() {
 
     setSaving(true)
     try {
-      // Összeállítjuk a forras_elems tömböt
-      const forrasElems = []
+      // Összeállítjuk a forrasok tömböt a backend elvárása szerint
+      // Fontos: ha ki lett ürítve, null értéket vagy üres taget adunk meg, 
+      // de a biztonság kedvéért érdemes lehet beletenni a forrás arraybe.
+      const forrasok = []
       
-      if (episode.inda) {
-        forrasElems.push({
-          link: episode.inda,
-          forra: { nev: 'Indavideo' }
-        })
-      }
+      // Mindig elküldjük, ha üres, a backend tudni fogja, hogy törölni kell
+      forrasok.push({
+        forras_id: 1,
+        nev: "INDA",
+        link: episode.inda || ""
+      })
       
-      if (episode.videa) {
-        forrasElems.push({
-          link: episode.videa,
-          forra: { nev: 'Videa' }
-        })
-      }
+      forrasok.push({
+        forras_id: 2,
+        nev: "VIDEA",
+        link: episode.videa || ""
+      })
       
       // Összeasseállítjuk a backendnek megfelelő payload-ot
       const payload = {
+        anime_id: Number(animeId),
         sorrend: episode.sorrend,
         resz: episode.resz,
-        lathatosag: episode.lathatosag,
-        forras_elems: forrasElems
+        lathatosag: episode.lathatosag === 1 || episode.lathatosag === true, 
+        forrasok: forrasok
+        // VIGYÁZAT: szándékosan NEM küldjük be a root "inda" és "videa" mezőket, 
+        // mert a backend "directSourceFieldMap" hibára fut velük.
       }
+
+      console.log('Kérés payloadja:', payload)
 
       let result: any;
       // Ha id nagyon nagy szám (Date.now()), akkor még új, ezért POST kérés kell
@@ -311,48 +317,21 @@ export default function EditAnimePage() {
         // Frissítsük az epizódot az új ID-val amit a backend adott (ha sikeres)
         if (result.success && result.data && result.data.id) {
           setEpisodes(prev => prev.map(ep => 
-            ep.id === episodeId ? { ...ep, id: result.data.id } : ep
+            ep.id === episodeId ? { 
+              ...ep, 
+              id: result.data.id,
+              inda: episode.inda,
+              videa: episode.videa
+            } : ep
           ))
         }
       } else {
-        // Meglévő epizód frissítése
+        // Meglévő epizód frissítése - nincs cache probléma, az UI már up to date
         result = await updateEpisode(episode.id, payload)
       }
       
       if (!result.success) {
         throw new Error(result.error || 'Sikertelen mentés')
-      }
-
-      // Újra fetch az epizódokat, hogy az új forras_elems adatok megjelenjenek
-      const episodesResult = await getEpisodesByAnimeId(parseInt(animeId!))
-      
-      if (episodesResult.success && episodesResult.data) {
-        const loadedEpisodes = episodesResult.data.map((ep: any) => {
-          const editableEp: EditableEpisode = {
-            id: ep.id,
-            sorrend: ep.sorrend || 1,
-            resz: ep.resz || `${ep.sorrend || 1}. rész`,
-            lathatosag: ep.lathatosag ? 1 : 0
-          }
-          
-          if (ep.forras_elems) {
-            // forras_elems lehet tömb vagy objektum - normalizáljuk tömbré
-            const sourcesArray = Array.isArray(ep.forras_elems) ? ep.forras_elems : [ep.forras_elems]
-            
-            sourcesArray.forEach((source: any) => {
-              if (!source?.forra?.nev) return
-              const sourceName = source.forra.nev.toLowerCase()
-              if (sourceName === 'indavideo') {
-                editableEp.inda = source.link
-              } else if (sourceName === 'videa') {
-                editableEp.videa = source.link
-              }
-            })
-          }
-          
-          return editableEp
-        })
-        setEpisodes(loadedEpisodes)
       }
 
       alert(result.message || 'Epizód sikeresen mentve!')
