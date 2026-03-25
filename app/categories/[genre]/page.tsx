@@ -6,7 +6,7 @@ import Header from '@/components/header'
 import { Card } from '@/components/ui/card'
 import Link from 'next/link'
 import { getAllAnimes } from '@/lib/api/anime.service'
-import { Play, Plus } from 'lucide-react'
+import { Play, Info } from 'lucide-react'
 import type { Anime } from '@/lib/types/anime'
 
 interface CategoryPageProps {
@@ -159,7 +159,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                             <Play className="w-4 h-4 fill-current" />
                           </button>
                           <button className="cursor-pointer bg-foreground/20 text-foreground rounded-full p-2 hover:bg-foreground/30 transition border border-foreground/30">
-                            <Plus className="w-4 h-4" />
+                            <Info className="w-4 h-4" />
                           </button>
                         </div>
                       </div>
